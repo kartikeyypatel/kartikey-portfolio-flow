@@ -1,0 +1,66 @@
+
+{
+  "header": {
+    "logo": "KartikeyPatel",
+    "nav": {
+      "home": "home",
+      "skills": "skills",
+      "myWork": "my work",
+      "projects": "projects",
+      "experience": "experience",
+      "contact": "contact"
+    }
+  },
+  "hero": {
+    "title": "KARTIKEY PATEL",
+    "subtitle": "Software Engineer • IT Professional",
+    "scrollDown": "Scroll down"
+  },
+  "skills": {
+    "title": "Skills",
+    "subtitle": "Technologies & Expertise",
+    "categories": {
+      "programming": {
+        "title": "Programming Languages",
+        "skills": ["Python", "Java", "JavaScript", "TypeScript", "C++", "SQL"]
+      },
+      "frameworks": {
+        "title": "Frameworks & Libraries",
+        "skills": ["React", "Node.js", "Express", "Django", "Spring Boot", "Next.js"]
+      },
+      "technologies": {
+        "title": "Technologies & Tools",
+        "skills": ["Git", "Docker", "AWS", "MongoDB", "PostgreSQL", "Redis"]
+      }
+    }
+  },
+  "myWork": {
+    "title": "My Work",
+    "description": "I'm a passionate software engineer with expertise in full-stack development, AI/ML applications, and modern web technologies. I focus on creating scalable, user-centric solutions that solve real-world problems.",
+    "featuredProject": "Featured Project",
+    "viewProject": "View Project"
+  },
+  "projects": {
+    "title": "Projects",
+    "filters": ["All", "App Development", "AI/ML", "Web Development"],
+    "showProject": "Show project",
+    "backToProjects": "Back to Projects",
+    "client": "Client/Source",
+    "technologies": "Technologies",
+    "nextProject": "Next Project",
+    "previousProject": "Previous Project"
+  },
+  "experience": {
+    "title": "Experience",
+    "subtitle": "Professional Journey"
+  },
+  "contact": {
+    "subtitle": "What's Next?",
+    "title": "Get In Touch",
+    "description": "I'm always interested in new opportunities and collaborations. Whether you have a project in mind or just want to connect, feel free to reach out!",
+    "sayHello": "Say Hello",
+    "social": {
+      "linkedin": "LinkedIn"
+    }
+  }
+}
