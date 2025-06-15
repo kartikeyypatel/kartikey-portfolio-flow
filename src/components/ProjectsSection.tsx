@@ -92,7 +92,7 @@ const ProjectsSection = () => {
       client: 'Academic Project',
       technologies: ['Python', 'HTML/CSS', 'Machine Learning', 'Naïve Bayes', 'Random Forest'],
       gallery: ['https://images.unsplash.com/photo-1599227694144-a60f5b1d3a5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
-      size: 'normal',
+      size: 'wide',
       githubUrl: 'https://github.com/kartikey-patel'
     },
     {
@@ -217,7 +217,7 @@ const ProjectsSection = () => {
             <FocusCards
               cards={filteredProjects}
               onCardClick={openProject}
-              className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[280px]"
+              className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[250px]"
               getCardClassName={(card) => getProjectSizeClass(card.size)}
             />
           </motion.div>
