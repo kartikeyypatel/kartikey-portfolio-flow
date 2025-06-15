@@ -16,7 +16,7 @@ const ContactSection = () => {
     <section id="contact" className="section-padding bg-portfolio-black relative overflow-hidden" ref={ref}>
       <Boxes />
       <div className="absolute inset-0 w-full h-full bg-portfolio-black z-10 [mask-image:radial-gradient(transparent_30%,white)] pointer-events-none" />
-      <div className="container-custom relative z-20">
+      <div className="container-custom relative z-20 pointer-events-none">
         <motion.div
           className="max-w-3xl mx-auto text-center"
           initial={{ opacity: 0, y: 50 }}
@@ -59,7 +59,7 @@ const ContactSection = () => {
             {/* Say Hello Button */}
             <motion.a
               href="mailto:kartikey.patel@example.com"
-              className="inline-flex items-center space-x-3 bg-transparent border-2 border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 group"
+              className="inline-flex items-center space-x-3 bg-transparent border-2 border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 group pointer-events-auto"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -78,7 +78,7 @@ const ContactSection = () => {
                 href="https://linkedin.com/in/kartikey-patel"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200"
+                className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200 pointer-events-auto"
                 whileHover={{ y: -2 }}
               >
                 <span className="sr-only">{locales.contact.social.linkedin}</span>
@@ -91,7 +91,7 @@ const ContactSection = () => {
                 href="https://github.com/kartikey-patel"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200"
+                className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200 pointer-events-auto"
                 whileHover={{ y: -2 }}
               >
                 <span className="sr-only">GitHub</span>
