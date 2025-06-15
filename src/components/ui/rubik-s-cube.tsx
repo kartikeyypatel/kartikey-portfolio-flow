@@ -1,7 +1,5 @@
-
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
 import * as THREE from 'three';
 import React, { Suspense, useRef, useState, useEffect, useMemo } from "react";
 
