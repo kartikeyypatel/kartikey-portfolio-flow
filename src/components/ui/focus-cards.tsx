@@ -10,20 +10,23 @@ export const Card = React.memo(
     hovered,
     setHovered,
     onClick,
+    className,
   }: {
     card: any;
     index: number;
     hovered: number | null;
     setHovered: React.Dispatch<React.SetStateAction<number | null>>;
     onClick: () => void;
+    className?: string;
   }) => (
     <div
       onMouseEnter={() => setHovered(index)}
       onMouseLeave={() => setHovered(null)}
       onClick={onClick}
       className={cn(
-        "rounded-lg relative bg-gray-100 dark:bg-neutral-900 overflow-hidden h-96 w-full transition-all duration-300 ease-out cursor-pointer",
-        hovered !== null && hovered !== index && "blur-sm scale-[0.98]"
+        "rounded-lg relative bg-gray-100 dark:bg-neutral-900 overflow-hidden w-full transition-all duration-300 ease-out cursor-pointer",
+        hovered !== null && hovered !== index && "blur-sm scale-[0.98]",
+        className
       )}
     >
       <img
@@ -57,14 +60,18 @@ export type CardType = {
 export function FocusCards({
   cards,
   onCardClick,
+  className,
+  getCardClassName,
 }: {
   cards: CardType[];
   onCardClick: (card: CardType) => void;
+  className?: string;
+  getCardClassName?: (card: CardType) => string;
 }) {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 w-full">
+    <div className={cn("w-full", className)}>
       {cards.map((card, index) => (
         <Card
           key={card.id}
@@ -73,6 +80,7 @@ export function FocusCards({
           hovered={hovered}
           setHovered={setHovered}
           onClick={() => onCardClick(card)}
+          className={getCardClassName ? getCardClassName(card) : ""}
         />
       ))}
     </div>

@@ -206,7 +206,12 @@ const ProjectsSection = () => {
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <FocusCards cards={filteredProjects} onCardClick={openProject} />
+            <FocusCards
+              cards={filteredProjects}
+              onCardClick={openProject}
+              className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[250px]"
+              getCardClassName={(card) => getProjectSizeClass(card.size)}
+            />
           </motion.div>
         </div>
       </section>
