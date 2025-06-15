@@ -1,9 +1,8 @@
-
 import { Canvas } from "@react-three/fiber";
 import { PerspectiveCamera, SpotLight, RoundedBox } from "@react-three/drei";
 import { useThree, useFrame } from "@react-three/fiber";
 import * as THREE from 'three';
-import React, { Suspense, useRef, useState, useEffect, forwardRef, useMemo, useCallback, MutableRefObject } from "react";
+import React, { Suspense, useRef, useState, useEffect, forwardRef, useMemo, useCallback } from "react";
 import { Vector3, Matrix4, Quaternion } from "three";
 
 interface CubeData {
@@ -31,7 +30,12 @@ interface RubiksCubeModelProps {
   scale?: number;
 }
 
-const RubiksCubeModel = forwardRef<THREE.Group, RubiksCubeModelProps>((props, ref) => {
+interface RubiksCubeRef {
+  reset: () => void;
+  group: THREE.Group | null;
+}
+
+const RubiksCubeModel = forwardRef<RubiksCubeRef, RubiksCubeModelProps>((props, ref) => {
   const ANIMATION_DURATION = 1.2;
   const GAP = 0.01;
   const RADIUS = 0.075;
@@ -65,9 +69,9 @@ const RubiksCubeModel = forwardRef<THREE.Group, RubiksCubeModelProps>((props, re
   const reusableQuaternion = useMemo(() => new Quaternion(), []);
   
   React.useImperativeHandle(ref, () => ({
-    ...(mainGroupRef.current || {}),
-    reset: resetCube
-  }));
+    reset: resetCube,
+    group: mainGroupRef.current
+  }), []);
 
   const initializeCubes = useCallback((): CubeData[] => {
     const initial: CubeData[] = [];
