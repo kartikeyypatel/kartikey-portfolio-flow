@@ -5,6 +5,7 @@ import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, X } from 'lucide-react';
 import locales from '../locales/en.json';
+import { FocusCards } from '@/components/ui/focus-cards';
 
 interface Project {
   id: string;
@@ -200,49 +201,12 @@ const ProjectsSection = () => {
 
           {/* Projects Grid */}
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[25rem] grid-flow-dense"
+            className="mt-16"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            {filteredProjects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                className={`group relative overflow-hidden rounded-2xl cursor-pointer ${getProjectSizeClass(project.size)}`}
-                initial={{ opacity: 0, y: 50 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                onClick={() => openProject(project)}
-                whileHover={{ y: -5 }}
-              >
-                <div className="w-full h-full relative overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-portfolio-black via-portfolio-black/20 to-transparent"></div>
-                  
-                  {/* Project Info */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <p className="text-portfolio-cyan text-sm font-mono mb-2">{formatCategory(project.category)}</p>
-                    <h3 className="text-xl font-semibold text-white mb-2">{project.title}</h3>
-                  </div>
-
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-portfolio-cyan/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <motion.div
-                      className="text-white text-center"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileHover={{ opacity: 1, y: 0 }}
-                    >
-                      <p className="font-semibold">{locales.projects.showProject}</p>
-                      <div className="w-12 h-0.5 bg-white mx-auto mt-2"></div>
-                    </motion.div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+            <FocusCards cards={filteredProjects} onCardClick={openProject} />
           </motion.div>
         </div>
       </section>
