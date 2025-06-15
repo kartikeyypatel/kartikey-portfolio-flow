@@ -31,55 +31,81 @@ const ProjectsSection = () => {
       id: '1',
       title: 'Consumer Safety Application',
       category: 'App Development',
-      date: '2024',
+      date: 'May 2025',
       image: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      description: 'A comprehensive mobile application designed to enhance consumer safety through real-time monitoring, incident reporting, and safety recommendations. Features include location-based alerts, emergency contacts, and safety score tracking.',
+      description: 'Designed the "Report a Product" workflow for a consumer safety application. Built a Node.js, Express, and Puppeteer backend to automate a 6-page FDA MedWatch form. Integrated Google Cloud services for reCAPTCHA v3 bypass.',
       client: 'Academic Project',
-      technologies: ['React Native', 'Node.js', 'MongoDB', 'Firebase', 'Google Maps API'],
+      technologies: ['React Native', 'TypeScript', 'Puppeteer', 'Expo Go', 'Node.js', 'Express', 'Google Cloud'],
       gallery: [
         'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
       ],
       size: 'large'
     },
     {
       id: '2',
-      title: 'AI-Powered Analytics Dashboard',
+      title: 'Enterprise Document Intelligence Assistant',
       category: 'AI/ML',
-      date: '2024',
-      image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      description: 'Machine learning-powered dashboard that provides intelligent insights and predictive analytics for business decision making.',
-      client: 'Enterprise Client',
-      technologies: ['Python', 'TensorFlow', 'React', 'D3.js', 'PostgreSQL'],
-      gallery: [
-        'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-      ]
+      date: 'April 2025',
+      image: 'https://images.unsplash.com/photo-1677756229133-d5d4f0490f23?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
+      description: 'Developed a RAG-based AI document Q&A system processing 10k+ files with LangChain and Pinecone (89% accuracy). Deployed on AWS Fargate using Docker and Kubernetes. Monitored via Weights & Biases.',
+      client: 'Personal Project',
+      technologies: ['LangChain', 'OpenAI GPT-4', 'AWS', 'Docker', 'Pinecone', 'Kubernetes', 'Weights & Biases', 'RAG Architecture'],
+      gallery: ['https://images.unsplash.com/photo-1677756229133-d5d4f0490f23?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
     },
     {
       id: '3',
-      title: 'E-Commerce Platform',
-      category: 'Web Development',
-      date: '2023',
-      image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      description: 'Full-stack e-commerce solution with modern design, payment integration, and inventory management.',
-      client: 'Startup Client',
-      technologies: ['Next.js', 'TypeScript', 'Stripe', 'Prisma', 'PostgreSQL'],
-      gallery: [
-        'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-      ]
+      title: 'Secure Web Sign-Up System',
+      category: 'Security',
+      date: 'May 2020 (JASC Publication)',
+      image: 'https://images.unsplash.com/photo-1550751827-4138d04d405b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
+      description: 'Implemented secure web sign-up using OAuth 2.0 and AES encryption. Ensured 100% data protection by generating dummy sign-up details and securing unique access codes via hashing, stored in an encrypted database.',
+      client: 'Publication',
+      technologies: ['Java', 'OAuth 2.0', 'XML', 'MySQL', 'AES Encryption', 'Hashing', 'Data Protection'],
+      gallery: ['https://images.unsplash.com/photo-1550751827-4138d04d405b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
     },
     {
       id: '4',
-      title: 'Smart Home IoT System',
-      category: 'App Development',
-      date: '2023',
-      image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      description: 'IoT-based home automation system with mobile app control and voice integration.',
+      title: 'Analyzing TV Shows and Movies',
+      category: 'AI/ML',
+      date: 'Feb 2025',
+      image: 'https://images.unsplash.com/photo-1593335937443-45c9a59a721d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
+      description: 'Using Python web scraping with Beautiful Soup and Pandas, and mathematical models like Naïve Bayes, K-Nearest Neighbor, and Random Forest, was able to achieve 92% accuracy in prediction of popularity.',
+      client: 'Academic Project',
+      technologies: ['Python', 'Pandas', 'Beautiful Soup', 'Data Mining', 'Naïve Bayes', 'KNN', 'Random Forest'],
+      gallery: ['https://images.unsplash.com/photo-1593335937443-45c9a59a721d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+    },
+    {
+      id: '5',
+      title: 'Crime Detection using Machine Learning',
+      category: 'AI/ML',
+      date: 'Jan 2025',
+      image: 'https://images.unsplash.com/photo-1599227694144-a60f5b1d3a5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
+      description: 'Developed a crime prediction website leveraging Machine Learning (ML) algorithms including Naïve Bayes and Random Forest; achieved 83% accuracy in forecasted crime occurrences aiding local law enforcement department in resource allocation and crime prevention efforts.',
+      client: 'Academic Project',
+      technologies: ['Python', 'HTML/CSS', 'Machine Learning', 'Naïve Bayes', 'Random Forest'],
+      gallery: ['https://images.unsplash.com/photo-1599227694144-a60f5b1d3a5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+    },
+    {
+      id: '6',
+      title: 'Real-Time Sentiment Analysis for Social Media',
+      category: 'AI/ML',
+      date: 'Dec 2024',
+      image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
+      description: 'Developed a real-time social media sentiment tracker using Twitter’s API and NLP for topic extraction, with a dashboard displaying sentiment trends and alerts for significant shifts, providing insights on public opinion for brands and topics.',
       client: 'Personal Project',
-      technologies: ['Flutter', 'Arduino', 'Firebase', 'Google Assistant API'],
-      gallery: [
-        'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-      ]
+      technologies: ['Python', 'Tweepy', 'TextBlob', 'NLP', 'MongoDB'],
+      gallery: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+    },
+    {
+      id: '7',
+      title: 'AI-Powered Personal Finance Dashboard',
+      category: 'Web Development',
+      date: 'Sep 2024',
+      image: 'https://images.unsplash.com/photo-1554224155-1696413565d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
+      description: 'Developed an AI-driven dashboard to track expenses, analyze spending patterns, and forecast budgets; integrated machine learning for tailored savings recommendations, visualized data with D3.js, and ensured secure user authentication.',
+      client: 'Personal Project',
+      technologies: ['Python', 'Django', 'React.js', 'Pandas', 'Machine Learning', 'scikit-learn', 'D3.js'],
+      gallery: ['https://images.unsplash.com/photo-1554224155-1696413565d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
     }
   ];
 

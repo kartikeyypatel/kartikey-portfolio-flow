@@ -50,7 +50,7 @@
   },
   "projects": {
     "title": "Projects",
-    "filters": ["All", "App Development", "AI/ML", "Web Development"],
+    "filters": ["All", "App Development", "AI/ML", "Web Development", "Security"],
     "showProject": "Show project",
     "backToProjects": "Back to Projects",
     "client": "Client/Source",
