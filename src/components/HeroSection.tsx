@@ -17,12 +17,14 @@ const HeroSection = () => {
     <section id="home" className="min-h-screen relative flex items-center justify-center overflow-hidden">
       {/* Background */}
       <div 
-        className="absolute inset-0 bg-hero-pattern bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('/lovable-uploads/d3620efd-2d2a-44ae-bd8c-a153652c0b21.png')"
+          backgroundImage: "url('/lovable-uploads/d3620efd-2d2a-44ae-bd8c-a153652c0b21.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center'
         }}
       >
-        <div className="absolute inset-0 bg-portfolio-black/70"></div>
+        <div className="absolute inset-0 bg-portfolio-black/60"></div>
       </div>
 
       {/* Content */}
