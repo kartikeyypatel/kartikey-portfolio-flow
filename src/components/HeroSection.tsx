@@ -39,12 +39,12 @@ const HeroSection = () => {
           </motion.h1>
           
           <motion.p 
-            className="text-xl md:text-2xl text-portfolio-text-muted mb-12 font-light mix-blend-exclusion"
+            className="text-3xl md:text-5xl text-gradient mb-12 font-light"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <AnimatedText texts={roles} className="h-8" />
+            <AnimatedText texts={roles} className="h-14" />
           </motion.p>
         </motion.div>
       </div>

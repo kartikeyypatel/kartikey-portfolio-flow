@@ -26,7 +26,7 @@ function AnimatedText({ texts, className = "" }: AnimatedTextProps) {
       {texts.map((text, index) => (
         <motion.span
           key={index}
-          className="absolute font-light"
+          className="absolute font-normal"
           initial={{ opacity: 0, y: "-100" }}
           transition={{ type: "spring", stiffness: 50 }}
           animate={
