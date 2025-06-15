@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import locales from '../locales/en.json';
 import { AnimatedText } from './ui/animated-hero';
-import { TextPressure } from './ui/interactive-text-pressure';
 
 const HeroSection = () => {
   const scrollToSkills = () => {
@@ -26,22 +25,6 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <motion.div
-            className="h-72 md:h-96 flex items-center justify-center mb-4"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-          >
-            <TextPressure
-              text={locales.hero.title}
-              flex={true}
-              textColor="#FFFFFF"
-              className="uppercase tracking-wider"
-              minFontSize={120}
-              scale={true}
-            />
-          </motion.div>
-          
           <motion.p 
             className="text-3xl md:text-5xl text-portfolio-text mb-12 font-light"
             initial={{ opacity: 0, y: 20 }}
