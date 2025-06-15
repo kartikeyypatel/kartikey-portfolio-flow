@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -57,7 +58,7 @@ const Header = () => {
       <div className="flex items-center justify-between h-20 px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <motion.div 
-          className="flex items-center flex-1"
+          className="flex items-center flex-1 lg:w-80 lg:flex-none"
           whileHover={{ scale: 1.05 }}
         >
           <h1 className="text-3xl font-bold text-portfolio-text flex items-baseline">
@@ -103,7 +104,7 @@ const Header = () => {
         </nav>
 
         {/* Resume Button */}
-        <div className="hidden lg:flex items-center flex-1 justify-end">
+        <div className="hidden lg:flex items-center justify-end lg:w-80">
           <ResumeButton />
         </div>
 
