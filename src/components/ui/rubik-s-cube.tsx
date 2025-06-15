@@ -13,7 +13,11 @@ interface RubiksCubeModelProps {
   scale?: number;
 }
 
-const RubiksCubeModel = forwardRef<THREE.Group, RubiksCubeModelProps>((props, ref) => {
+interface RubiksCubeRef {
+  reset: () => void;
+}
+
+const RubiksCubeModel = forwardRef<RubiksCubeRef, RubiksCubeModelProps>((props, ref) => {
   const ANIMATION_DURATION = 1.2;
   const GAP = 0.01;
   const RADIUS = 0.075;
@@ -46,8 +50,25 @@ const RubiksCubeModel = forwardRef<THREE.Group, RubiksCubeModelProps>((props, re
   const reusableMatrix4 = useMemo(() => new Matrix4(), []);
   const reusableQuaternion = useMemo(() => new Quaternion(), []);
   
+  const resetCube = useCallback(() => {
+    if (!isMountedRef.current) return;
+    
+    setCubes(initializeCubes());
+    if (mainGroupRef.current) {
+      mainGroupRef.current.rotation.set(0, 0, 0);
+    }
+    isAnimatingRef.current = false;
+    currentRotationRef.current = 0;
+    lastMoveAxisRef.current = null;
+    currentMoveRef.current = null;
+    
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+  }, []);
+
   React.useImperativeHandle(ref, () => ({
-    ...(mainGroupRef.current || {}),
     reset: resetCube
   }));
 
@@ -88,24 +109,6 @@ const RubiksCubeModel = forwardRef<THREE.Group, RubiksCubeModelProps>((props, re
         resizeTimeoutRef.current = null;
       }
     };
-  }, [initializeCubes]);
-
-  const resetCube = useCallback(() => {
-    if (!isMountedRef.current) return;
-    
-    setCubes(initializeCubes());
-    if (mainGroupRef.current) {
-      mainGroupRef.current.rotation.set(0, 0, 0);
-    }
-    isAnimatingRef.current = false;
-    currentRotationRef.current = 0;
-    lastMoveAxisRef.current = null;
-    currentMoveRef.current = null;
-    
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-      animationFrameRef.current = null;
-    }
   }, [initializeCubes]);
 
   const handleViewportChange = useCallback(() => {
