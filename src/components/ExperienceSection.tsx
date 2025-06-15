@@ -103,14 +103,14 @@ const ExperienceSection = () => {
               {/* Accordion Header */}
               <button
                 onClick={() => toggleItem(experience.id)}
-                className="w-full bg-secondary hover:bg-secondary/80 transition-colors duration-200 p-6 flex items-center justify-between"
+                className="w-full bg-portfolio-cyan hover:bg-portfolio-cyan/90 transition-colors duration-200 p-6 flex items-center justify-between"
               >
                 <div className="flex items-center space-x-4 text-left">
                   <div>
-                    <h3 className="text-xl font-semibold text-foreground">
+                    <h3 className="text-xl font-semibold text-portfolio-black">
                       {experience.title}
                     </h3>
-                    <p className="text-muted-foreground">
+                    <p className="text-portfolio-black/80">
                       {experience.company} • {experience.period}
                     </p>
                   </div>
@@ -119,7 +119,7 @@ const ExperienceSection = () => {
                 <motion.div
                   animate={{ rotate: openItem === experience.id ? 45 : 0 }}
                   transition={{ duration: 0.2 }}
-                  className="text-foreground"
+                  className="text-portfolio-black"
                 >
                   {openItem === experience.id ? (
                     <Minus className="h-6 w-6" />
