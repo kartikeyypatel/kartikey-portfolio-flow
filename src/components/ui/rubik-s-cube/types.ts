@@ -1,5 +1,5 @@
 
-import { Vector3, Matrix4 } from "three";
+import { Vector3, Matrix4, Group } from "three";
 
 export interface CubeData {
   position: Vector3;
@@ -28,5 +28,5 @@ export interface RubiksCubeModelProps {
 
 export interface RubiksCubeRef {
   reset: () => void;
-  group: THREE.Group | null;
+  group: Group | null;
 }
