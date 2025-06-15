@@ -1,4 +1,3 @@
-
 'use client';
 
 import { motion } from 'framer-motion';
@@ -34,12 +33,12 @@ const ProjectsSection = () => {
       title: 'Consumer Safety Application (Capstone)',
       category: 'App Development',
       date: 'May 2025',
-      image: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image: '/lovable-uploads/4e145dc9-9986-473d-a061-cc6b95b27460.png',
       description: 'Designed the "Report a Product" workflow for a consumer safety application. Built a Node.js, Express, and Puppeteer backend to automate a 6-page FDA MedWatch form. Integrated Google Cloud services for reCAPTCHA v3 bypass.',
       client: 'Academic Project',
       technologies: ['React Native', 'TypeScript', 'Puppeteer', 'Expo Go', 'Node.js', 'Express', 'Google Cloud'],
       gallery: [
-        'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        '/lovable-uploads/4e145dc9-9986-473d-a061-cc6b95b27460.png',
       ],
       size: 'wide',
       githubUrl: 'https://github.com/kartikey-patel'
@@ -49,11 +48,11 @@ const ProjectsSection = () => {
       title: 'Enterprise Document Intelligence Assistant',
       category: ['AI/ML', 'Web Development'],
       date: 'April 2025',
-      image: 'https://images.unsplash.com/photo-1677756229133-d5d4f0490f23?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
+      image: '/lovable-uploads/5269f9aa-d080-4608-bdf5-d13a7458b3b9.png',
       description: 'Developed a RAG-based AI document Q&A system processing 10k+ files with LangChain and Pinecone (89% accuracy). Deployed on AWS Fargate using Docker and Kubernetes. Monitored via Weights & Biases.',
       client: 'Personal Project',
       technologies: ['LangChain', 'OpenAI GPT-4', 'AWS', 'Docker', 'Pinecone', 'Kubernetes', 'Weights & Biases', 'RAG Architecture'],
-      gallery: ['https://images.unsplash.com/photo-1677756229133-d5d4f0490f23?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+      gallery: ['/lovable-uploads/5269f9aa-d080-4608-bdf5-d13a7458b3b9.png'],
       size: 'normal',
       githubUrl: 'https://github.com/kartikey-patel'
     },
@@ -62,11 +61,11 @@ const ProjectsSection = () => {
       title: 'Secure Web Sign-Up System',
       category: 'Security',
       date: 'May 2020 (JASC Publication)',
-      image: 'https://images.unsplash.com/photo-1550751827-4138d04d405b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
+      image: '/lovable-uploads/66304f36-e0a8-4dd0-a849-e96125c9d07e.png',
       description: 'Implemented secure web sign-up using OAuth 2.0 and AES encryption. Ensured 100% data protection by generating dummy sign-up details and securing unique access codes via hashing, stored in an encrypted database.',
       client: 'Publication',
       technologies: ['Java', 'OAuth 2.0', 'XML', 'MySQL', 'AES Encryption', 'Hashing', 'Data Protection'],
-      gallery: ['https://images.unsplash.com/photo-1550751827-4138d04d405b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+      gallery: ['/lovable-uploads/66304f36-e0a8-4dd0-a849-e96125c9d07e.png'],
       size: 'normal',
       githubUrl: 'https://github.com/kartikey-patel'
     },
