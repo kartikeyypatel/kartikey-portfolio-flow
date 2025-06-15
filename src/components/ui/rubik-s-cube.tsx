@@ -9,12 +9,12 @@ interface RubiksCubeRef {
 }
 
 const FACE_COLORS = {
-  front: '#ff0000',   // Red
-  back: '#ff8c00',    // Orange  
-  left: '#ffffff',    // White
-  right: '#ffff00',   // Yellow
-  top: '#00ff00',     // Green
-  bottom: '#0000ff'   // Blue
+  front: '#22D3EE',   // Primary cyan (website accent)
+  back: '#0891b2',    // Darker cyan
+  left: '#111111',    // Dark gray (website secondary)
+  right: '#888888',   // Muted gray (website muted text)
+  top: '#67e8f9',     // Lighter cyan
+  bottom: '#0B0B0B'   // Very dark gray (website background variant)
 };
 
 const INITIAL_POSITIONS = [
@@ -40,32 +40,32 @@ const createCubeMaterial = (position: number[]) => {
   
   // Right face (positive X)
   materials.push(new THREE.MeshLambertMaterial({ 
-    color: x === 1 ? FACE_COLORS.right : '#2c2c2c' 
+    color: x === 1 ? FACE_COLORS.right : '#1a1a1a' 
   }));
   
   // Left face (negative X) 
   materials.push(new THREE.MeshLambertMaterial({ 
-    color: x === -1 ? FACE_COLORS.left : '#2c2c2c' 
+    color: x === -1 ? FACE_COLORS.left : '#1a1a1a' 
   }));
   
   // Top face (positive Y)
   materials.push(new THREE.MeshLambertMaterial({ 
-    color: y === 1 ? FACE_COLORS.top : '#2c2c2c' 
+    color: y === 1 ? FACE_COLORS.top : '#1a1a1a' 
   }));
   
   // Bottom face (negative Y)
   materials.push(new THREE.MeshLambertMaterial({ 
-    color: y === -1 ? FACE_COLORS.bottom : '#2c2c2c' 
+    color: y === -1 ? FACE_COLORS.bottom : '#1a1a1a' 
   }));
   
   // Front face (positive Z)
   materials.push(new THREE.MeshLambertMaterial({ 
-    color: z === 1 ? FACE_COLORS.front : '#2c2c2c' 
+    color: z === 1 ? FACE_COLORS.front : '#1a1a1a' 
   }));
   
   // Back face (negative Z)
   materials.push(new THREE.MeshLambertMaterial({ 
-    color: z === -1 ? FACE_COLORS.back : '#2c2c2c' 
+    color: z === -1 ? FACE_COLORS.back : '#1a1a1a' 
   }));
   
   return materials;
