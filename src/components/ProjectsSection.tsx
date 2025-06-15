@@ -1,4 +1,3 @@
-
 'use client';
 
 import { motion } from 'framer-motion';
@@ -10,7 +9,7 @@ import locales from '../locales/en.json';
 interface Project {
   id: string;
   title: string;
-  category: string;
+  category: string | string[];
   date: string;
   image: string;
   description: string;
@@ -29,7 +28,7 @@ const ProjectsSection = () => {
   const projects: Project[] = [
     {
       id: '1',
-      title: 'Consumer Safety Application',
+      title: 'Consumer Safety Application (Capstone)',
       category: 'App Development',
       date: 'May 2025',
       image: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -44,7 +43,7 @@ const ProjectsSection = () => {
     {
       id: '2',
       title: 'Enterprise Document Intelligence Assistant',
-      category: 'AI/ML',
+      category: ['AI/ML', 'Web Development'],
       date: 'April 2025',
       image: 'https://images.unsplash.com/photo-1677756229133-d5d4f0490f23?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
       description: 'Developed a RAG-based AI document Q&A system processing 10k+ files with LangChain and Pinecone (89% accuracy). Deployed on AWS Fargate using Docker and Kubernetes. Monitored via Weights & Biases.',
@@ -113,7 +112,11 @@ const ProjectsSection = () => {
 
   const filteredProjects = activeFilter === 'All' 
     ? projects 
-    : projects.filter(project => project.category === activeFilter);
+    : projects.filter(project => 
+        Array.isArray(project.category) 
+          ? project.category.includes(activeFilter) 
+          : project.category === activeFilter
+      );
 
   const openProject = (project: Project) => {
     setSelectedProject(project);
@@ -135,6 +138,10 @@ const ProjectsSection = () => {
     if (!selectedProject) return null;
     const currentIndex = projects.findIndex(p => p.id === selectedProject.id);
     return projects[(currentIndex - 1 + projects.length) % projects.length];
+  };
+
+  const formatCategory = (category: string | string[]) => {
+    return Array.isArray(category) ? category.join(' & ') : category;
   };
 
   return (
@@ -174,7 +181,7 @@ const ProjectsSection = () => {
 
           {/* Projects Grid */}
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
@@ -201,7 +208,7 @@ const ProjectsSection = () => {
                   
                   {/* Project Info */}
                   <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <p className="text-portfolio-cyan text-sm font-mono mb-2">{project.category}</p>
+                    <p className="text-portfolio-cyan text-sm font-mono mb-2">{formatCategory(project.category)}</p>
                     <h3 className="text-xl font-semibold text-white mb-2">{project.title}</h3>
                   </div>
 
@@ -254,14 +261,14 @@ const ProjectsSection = () => {
 
               {/* Breadcrumbs */}
               <div className="text-sm text-portfolio-text-muted mb-4 font-mono">
-                Projects / {selectedProject.category} / {selectedProject.title}
+                Projects / {formatCategory(selectedProject.category)} / {selectedProject.title}
               </div>
 
               {/* Project Title */}
               <h1 className="text-4xl md:text-6xl font-bold text-portfolio-text mb-2">
                 {selectedProject.title}
               </h1>
-              <p className="text-portfolio-cyan mb-8">{selectedProject.category} • {selectedProject.date}</p>
+              <p className="text-portfolio-cyan mb-8">{formatCategory(selectedProject.category)} • {selectedProject.date}</p>
 
               {/* Project Content */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
