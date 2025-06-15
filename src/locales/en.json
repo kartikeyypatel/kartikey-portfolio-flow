@@ -1,3 +1,4 @@
+
 {
   "header": {
     "logo": "KartikeyPatel",
@@ -78,6 +79,10 @@
       "github": "GitHub",
       "twitter": "Twitter",
       "facebook": "Facebook"
-    }
+    },
+    "phone": "+1 (555) 123-4567",
+    "location": "San Francisco, USA",
+    "footerLine1": "Designed & Built by Kartikey Patel",
+    "footerLine2": "© 2025 All Rights Reserved"
   }
 }

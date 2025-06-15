@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ArrowRight, Linkedin, Github, Twitter, Facebook, Mail } from 'lucide-react';
+import { ArrowRight, Linkedin, Github, Twitter, Facebook, Mail, Phone, MapPin } from 'lucide-react';
 import locales from '../locales/en.json';
 import { Boxes } from './ui/background-boxes';
 import { useForm } from 'react-hook-form';
@@ -57,7 +57,7 @@ const ContactSection = () => {
     <section id="contact" className="section-padding bg-portfolio-black relative overflow-hidden" ref={ref}>
       <Boxes />
       <div className="absolute inset-0 w-full h-full bg-portfolio-black z-10 [mask-image:radial-gradient(transparent_30%,white)] pointer-events-none" />
-      <div className="container-custom relative z-20 pointer-events-none">
+      <div className="container-custom relative z-20">
         <motion.div
           className="max-w-3xl mx-auto text-center"
           initial={{ opacity: 0, y: 50 }}
@@ -186,6 +186,23 @@ const ContactSection = () => {
               </Form>
             </div>
 
+            {/* Contact Info */}
+            <motion.div
+              className="flex flex-col sm:flex-row justify-center items-center gap-x-8 gap-y-4 pt-8 pointer-events-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+            >
+              <div className="flex items-center gap-3 text-portfolio-text-muted">
+                <Phone className="h-5 w-5 text-portfolio-cyan" />
+                <span>{locales.contact.phone}</span>
+              </div>
+              <div className="flex items-center gap-3 text-portfolio-text-muted">
+                <MapPin className="h-5 w-5 text-portfolio-cyan" />
+                <span>{locales.contact.location}</span>
+              </div>
+            </motion.div>
+
             {/* Social Links */}
             <motion.div
               className="flex justify-center space-x-6"
@@ -257,8 +274,9 @@ const ContactSection = () => {
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.6, delay: 1 }}
         >
-          <p className="text-portfolio-text-muted">
-            just built by kartikey patel © 2025
+          <p className="text-portfolio-text-muted leading-relaxed">
+            {locales.contact.footerLine1} <br />
+            {locales.contact.footerLine2}
           </p>
         </motion.div>
       </div>
