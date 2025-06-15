@@ -1,9 +1,10 @@
+
 'use client';
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, X, Github } from 'lucide-react';
 import locales from '../locales/en.json';
 import { FocusCards } from '@/components/ui/focus-cards';
 
@@ -18,6 +19,7 @@ interface Project {
   technologies: string[];
   gallery: string[];
   size?: 'normal' | 'large' | 'wide' | 'tall';
+  githubUrl?: string;
 }
 
 const ProjectsSection = () => {
@@ -39,7 +41,8 @@ const ProjectsSection = () => {
       gallery: [
         'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       ],
-      size: 'wide'
+      size: 'wide',
+      githubUrl: 'https://github.com/kartikey-patel'
     },
     {
       id: '2',
@@ -52,6 +55,7 @@ const ProjectsSection = () => {
       technologies: ['LangChain', 'OpenAI GPT-4', 'AWS', 'Docker', 'Pinecone', 'Kubernetes', 'Weights & Biases', 'RAG Architecture'],
       gallery: ['https://images.unsplash.com/photo-1677756229133-d5d4f0490f23?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
       size: 'normal',
+      githubUrl: 'https://github.com/kartikey-patel'
     },
     {
       id: '3',
@@ -64,6 +68,7 @@ const ProjectsSection = () => {
       technologies: ['Java', 'OAuth 2.0', 'XML', 'MySQL', 'AES Encryption', 'Hashing', 'Data Protection'],
       gallery: ['https://images.unsplash.com/photo-1550751827-4138d04d405b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
       size: 'normal',
+      githubUrl: 'https://github.com/kartikey-patel'
     },
     {
       id: '4',
@@ -76,6 +81,7 @@ const ProjectsSection = () => {
       technologies: ['Python', 'Pandas', 'Beautiful Soup', 'Data Mining', 'Naïve Bayes', 'KNN', 'Random Forest'],
       gallery: ['https://images.unsplash.com/photo-1593335937443-45c9a59a721d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
       size: 'normal',
+      githubUrl: 'https://github.com/kartikey-patel'
     },
     {
       id: '5',
@@ -88,6 +94,7 @@ const ProjectsSection = () => {
       technologies: ['Python', 'HTML/CSS', 'Machine Learning', 'Naïve Bayes', 'Random Forest'],
       gallery: ['https://images.unsplash.com/photo-1599227694144-a60f5b1d3a5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
       size: 'wide',
+      githubUrl: 'https://github.com/kartikey-patel'
     },
     {
       id: '6',
@@ -100,6 +107,7 @@ const ProjectsSection = () => {
       technologies: ['Python', 'Tweepy', 'TextBlob', 'NLP', 'MongoDB'],
       gallery: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
       size: 'normal',
+      githubUrl: 'https://github.com/kartikey-patel'
     },
     {
       id: '7',
@@ -112,6 +120,7 @@ const ProjectsSection = () => {
       technologies: ['Python', 'Django', 'React.js', 'Pandas', 'Machine Learning', 'scikit-learn', 'D3.js'],
       gallery: ['https://images.unsplash.com/photo-1554224155-1696413565d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
       size: 'normal',
+      githubUrl: 'https://github.com/kartikey-patel'
     }
   ];
 
@@ -277,13 +286,23 @@ const ProjectsSection = () => {
                 </div>
 
                 <div className="space-y-8">
-                  {/* Client */}
-                  <div>
-                    <h3 className="text-xl font-semibold text-portfolio-text mb-4">
-                      {locales.projects.client}
-                    </h3>
-                    <p className="text-portfolio-text-muted">{selectedProject.client}</p>
-                  </div>
+                  {/* Github */}
+                  {selectedProject.githubUrl && (
+                    <div>
+                      <h3 className="text-xl font-semibold text-portfolio-text mb-4">
+                        {(locales.projects as any).github}
+                      </h3>
+                      <a
+                        href={selectedProject.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-portfolio-text-muted hover:text-portfolio-cyan transition-colors"
+                      >
+                        <Github className="h-5 w-5" />
+                        <span>View on GitHub</span>
+                      </a>
+                    </div>
+                  )}
 
                   {/* Technologies */}
                   <div>

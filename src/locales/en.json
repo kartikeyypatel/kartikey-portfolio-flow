@@ -50,10 +50,17 @@
   },
   "projects": {
     "title": "Projects",
-    "filters": ["All", "App Development", "AI/ML", "Web Development", "Security"],
+    "filters": [
+      "All",
+      "App Development",
+      "AI/ML",
+      "Web Development",
+      "Security"
+    ],
     "showProject": "Show project",
     "backToProjects": "Back to Projects",
     "client": "Client/Source",
+    "github": "GitHub",
     "technologies": "Technologies",
     "nextProject": "Next Project",
     "previousProject": "Previous Project"
