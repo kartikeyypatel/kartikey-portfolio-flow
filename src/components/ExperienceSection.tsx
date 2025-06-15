@@ -25,30 +25,39 @@ const ExperienceSection = () => {
   const experiences: Experience[] = [
     {
       id: '1',
-      title: 'Software Engineer',
-      company: 'Tech Solutions Inc.',
-      period: '2023 - Present',
-      description: 'Leading development of scalable web applications using modern technologies. Responsible for architecture decisions, code reviews, and mentoring junior developers. Successfully delivered multiple high-impact projects improving system performance by 40%.',
-      skills: ['React', 'Node.js', 'TypeScript', 'AWS', 'Docker', 'MongoDB'],
-      logo: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
+      title: 'Information Technology Intern',
+      company: 'PSE&G',
+      period: 'May 2024 - Aug. 2024',
+      description: 'Executed cybersecurity strategies by performing over 15 risk and vulnerability assessments across AWS, Azure, and GCP environments, ensuring alignment with NERC CIP, GDPR, and HIPAA compliance standards. Performed 100+ security scans with Veracode and Dome9, cutting vulnerabilities by 25%. Integrated automated security scans into CI/CD pipelines using Jenkins, identifying and mitigating over 300 vulnerabilities. Contributed to developing an internal portal using React, TypeScript, and Node.js.',
+      skills: ['Cybersecurity', 'AWS', 'Veracode', 'Dome9', 'CI/CD', 'Jenkins', 'React', 'Node.js'],
+      logo: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
     },
     {
       id: '2',
-      title: 'Full Stack Developer',
-      company: 'Digital Innovations LLC',
-      period: '2022 - 2023',
-      description: 'Developed and maintained customer-facing applications serving 10,000+ users. Implemented CI/CD pipelines and automated testing processes. Collaborated with cross-functional teams to deliver features on time.',
-      skills: ['Vue.js', 'Python', 'Django', 'PostgreSQL', 'Redis', 'Jenkins'],
-      logo: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
+      title: 'Software Engineer',
+      company: 'TCS',
+      period: 'May 2021 - May 2023',
+      description: 'Automated user data monitoring with SQL, reducing manual interventions by 80% for 205M+ users. Built and maintained 150+ Java RESTful APIs for call center dashboards, reducing troubleshooting times. Managed 10 TB+ of business reports using Tableau. Achieved 95% automation of server monitoring with Unix Shell scripts.',
+      skills: ['SQL', 'Java', 'RESTful APIs', 'Tableau', 'Unix Shell Scripting'],
+      logo: 'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
     },
     {
       id: '3',
-      title: 'Junior Developer',
-      company: 'StartUp Ventures',
-      period: '2021 - 2022',
-      description: 'Built responsive web interfaces and RESTful APIs. Participated in agile development processes and contributed to technical documentation. Gained experience in modern development practices and tools.',
-      skills: ['JavaScript', 'React', 'Express.js', 'MySQL', 'Git', 'JIRA'],
-      logo: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
+      title: 'Software Engineer',
+      company: 'Parshwa Builders',
+      period: 'Jun. 2020 - Apr. 2021',
+      description: 'Engineered Python Flask APIs for a real estate application, deployed on AWS Lambda, reducing response times by 30%. Collaborated in an Agile environment to define 15+ technical deliverables for a real estate platform on AWS, accelerating project delivery by 15%.',
+      skills: ['Python', 'Flask', 'APIs', 'AWS Lambda'],
+      logo: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
+    },
+    {
+      id: '4',
+      title: 'Software Developer Intern',
+      company: 'CRISIL Limited',
+      period: 'Jun. 2019 - Jul. 2019',
+      description: 'Created a chatbot using IBM Watson, integrating Java and JavaScript APIs with IBM Cloud services to deliver context-aware responses, resulting in a 35% increase in customer satisfaction.',
+      skills: ['Chatbot', 'IBM Watson', 'Java API', 'IBM Cloud'],
+      logo: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
     }
   ];
 
