@@ -6,6 +6,8 @@ import { ChevronDown } from 'lucide-react';
 import { BackgroundPaths } from './ui/background-paths';
 import { AnimatedText } from './ui/animated-hero';
 import { TextPressure } from './ui/interactive-text-pressure';
+import { SplineScene } from './ui/spline';
+import { Spotlight } from './ui/spotlight';
 
 const HeroSection = () => {
   const scrollToSkills = () => {
@@ -19,40 +21,55 @@ const HeroSection = () => {
 
   return (
     <section id="home" className="min-h-screen relative flex items-center justify-center overflow-hidden">
-      {/* New Animated Background */}
       <BackgroundPaths />
 
       {/* Content */}
-      <div className="relative z-10 text-center w-full">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
+      <div className="relative z-10 w-full flex flex-col-reverse md:flex-row items-center justify-center container mx-auto px-4 gap-8">
+        {/* Left content: Text */}
+        <div className="md:w-3/5 text-center md:text-left">
           <motion.div
-            className="h-32 md:h-40 flex items-center justify-center mb-6"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <TextPressure
-              text="Kartikey Patel"
-              flex={true}
-              textColor="#E0E0E0"
-              className="mix-blend-difference"
-              minFontSize={100}
-            />
+            <motion.div
+              className="h-32 md:h-40 flex items-center justify-center md:justify-start mb-6"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.5 }}
+            >
+              <TextPressure
+                text="Kartikey Patel"
+                flex={true}
+                textColor="#E0E0E0"
+                className="mix-blend-difference"
+                minFontSize={100}
+              />
+            </motion.div>
+            
+            <motion.p 
+              className="text-3xl md:text-5xl text-portfolio-text mb-12 font-light"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+            >
+              <AnimatedText texts={roles} className="h-12 md:h-16" />
+            </motion.p>
           </motion.div>
-          
-          <motion.p 
-            className="text-3xl md:text-5xl text-portfolio-text mb-12 font-light"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-          >
-            <AnimatedText texts={roles} className="h-12 md:h-16" />
-          </motion.p>
-        </motion.div>
+        </div>
+
+        {/* Right content: Robot */}
+        <div className="relative w-full md:w-2/5 h-80 md:h-[500px] flex items-center justify-center">
+          <Spotlight
+            className="-top-20 left-0 md:left-20 md:-top-10"
+            fill="white"
+          />
+          <div className="w-full h-full">
+            <SplineScene 
+              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Scroll indicator */}
