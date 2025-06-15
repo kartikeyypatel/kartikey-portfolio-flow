@@ -3,7 +3,6 @@
 
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import locales from '../locales/en.json';
 import { BackgroundPaths } from './ui/background-paths';
 import { AnimatedText } from './ui/animated-hero';
 import { TextPressure } from './ui/interactive-text-pressure';
@@ -37,7 +36,7 @@ const HeroSection = () => {
             transition={{ duration: 1, delay: 0.5 }}
           >
             <TextPressure
-              text={locales.hero.title}
+              text="Kartikey Patel"
               flex={true}
               textColor="#E0E0E0"
               className="mix-blend-difference"
@@ -46,12 +45,12 @@ const HeroSection = () => {
           </motion.div>
           
           <motion.p 
-            className="text-4xl md:text-6xl text-portfolio-text mb-12 font-light"
+            className="text-3xl md:text-5xl text-portfolio-text mb-12 font-light"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <AnimatedText texts={roles} className="h-14 md:h-20" />
+            <AnimatedText texts={roles} className="h-12 md:h-16" />
           </motion.p>
         </motion.div>
       </div>
@@ -67,7 +66,7 @@ const HeroSection = () => {
         whileTap={{ scale: 0.95 }}
       >
         <div className="flex flex-col items-center">
-          <span className="text-sm mb-2 font-mono">{locales.hero.scrollDown}</span>
+          <span className="text-sm mb-2 font-mono">Skills</span>
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
