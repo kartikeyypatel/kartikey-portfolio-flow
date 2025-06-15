@@ -1,4 +1,3 @@
-
 'use client';
 
 import { motion } from 'framer-motion';
@@ -27,7 +26,7 @@ const HeroSection = () => {
       <div className="relative w-full container mx-auto px-4 flex items-center justify-start h-screen">
         
         {/* Robot on the right, partially behind */}
-        <div className="absolute top-0 right-0 w-full md:w-3/5 h-full flex items-center justify-center z-0 opacity-30 md:opacity-40 pointer-events-none">
+        <div className="absolute top-0 right-0 w-full md:w-3/5 h-full flex items-center justify-center z-0 opacity-30 md:opacity-40">
           <Spotlight
             className="-top-20 left-0 md:left-20 md:-top-10"
             fill="white"
@@ -98,4 +97,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-
