@@ -4,7 +4,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Code, Cpu, Cloud } from 'lucide-react';
+import { Code, Cpu, Database } from 'lucide-react';
 import locales from '../locales/en.json';
 
 const SkillsSection = () => {
@@ -23,7 +23,7 @@ const SkillsSection = () => {
       skills: locales.skills.categories.frameworks.skills,
     },
     {
-      icon: Cloud,
+      icon: Database,
       title: locales.skills.categories.technologies.title,
       skills: locales.skills.categories.technologies.skills,
     },

@@ -22,15 +22,23 @@
     "categories": {
       "programming": {
         "title": "Programming Languages",
-        "skills": ["Python", "Java", "JavaScript", "TypeScript", "C++", "SQL"]
+        "skills": ["C/C++", "Java", "HTML/CSS", "JavaScript", "Python", "TypeScript", "Golang", "Rust"]
       },
       "frameworks": {
-        "title": "Frameworks & Libraries",
-        "skills": ["React", "Node.js", "Express", "Django", "Spring Boot", "Next.js"]
+        "title": "Frameworks & Tools",
+        "skills": [
+          "React.js", "Node.js", "Flask", "Django", "Angular", "Spring Boot", 
+          "ASP.NET", "Bootstrap", "Tableau", "Git", "Docker", "Kafka", 
+          "Terraform", "Kubernetes", "LangChain", "Hugging Face", "AWS Bedrock", 
+          "PyTorch", "TensorFlow"
+        ]
       },
       "technologies": {
-        "title": "Technologies & Tools",
-        "skills": ["Git", "Docker", "AWS", "MongoDB", "PostgreSQL", "Redis"]
+        "title": "Data Management",
+        "skills": [
+          "MySQL", "PostgreSQL", "MongoDB", "Oracle", "MariaDB", "DynamoDB", 
+          "Neo4j", "ChromaDB", "Pinecone"
+        ]
       }
     }
   },
