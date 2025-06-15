@@ -52,7 +52,7 @@ const Header = () => {
             whileHover={{ scale: 1.05 }}
           >
             <h1 className="text-3xl font-bold text-portfolio-text">
-              KartikeyPatel
+              {locales.header.logo}
               <span className="text-portfolio-cyan">.</span>
               <span className="animate-blink text-portfolio-cyan">|</span>
             </h1>

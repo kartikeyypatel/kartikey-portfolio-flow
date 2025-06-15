@@ -4,7 +4,9 @@
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import locales from '../locales/en.json';
+import AnimatedBackground from './AnimatedBackground';
 import { AnimatedText } from './ui/animated-hero';
+import { TextPressure } from './ui/interactive-text-pressure';
 
 const HeroSection = () => {
   const scrollToSkills = () => {
@@ -17,7 +19,10 @@ const HeroSection = () => {
   const roles = ["Software Engineer", "Full Stack Developer", "Frontend Developer", "Backend Developer"];
 
   return (
-    <section id="home" className="min-h-screen relative flex items-center justify-center overflow-hidden bg-portfolio-black">
+    <section id="home" className="min-h-screen relative flex items-center justify-center overflow-hidden">
+      {/* Animated 3D Background */}
+      <AnimatedBackground />
+
       {/* Content */}
       <div className="relative z-10 text-center">
         <motion.div
@@ -25,6 +30,21 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
+          <motion.div
+            className="h-32 md:h-40 flex items-center justify-center mb-6"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          >
+            <TextPressure
+              text={locales.hero.title}
+              flex={true}
+              textColor="#E0E0E0"
+              className="mix-blend-difference"
+              minFontSize={60}
+            />
+          </motion.div>
+          
           <motion.p 
             className="text-3xl md:text-5xl text-portfolio-text mb-12 font-light"
             initial={{ opacity: 0, y: 20 }}
