@@ -1,10 +1,9 @@
-
 'use client';
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ArrowRight, Linkedin, Github, Twitter, Facebook } from 'lucide-react';
+import { ArrowRight, Linkedin, Github, Twitter, Facebook, Mail } from 'lucide-react';
 import locales from '../locales/en.json';
 import { Boxes } from './ui/background-boxes';
 import { useForm } from 'react-hook-form';
@@ -237,6 +236,16 @@ const ContactSection = () => {
                 <span className="sr-only">{locales.contact.social.facebook}</span>
                 <Facebook className="h-6 w-6" />
               </motion.a>
+              <motion.a
+                href="mailto:contact@kartikeypatel.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200 pointer-events-auto"
+                whileHover={{ y: -2 }}
+              >
+                <span className="sr-only">Email</span>
+                <Mail className="h-6 w-6" />
+              </motion.a>
             </motion.div>
           </motion.div>
         </motion.div>
@@ -249,7 +258,7 @@ const ContactSection = () => {
           transition={{ duration: 0.6, delay: 1 }}
         >
           <p className="text-portfolio-text-muted">
-            © 2024 Kartikey Patel. Built with React & Framer Motion.
+            just built by kartikey patel © 2025
           </p>
         </motion.div>
       </div>
