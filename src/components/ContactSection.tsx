@@ -6,14 +6,17 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import locales from '../locales/en.json';
+import { Boxes } from './ui/background-boxes';
 
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id="contact" className="section-padding bg-portfolio-black" ref={ref}>
-      <div className="container-custom">
+    <section id="contact" className="section-padding bg-portfolio-black relative overflow-hidden" ref={ref}>
+      <Boxes />
+      <div className="absolute inset-0 w-full h-full bg-portfolio-black z-10 [mask-image:radial-gradient(transparent_30%,white)] pointer-events-none" />
+      <div className="container-custom relative z-20">
         <motion.div
           className="max-w-3xl mx-auto text-center"
           initial={{ opacity: 0, y: 50 }}
