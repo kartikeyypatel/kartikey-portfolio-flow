@@ -86,7 +86,7 @@ const SkillsSection = () => {
             <motion.div
               key={category.title}
               variants={cardVariants}
-              className="group relative bg-portfolio-gray/50 backdrop-blur-sm rounded-2xl p-8 border border-portfolio-gray-lighter hover:border-portfolio-cyan transition-all duration-300 hover:shadow-lg hover:shadow-portfolio-cyan/10"
+              className="group relative bg-portfolio-gray/50 backdrop-blur-sm rounded-2xl p-8 border border-portfolio-gray-lighter hover:border-portfolio-cyan transition-all duration-300 hover:shadow-lg hover:shadow-portfolio-cyan/10 flex flex-col"
               whileHover={{ y: -5 }}
             >
               <div className="mb-6">
@@ -97,7 +97,11 @@ const SkillsSection = () => {
                 {category.title}
               </h3>
               
-              <ul className="space-y-3">
+              <ul className={`flex-grow ${
+                category.title === locales.skills.categories.frameworks.title 
+                ? "grid grid-cols-2 gap-x-6 gap-y-3" 
+                : "space-y-3"
+              }`}>
                 {category.skills.map((skill, skillIndex) => (
                   <motion.li
                     key={skill}
