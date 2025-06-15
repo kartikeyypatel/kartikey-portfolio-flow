@@ -111,7 +111,7 @@ const ContactSection = () => {
                             <Input
                               placeholder="Your Name"
                               {...field}
-                              className="bg-portfolio-gray border-portfolio-gray-lighter focus:ring-portfolio-cyan focus:border-portfolio-cyan text-portfolio-text"
+                              className="bg-black/30 border-slate-700 backdrop-blur-sm focus:ring-portfolio-cyan focus:border-portfolio-cyan text-portfolio-text"
                             />
                           </FormControl>
                           <FormMessage />
@@ -129,7 +129,7 @@ const ContactSection = () => {
                               placeholder="Your Email"
                               type="email"
                               {...field}
-                              className="bg-portfolio-gray border-portfolio-gray-lighter focus:ring-portfolio-cyan focus:border-portfolio-cyan text-portfolio-text"
+                              className="bg-black/30 border-slate-700 backdrop-blur-sm focus:ring-portfolio-cyan focus:border-portfolio-cyan text-portfolio-text"
                             />
                           </FormControl>
                           <FormMessage />
@@ -147,7 +147,7 @@ const ContactSection = () => {
                           <Input
                             placeholder="What is this about?"
                             {...field}
-                            className="bg-portfolio-gray border-portfolio-gray-lighter focus:ring-portfolio-cyan focus:border-portfolio-cyan text-portfolio-text"
+                            className="bg-black/30 border-slate-700 backdrop-blur-sm focus:ring-portfolio-cyan focus:border-portfolio-cyan text-portfolio-text"
                           />
                         </FormControl>
                         <FormMessage />
@@ -164,7 +164,7 @@ const ContactSection = () => {
                           <Textarea
                             placeholder="Your message..."
                             {...field}
-                            className="bg-portfolio-gray border-portfolio-gray-lighter min-h-[120px] focus:ring-portfolio-cyan focus:border-portfolio-cyan text-portfolio-text"
+                            className="bg-black/30 border-slate-700 backdrop-blur-sm min-h-[120px] focus:ring-portfolio-cyan focus:border-portfolio-cyan text-portfolio-text"
                           />
                         </FormControl>
                         <FormMessage />

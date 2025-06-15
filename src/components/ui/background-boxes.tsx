@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
-  const rows = new Array(30).fill(1);
-  const cols = new Array(30).fill(1);
+  const rows = new Array(20).fill(1);
+  const cols = new Array(20).fill(1);
   
   // Using direct color values instead of CSS variables
   const colors = [

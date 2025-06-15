@@ -1,19 +1,26 @@
-
 'use client';
 
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ArrowRight } from 'lucide-react';
 import { BackgroundPaths } from './ui/background-paths';
 import { AnimatedText } from './ui/animated-hero';
 import { TextPressure } from './ui/interactive-text-pressure';
 import { SplineScene } from './ui/spline';
 import { Spotlight } from './ui/spotlight';
+import { ResumeButton } from './ui/ResumeButton';
 
 const HeroSection = () => {
   const scrollToSkills = () => {
     const skillsSection = document.querySelector('#skills');
     if (skillsSection) {
       skillsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToProjects = () => {
+    const projectsSection = document.querySelector('#projects');
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -69,6 +76,25 @@ const HeroSection = () => {
             >
               <AnimatedText texts={roles} className="h-12 md:h-16" />
             </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div
+              className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 mt-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.0 }}
+            >
+              <motion.button
+                onClick={scrollToProjects}
+                className="inline-flex items-center space-x-3 bg-transparent border-2 border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black px-6 py-3 rounded-full text-base font-semibold transition-all duration-300 group"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span>View My Work</span>
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
+              </motion.button>
+              <ResumeButton />
+            </motion.div>
           </motion.div>
         </div>
       </div>
