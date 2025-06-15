@@ -1,4 +1,3 @@
-
 'use client';
 
 import { motion } from 'framer-motion';
@@ -46,14 +45,6 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <motion.p
-              className="text-xl md:text-2xl text-portfolio-text-muted mb-2 font-light"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              Hi, I'm
-            </motion.p>
             <motion.div
               className="h-32 md:h-40 flex items-center justify-center md:justify-start mb-4"
               initial={{ opacity: 0, y: 30 }}
