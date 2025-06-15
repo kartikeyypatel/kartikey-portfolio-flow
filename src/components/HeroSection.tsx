@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import locales from '../locales/en.json';
 import AnimatedBackground from './AnimatedBackground';
+import { Scene } from './ui/rubik-s-cube';
 
 const HeroSection = () => {
   const scrollToSkills = () => {
@@ -19,6 +20,11 @@ const HeroSection = () => {
       {/* Animated 3D Background */}
       <AnimatedBackground />
 
+      {/* Rubik's Cube Overlay */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
+        <Scene />
+      </div>
+
       {/* Content */}
       <div className="relative z-10 text-center">
         <motion.div
@@ -27,7 +33,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <motion.h1 
-            className="text-6xl md:text-8xl lg:text-9xl font-bold text-portfolio-text mb-6 tracking-wider"
+            className="text-6xl md:text-8xl lg:text-9xl font-bold text-portfolio-text mb-6 tracking-wider mix-blend-difference"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
@@ -36,7 +42,7 @@ const HeroSection = () => {
           </motion.h1>
           
           <motion.p 
-            className="text-xl md:text-2xl text-portfolio-text-muted mb-12 font-light"
+            className="text-xl md:text-2xl text-portfolio-text-muted mb-12 font-light mix-blend-exclusion"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
@@ -49,7 +55,7 @@ const HeroSection = () => {
       {/* Scroll indicator */}
       <motion.button
         onClick={scrollToSkills}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-portfolio-cyan hover:text-white transition-colors duration-200"
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-portfolio-cyan hover:text-white transition-colors duration-200 z-20"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 1.2 }}
