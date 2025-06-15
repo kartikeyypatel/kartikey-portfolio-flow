@@ -31,7 +31,7 @@ function FloatingPaths({ position }: { position: number }) {
                         d={path.d}
                         stroke="currentColor"
                         strokeWidth={path.width}
-                        strokeOpacity={0.05 + path.id * 0.015}
+                        strokeOpacity={0.1 + path.id * 0.03}
                         initial={{ pathLength: 0.3, opacity: 0.6 }}
                         animate={{
                             pathLength: 1,
@@ -52,7 +52,7 @@ function FloatingPaths({ position }: { position: number }) {
 
 export function BackgroundPaths() {
     return (
-        <div className="absolute inset-0 w-full h-full overflow-hidden bg-portfolio-black text-portfolio-cyan/30">
+        <div className="absolute inset-0 w-full h-full overflow-hidden bg-portfolio-black text-portfolio-cyan">
             <FloatingPaths position={1} />
             <FloatingPaths position={-1} />
             <div className="absolute inset-0 bg-gradient-to-t from-portfolio-black via-transparent to-portfolio-black/50"></div>
