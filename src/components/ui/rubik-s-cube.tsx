@@ -8,25 +8,30 @@ import React, { Suspense, useRef, useState, useEffect, forwardRef, useMemo, useC
 import { Vector3, Matrix4, Quaternion } from "three";
 import { RoundedBox } from "@react-three/drei";
 
-const RubiksCubeModel = forwardRef((props, ref) => {
+interface RubiksCubeModelProps {
+  position?: [number, number, number];
+  scale?: number;
+}
+
+const RubiksCubeModel = forwardRef<THREE.Group, RubiksCubeModelProps>((props, ref) => {
   const ANIMATION_DURATION = 1.2;
   const GAP = 0.01;
   const RADIUS = 0.075;
   
-  const mainGroupRef = useRef();
+  const mainGroupRef = useRef<THREE.Group>(null);
   const isAnimatingRef = useRef(false);
   const currentRotationRef = useRef(0);
-  const lastMoveAxisRef = useRef(null);
-  const currentMoveRef = useRef(null);
-  const animationFrameRef = useRef(null);
+  const lastMoveAxisRef = useRef<string | null>(null);
+  const currentMoveRef = useRef<any>(null);
+  const animationFrameRef = useRef<number | null>(null);
   const isMountedRef = useRef(true); 
   const viewportSizeRef = useRef({ width: window.innerWidth, height: window.innerHeight });
   
   const isResizingRef = useRef(false);
-  const resizeTimeoutRef = useRef(null);
+  const resizeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   const [size, setSize] = useState(0.8);
-  const [cubes, setCubes] = useState([]);
+  const [cubes, setCubes] = useState<any[]>([]);
   const [isVisible, setIsVisible] = useState(true);
   const [deviceSettings, setDeviceSettings] = useState(() => {
     const isMobile = window.innerWidth < 768;
@@ -42,7 +47,7 @@ const RubiksCubeModel = forwardRef((props, ref) => {
   const reusableQuaternion = useMemo(() => new Quaternion(), []);
   
   React.useImperativeHandle(ref, () => ({
-    ...mainGroupRef.current,
+    ...(mainGroupRef.current || {}),
     reset: resetCube
   }));
 
@@ -156,7 +161,7 @@ const RubiksCubeModel = forwardRef((props, ref) => {
   useEffect(() => {
     handleViewportChange();
     
-    let throttleTimer = null;
+    let throttleTimer: NodeJS.Timeout | null = null;
     const throttledHandler = () => {
       if (throttleTimer) return;
       throttleTimer = setTimeout(() => {
@@ -230,7 +235,7 @@ const RubiksCubeModel = forwardRef((props, ref) => {
     return moves;
   }, []);
 
-  const isInLayer = useCallback((position, axis, layer) => {
+  const isInLayer = useCallback((position: Vector3, axis: string, layer: number) => {
     const coord = axis === "x" ? position.x : axis === "y" ? position.y : position.z;
     return Math.abs(coord - layer) < 0.1;
   }, []);
@@ -248,12 +253,11 @@ const RubiksCubeModel = forwardRef((props, ref) => {
       lastMoveAxisRef.current = move.axis;
       isAnimatingRef.current = true;
       currentRotationRef.current = 0;
-    } else {
     }
   }, [possibleMoves, isVisible]);
 
   useEffect(() => {
-    let timeoutId;
+    let timeoutId: NodeJS.Timeout;
 
     const scheduleNextMove = () => {
       if (isVisible && isMountedRef.current && !isResizingRef.current) {
@@ -269,7 +273,6 @@ const RubiksCubeModel = forwardRef((props, ref) => {
           delay
         );
       } else {
-        
         if (isResizingRef.current && isVisible && isMountedRef.current) {
           setTimeout(() => {
             if (isMountedRef.current) {
@@ -289,26 +292,26 @@ const RubiksCubeModel = forwardRef((props, ref) => {
     };
   }, [isVisible, selectNextMove]);
 
-  const createRotationMatrix = useCallback((axis, angle) => {
+  const createRotationMatrix = useCallback((axis: string, angle: number) => {
     reusableMatrix4.identity();
     reusableQuaternion.identity();
     reusableVec3.set(0, 0, 0);
     
-    reusableVec3[axis] = 1;
+    (reusableVec3 as any)[axis] = 1;
     reusableQuaternion.setFromAxisAngle(reusableVec3, angle);
     return reusableMatrix4.makeRotationFromQuaternion(reusableQuaternion);
   }, [reusableMatrix4, reusableQuaternion, reusableVec3]);
 
-  const easeInOutQuad = useCallback((t) => {
+  const easeInOutQuad = useCallback((t: number) => {
     return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
   }, []);
 
-  const matrixToQuaternion = useCallback((matrix) => {
+  const matrixToQuaternion = useCallback((matrix: Matrix4) => {
     reusableQuaternion.setFromRotationMatrix(matrix);
     return reusableQuaternion.clone();
   }, [reusableQuaternion]);
 
-  const normalizePositions = useCallback((cubes) => {
+  const normalizePositions = useCallback((cubes: any[]) => {
     return cubes.map(cube => {
       const x = Math.round(cube.position.x);
       const y = Math.round(cube.position.y);
@@ -328,7 +331,7 @@ const RubiksCubeModel = forwardRef((props, ref) => {
     });
   }, []);
 
-  const checkCubeIntegrity = useCallback((cubes) => {
+  const checkCubeIntegrity = useCallback((cubes: any[]) => {
     if (cubes.length !== 27) {
       console.warn("Incorrect number of cubes:", cubes.length);
       return false;
@@ -345,7 +348,7 @@ const RubiksCubeModel = forwardRef((props, ref) => {
     return true;
   }, []);
 
-  const updateCubes = useCallback((prevCubes, move, stepRotationMatrix) => {
+  const updateCubes = useCallback((prevCubes: any[], move: any, stepRotationMatrix: Matrix4) => {
     return prevCubes.map((cube) => {
       if (isInLayer(cube.position, move.axis, move.layer)) {
         const tempVec3 = new Vector3(
@@ -443,7 +446,7 @@ const RubiksCubeModel = forwardRef((props, ref) => {
     reflectivity: 0.5,
     iridescence: 0,
     iridescenceIOR: 0,
-    iridescenceThicknessRange: [100, 400],
+    iridescenceThicknessRange: [100, 400] as [number, number],
     envMapIntensity: 8
   }), []);
 
@@ -478,7 +481,6 @@ const RubiksCubeModel = forwardRef((props, ref) => {
   );
 });
 
-
 function CameraController() {
   const { camera } = useThree();
   
@@ -489,11 +491,8 @@ function CameraController() {
   return null;
 }
 
-function EnhancedSpotlight(props) {
-  const light = useRef();
-  
-  // Uncomment to see a visual helper for the spotlight
-  //useHelper(spotlightRef, THREE.SpotLightHelper, 'red');
+function EnhancedSpotlight(props: any) {
+  const light = useRef<THREE.SpotLight>(null);
   
   useEffect(() => {
     if (light.current) {
@@ -514,11 +513,9 @@ function EnhancedSpotlight(props) {
 }
 
 function SceneContent() {
-
   const depthBuffer = useDepthBuffer({ 
     size: 2048,
-    frames: 1,
-    disableRenderLoop: true 
+    frames: 1
   });
   
   const [time, setTime] = useState(0);
@@ -592,7 +589,6 @@ export function Scene() {
         }}
       >
         <SceneContent />
-        {/* <Perf /> */}
       </Canvas>
     </div>
   );
