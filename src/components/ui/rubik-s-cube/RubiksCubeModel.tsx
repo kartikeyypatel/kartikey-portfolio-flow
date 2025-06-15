@@ -108,7 +108,7 @@ const RubiksCubeModel = forwardRef<RubiksCubeRef, RubiksCubeModelProps>((props, 
     if (!isAnimatingRef.current && isVisible && isMountedRef.current && !isResizingRef.current) {
       try {
         const availableMoves = possibleMoves.filter(
-          (move) => move.axis !== lastMoveAxisRef.current
+          (move) => move && move.axis !== lastMoveAxisRef.current
         );
         
         if (availableMoves.length === 0) {
@@ -117,6 +117,11 @@ const RubiksCubeModel = forwardRef<RubiksCubeRef, RubiksCubeModelProps>((props, 
         }
         
         const move = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+        if (!move) {
+          console.warn("RubiksCubeModel: Selected move is invalid");
+          return;
+        }
+        
         const rotationAngle = Math.PI / 2;
               
         currentMoveRef.current = { ...move, rotationAngle };
@@ -190,6 +195,12 @@ const RubiksCubeModel = forwardRef<RubiksCubeRef, RubiksCubeModelProps>((props, 
 
       if (isAnimatingRef.current && currentMoveRef.current) {
         const move = currentMoveRef.current;
+        if (!move || typeof move.direction === 'undefined') {
+          console.warn("RubiksCubeModel: Invalid move in useFrame");
+          isAnimatingRef.current = false;
+          return;
+        }
+        
         const targetRotation = move.rotationAngle || 0;
         const rotation = delta / ANIMATION_DURATION;
 
@@ -267,7 +278,7 @@ const RubiksCubeModel = forwardRef<RubiksCubeRef, RubiksCubeModelProps>((props, 
   return (
     <group ref={mainGroupRef} {...props}>
       {cubes.map((cube, index) => {
-        if (!cube || !cube.position || !cube.rotationMatrix) {
+        if (!cube || !cube.position || !cube.rotationMatrix || !cube.id) {
           console.warn("RubiksCubeModel: Invalid cube data at index", index, cube);
           return null;
         }
@@ -288,9 +299,9 @@ const RubiksCubeModel = forwardRef<RubiksCubeRef, RubiksCubeModelProps>((props, 
               <RoundedBox
                 args={[size, size, size]}
                 radius={RADIUS}
-                smoothness={deviceSettings.smoothness}
-                castShadow={deviceSettings.castShadow}
-                receiveShadow={deviceSettings.receiveShadow}
+                smoothness={deviceSettings?.smoothness || 2}
+                castShadow={deviceSettings?.castShadow || false}
+                receiveShadow={deviceSettings?.receiveShadow || false}
               >
                 <meshPhysicalMaterial 
                   color={cubeColors[index % cubeColors.length]}

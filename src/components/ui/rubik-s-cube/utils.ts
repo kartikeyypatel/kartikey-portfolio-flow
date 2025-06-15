@@ -29,7 +29,7 @@ export const initializeCubes = (): CubeData[] => {
 };
 
 export const isInLayer = (position: Vector3, axis: string, layer: number): boolean => {
-  if (!position) {
+  if (!position || typeof position.x === 'undefined' || typeof position.y === 'undefined' || typeof position.z === 'undefined') {
     console.warn("Utils: Invalid position in isInLayer");
     return false;
   }
@@ -97,7 +97,7 @@ export const normalizePositions = (cubes: CubeData[]): CubeData[] => {
   
   try {
     return cubes.map(cube => {
-      if (!cube || !cube.position) {
+      if (!cube || !cube.position || typeof cube.position.x === 'undefined') {
         console.warn("Utils: Invalid cube in normalizePositions:", cube);
         return cube;
       }
@@ -137,7 +137,7 @@ export const checkCubeIntegrity = (cubes: CubeData[]): boolean => {
     }
 
     for (const cube of cubes) {
-      if (!cube || !cube.position) {
+      if (!cube || !cube.position || typeof cube.position.x === 'undefined') {
         console.warn("Invalid cube in integrity check:", cube);
         return false;
       }
@@ -164,24 +164,18 @@ export const updateCubes = (prevCubes: CubeData[], move: Move, stepRotationMatri
   
   try {
     return prevCubes.map((cube) => {
-      if (!cube || !cube.position) {
+      if (!cube || !cube.position || !cube.rotationMatrix || typeof cube.position.x === 'undefined') {
         console.warn("Utils: Invalid cube in updateCubes:", cube);
         return cube;
       }
       
       if (isInLayer(cube.position, move.axis, move.layer)) {
-        const tempVec3 = new Vector3(
-          cube.position.x,
-          cube.position.y,
-          cube.position.z
-        );
-
+        const tempVec3 = new Vector3();
+        tempVec3.copy(cube.position);
         tempVec3.applyMatrix4(stepRotationMatrix);
 
-        const newRotationMatrix = new Matrix4().multiplyMatrices(
-          stepRotationMatrix,
-          cube.rotationMatrix
-        );
+        const newRotationMatrix = new Matrix4();
+        newRotationMatrix.multiplyMatrices(stepRotationMatrix, cube.rotationMatrix);
 
         return {
           ...cube,
