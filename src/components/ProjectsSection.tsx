@@ -62,7 +62,7 @@ const ProjectsSection = () => {
       client: 'Publication',
       technologies: ['Java', 'OAuth 2.0', 'XML', 'MySQL', 'AES Encryption', 'Hashing', 'Data Protection'],
       gallery: ['https://images.unsplash.com/photo-1550751827-4138d04d405b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
-      size: 'tall',
+      size: 'normal',
     },
     {
       id: '4',
