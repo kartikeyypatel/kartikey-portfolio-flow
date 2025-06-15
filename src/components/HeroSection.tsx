@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import locales from '../locales/en.json';
 import AnimatedBackground from './AnimatedBackground';
-import { Scene } from './ui/rubik-s-cube';
 
 const HeroSection = () => {
   const scrollToSkills = () => {
@@ -19,11 +18,6 @@ const HeroSection = () => {
     <section id="home" className="min-h-screen relative flex items-center justify-center overflow-hidden">
       {/* Animated 3D Background */}
       <AnimatedBackground />
-
-      {/* Rubik's Cube Overlay */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
-        <Scene />
-      </div>
 
       {/* Content */}
       <div className="relative z-10 text-center">
