@@ -4,6 +4,7 @@
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import locales from '../locales/en.json';
+import AnimatedBackground from './AnimatedBackground';
 
 const HeroSection = () => {
   const scrollToSkills = () => {
@@ -15,17 +16,8 @@ const HeroSection = () => {
 
   return (
     <section id="home" className="min-h-screen relative flex items-center justify-center overflow-hidden">
-      {/* Background */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: "url('/lovable-uploads/d3620efd-2d2a-44ae-bd8c-a153652c0b21.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center'
-        }}
-      >
-        <div className="absolute inset-0 bg-portfolio-black/60"></div>
-      </div>
+      {/* Animated 3D Background */}
+      <AnimatedBackground />
 
       {/* Content */}
       <div className="relative z-10 text-center">
