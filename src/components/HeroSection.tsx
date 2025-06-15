@@ -2,7 +2,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { ChevronDown } from 'lucide-react';
 import locales from '../locales/en.json';
 
 const HeroSection = () => {
@@ -68,7 +68,7 @@ const HeroSection = () => {
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <ChevronDownIcon className="h-6 w-6" />
+            <ChevronDown className="h-6 w-6" />
           </motion.div>
         </div>
       </motion.button>

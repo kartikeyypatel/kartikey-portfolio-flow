@@ -4,7 +4,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { ArrowRight } from 'lucide-react';
 import locales from '../locales/en.json';
 
 const ContactSection = () => {
@@ -61,7 +61,7 @@ const ContactSection = () => {
               whileTap={{ scale: 0.95 }}
             >
               <span>{locales.contact.sayHello}</span>
-              <ArrowRightIcon className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
+              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
             </motion.a>
 
             {/* Social Links */}

@@ -1,9 +1,8 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Bars3Icon } from '@heroicons/react/24/outline';
+import { Menu } from 'lucide-react';
 import locales from '../locales/en.json';
 
 const Header = () => {
@@ -89,7 +88,7 @@ const Header = () => {
 
           {/* Mobile menu placeholder */}
           <div className="lg:hidden">
-            <Bars3Icon className="h-6 w-6 text-portfolio-text" />
+            <Menu className="h-6 w-6 text-portfolio-text" />
           </div>
         </div>
       </div>

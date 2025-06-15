@@ -4,7 +4,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
+import { Plus, Minus } from 'lucide-react';
 import locales from '../locales/en.json';
 
 interface Experience {
@@ -113,9 +113,9 @@ const ExperienceSection = () => {
                   className="text-white"
                 >
                   {openItems.includes(experience.id) ? (
-                    <MinusIcon className="h-6 w-6" />
+                    <Minus className="h-6 w-6" />
                   ) : (
-                    <PlusIcon className="h-6 w-6" />
+                    <Plus className="h-6 w-6" />
                   )}
                 </motion.div>
               </button>

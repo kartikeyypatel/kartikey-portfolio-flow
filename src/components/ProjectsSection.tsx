@@ -4,7 +4,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { ArrowLeftIcon, ArrowRightIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ArrowLeft, ArrowRight, X } from 'lucide-react';
 import locales from '../locales/en.json';
 
 interface Project {
@@ -214,7 +214,7 @@ const ProjectsSection = () => {
                   onClick={closeProject}
                   className="flex items-center space-x-2 text-portfolio-cyan hover:text-white transition-colors"
                 >
-                  <ArrowLeftIcon className="h-6 w-6" />
+                  <ArrowLeft className="h-6 w-6" />
                   <span>{locales.projects.backToProjects}</span>
                 </button>
                 
@@ -222,7 +222,7 @@ const ProjectsSection = () => {
                   onClick={closeProject}
                   className="text-portfolio-text hover:text-white transition-colors"
                 >
-                  <XMarkIcon className="h-6 w-6" />
+                  <X className="h-6 w-6" />
                 </button>
               </div>
 
@@ -291,7 +291,7 @@ const ProjectsSection = () => {
                   onClick={() => setSelectedProject(getPreviousProject())}
                   className="flex items-center space-x-2 text-portfolio-text hover:text-portfolio-cyan transition-colors"
                 >
-                  <ArrowLeftIcon className="h-5 w-5" />
+                  <ArrowLeft className="h-5 w-5" />
                   <span>{locales.projects.previousProject}</span>
                 </button>
 
@@ -300,7 +300,7 @@ const ProjectsSection = () => {
                   className="flex items-center space-x-2 text-portfolio-text hover:text-portfolio-cyan transition-colors"
                 >
                   <span>{locales.projects.nextProject}</span>
-                  <ArrowRightIcon className="h-5 w-5" />
+                  <ArrowRight className="h-5 w-5" />
                 </button>
               </div>
             </div>

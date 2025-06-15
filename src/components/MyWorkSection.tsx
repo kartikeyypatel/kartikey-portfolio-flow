@@ -4,7 +4,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { ArrowRight } from 'lucide-react';
 import locales from '../locales/en.json';
 
 const MyWorkSection = () => {
@@ -105,7 +105,7 @@ const MyWorkSection = () => {
                 whileHover={{ x: 5 }}
               >
                 <span>{locales.myWork.viewProject}</span>
-                <ArrowRightIcon className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
               </motion.button>
             </motion.div>
           </motion.div>

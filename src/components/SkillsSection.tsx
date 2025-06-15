@@ -4,7 +4,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { CodeBracketIcon, CpuChipIcon, CloudIcon } from '@heroicons/react/24/outline';
+import { Code, Cpu, Cloud } from 'lucide-react';
 import locales from '../locales/en.json';
 
 const SkillsSection = () => {
@@ -13,17 +13,17 @@ const SkillsSection = () => {
 
   const skillCategories = [
     {
-      icon: CodeBracketIcon,
+      icon: Code,
       title: locales.skills.categories.programming.title,
       skills: locales.skills.categories.programming.skills,
     },
     {
-      icon: CpuChipIcon,
+      icon: Cpu,
       title: locales.skills.categories.frameworks.title,
       skills: locales.skills.categories.frameworks.skills,
     },
     {
-      icon: CloudIcon,
+      icon: Cloud,
       title: locales.skills.categories.technologies.title,
       skills: locales.skills.categories.technologies.skills,
     },
@@ -45,7 +45,7 @@ const SkillsSection = () => {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: 'easeOut',
+        ease: "easeOut",
       },
     },
   };
