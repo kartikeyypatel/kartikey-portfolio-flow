@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import locales from '../locales/en.json';
 import AnimatedBackground from './AnimatedBackground';
+import { AnimatedText } from './ui/animated-hero';
 
 const HeroSection = () => {
   const scrollToSkills = () => {
@@ -13,6 +14,8 @@ const HeroSection = () => {
       skillsSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  const roles = ["Software Engineer", "Full Stack Developer", "Frontend Developer", "Backend Developer"];
 
   return (
     <section id="home" className="min-h-screen relative flex items-center justify-center overflow-hidden">
@@ -41,7 +44,7 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            {locales.hero.subtitle}
+            <AnimatedText texts={roles} className="h-8" />
           </motion.p>
         </motion.div>
       </div>
