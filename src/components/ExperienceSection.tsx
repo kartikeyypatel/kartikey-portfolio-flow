@@ -30,7 +30,7 @@ const ExperienceSection = () => {
       period: 'May 2024 - Aug. 2024',
       description: 'Executed cybersecurity strategies by performing over 15 risk and vulnerability assessments across AWS, Azure, and GCP environments, ensuring alignment with NERC CIP, GDPR, and HIPAA compliance standards. Performed 100+ security scans with Veracode and Dome9, cutting vulnerabilities by 25%. Integrated automated security scans into CI/CD pipelines using Jenkins, identifying and mitigating over 300 vulnerabilities. Contributed to developing an internal portal using React, TypeScript, and Node.js.',
       skills: ['Cybersecurity', 'AWS', 'Veracode', 'Dome9', 'CI/CD', 'Jenkins', 'React', 'Node.js'],
-      logo: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
+      logo: '/lovable-uploads/f4e6c158-e728-46fd-88f4-7f764885e7b7.png'
     },
     {
       id: '2',
@@ -39,7 +39,7 @@ const ExperienceSection = () => {
       period: 'May 2021 - May 2023',
       description: 'Automated user data monitoring with SQL, reducing manual interventions by 80% for 205M+ users. Built and maintained 150+ Java RESTful APIs for call center dashboards, reducing troubleshooting times. Managed 10 TB+ of business reports using Tableau. Achieved 95% automation of server monitoring with Unix Shell scripts.',
       skills: ['SQL', 'Java', 'RESTful APIs', 'Tableau', 'Unix Shell Scripting'],
-      logo: 'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
+      logo: '/lovable-uploads/0a120f1b-970b-4375-9a4a-a1ee89b1e56c.png'
     },
     {
       id: '3',
@@ -48,7 +48,7 @@ const ExperienceSection = () => {
       period: 'Jun. 2020 - Apr. 2021',
       description: 'Engineered Python Flask APIs for a real estate application, deployed on AWS Lambda, reducing response times by 30%. Collaborated in an Agile environment to define 15+ technical deliverables for a real estate platform on AWS, accelerating project delivery by 15%.',
       skills: ['Python', 'Flask', 'APIs', 'AWS Lambda'],
-      logo: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
+      logo: '/lovable-uploads/426dc987-9df8-4652-862a-3892823ced4d.png'
     },
     {
       id: '4',
@@ -57,7 +57,7 @@ const ExperienceSection = () => {
       period: 'Jun. 2019 - Jul. 2019',
       description: 'Created a chatbot using IBM Watson, integrating Java and JavaScript APIs with IBM Cloud services to deliver context-aware responses, resulting in a 35% increase in customer satisfaction.',
       skills: ['Chatbot', 'IBM Watson', 'Java API', 'IBM Cloud'],
-      logo: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
+      logo: '/lovable-uploads/dd039a77-d180-4eb1-8feb-227df0fd9c8b.png'
     }
   ];
 
