@@ -1,4 +1,3 @@
-
 'use client';
 
 import { motion } from 'framer-motion';
@@ -39,8 +38,7 @@ const HeroSection = () => {
             <TextPressure
               text={locales.hero.title}
               flex={true}
-              textColor="#E0E0E0"
-              className="mix-blend-difference"
+              textColor="#FFFFFF"
               minFontSize={120}
               scale={true}
             />
