@@ -24,7 +24,7 @@ const HeroSection = () => {
       <AnimatedBackground />
 
       {/* Content */}
-      <div className="relative z-10 text-center">
+      <div className="relative z-10 text-center w-full">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -41,17 +41,17 @@ const HeroSection = () => {
               flex={true}
               textColor="#E0E0E0"
               className="mix-blend-difference"
-              minFontSize={60}
+              minFontSize={100}
             />
           </motion.div>
           
           <motion.p 
-            className="text-3xl md:text-5xl text-portfolio-text mb-12 font-light"
+            className="text-4xl md:text-6xl text-portfolio-text mb-12 font-light"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <AnimatedText texts={roles} className="h-14" />
+            <AnimatedText texts={roles} className="h-14 md:h-20" />
           </motion.p>
         </motion.div>
       </div>
