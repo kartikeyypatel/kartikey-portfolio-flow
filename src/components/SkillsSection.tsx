@@ -1,3 +1,4 @@
+
 'use client';
 
 import { motion } from 'framer-motion';
@@ -5,7 +6,6 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Code, Cpu, Database } from 'lucide-react';
 import locales from '../locales/en.json';
-import { Boxes } from './ui/background-boxes';
 
 const SkillsSection = () => {
   const ref = useRef(null);
@@ -86,19 +86,18 @@ const SkillsSection = () => {
             <motion.div
               key={category.title}
               variants={cardVariants}
-              className="group relative bg-portfolio-gray/50 backdrop-blur-sm rounded-2xl p-8 border border-portfolio-gray-lighter hover:border-portfolio-cyan transition-all duration-300 hover:shadow-lg hover:shadow-portfolio-cyan/10 flex flex-col overflow-hidden"
+              className="group relative bg-portfolio-gray/50 backdrop-blur-sm rounded-2xl p-8 border border-portfolio-gray-lighter hover:border-portfolio-cyan transition-all duration-300 hover:shadow-lg hover:shadow-portfolio-cyan/10 flex flex-col"
               whileHover={{ y: -5 }}
             >
-              <Boxes />
-              <div className="mb-6 relative">
+              <div className="mb-6">
                 <category.icon className="h-12 w-12 text-portfolio-cyan group-hover:scale-110 transition-transform duration-300" />
               </div>
               
-              <h3 className="text-xl font-semibold text-portfolio-text mb-6 group-hover:text-portfolio-cyan transition-colors duration-300 relative">
+              <h3 className="text-xl font-semibold text-portfolio-text mb-6 group-hover:text-portfolio-cyan transition-colors duration-300">
                 {category.title}
               </h3>
               
-              <ul className={`flex-grow relative ${
+              <ul className={`flex-grow ${
                 category.title === locales.skills.categories.frameworks.title 
                 ? "grid grid-cols-2 gap-x-6 gap-y-3" 
                 : "space-y-3"
