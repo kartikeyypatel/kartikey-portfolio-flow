@@ -6,6 +6,7 @@ import { ChevronDown } from 'lucide-react';
 import locales from '../locales/en.json';
 import AnimatedBackground from './AnimatedBackground';
 import { AnimatedText } from './ui/animated-hero';
+import { TextPressure } from './ui/interactive-text-pressure';
 
 const HeroSection = () => {
   const scrollToSkills = () => {
@@ -29,14 +30,20 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <motion.h1 
-            className="text-6xl md:text-8xl lg:text-9xl font-bold text-portfolio-text mb-6 tracking-wider mix-blend-difference"
+          <motion.div
+            className="h-32 md:h-40 flex items-center justify-center mb-6"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
           >
-            {locales.hero.title}
-          </motion.h1>
+            <TextPressure
+              text={locales.hero.title}
+              flex={true}
+              textColor="#E0E0E0"
+              className="mix-blend-difference"
+              minFontSize={60}
+            />
+          </motion.div>
           
           <motion.p 
             className="text-3xl md:text-5xl text-portfolio-text mb-12 font-light"
