@@ -10,7 +10,7 @@ const names = [
   "KartikeyPatel",    // English
   "卡蒂克帕特尔", // Mandarin Chinese
   "कार्तिकेयपटेल", // Hindi
-  "কার্তিকেয়প্যাটেল", // Bengali
+  "KartikeyPatel",    // Spanish
   "КартикейПатель"  // Russian
 ];
 
@@ -57,7 +57,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <motion.div 
-            className="flex items-center"
+            className="flex items-center min-w-[320px]"
             whileHover={{ scale: 1.05 }}
           >
             <h1 className="text-3xl font-bold text-portfolio-text flex items-baseline">
