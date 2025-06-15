@@ -16,7 +16,7 @@ interface Project {
   client: string;
   technologies: string[];
   gallery: string[];
-  size?: 'normal' | 'large';
+  size?: 'normal' | 'large' | 'wide' | 'tall';
 }
 
 const ProjectsSection = () => {
@@ -38,7 +38,7 @@ const ProjectsSection = () => {
       gallery: [
         'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       ],
-      size: 'large'
+      size: 'wide'
     },
     {
       id: '2',
@@ -50,6 +50,7 @@ const ProjectsSection = () => {
       client: 'Personal Project',
       technologies: ['LangChain', 'OpenAI GPT-4', 'AWS', 'Docker', 'Pinecone', 'Kubernetes', 'Weights & Biases', 'RAG Architecture'],
       gallery: ['https://images.unsplash.com/photo-1677756229133-d5d4f0490f23?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+      size: 'normal',
     },
     {
       id: '3',
@@ -61,6 +62,7 @@ const ProjectsSection = () => {
       client: 'Publication',
       technologies: ['Java', 'OAuth 2.0', 'XML', 'MySQL', 'AES Encryption', 'Hashing', 'Data Protection'],
       gallery: ['https://images.unsplash.com/photo-1550751827-4138d04d405b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+      size: 'tall',
     },
     {
       id: '4',
@@ -72,6 +74,7 @@ const ProjectsSection = () => {
       client: 'Academic Project',
       technologies: ['Python', 'Pandas', 'Beautiful Soup', 'Data Mining', 'Naïve Bayes', 'KNN', 'Random Forest'],
       gallery: ['https://images.unsplash.com/photo-1593335937443-45c9a59a721d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+      size: 'normal',
     },
     {
       id: '5',
@@ -83,6 +86,7 @@ const ProjectsSection = () => {
       client: 'Academic Project',
       technologies: ['Python', 'HTML/CSS', 'Machine Learning', 'Naïve Bayes', 'Random Forest'],
       gallery: ['https://images.unsplash.com/photo-1599227694144-a60f5b1d3a5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+      size: 'wide',
     },
     {
       id: '6',
@@ -94,6 +98,7 @@ const ProjectsSection = () => {
       client: 'Personal Project',
       technologies: ['Python', 'Tweepy', 'TextBlob', 'NLP', 'MongoDB'],
       gallery: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+      size: 'normal',
     },
     {
       id: '7',
@@ -105,6 +110,7 @@ const ProjectsSection = () => {
       client: 'Personal Project',
       technologies: ['Python', 'Django', 'React.js', 'Pandas', 'Machine Learning', 'scikit-learn', 'D3.js'],
       gallery: ['https://images.unsplash.com/photo-1554224155-1696413565d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+      size: 'normal',
     }
   ];
 
@@ -138,6 +144,19 @@ const ProjectsSection = () => {
     if (!selectedProject) return null;
     const currentIndex = projects.findIndex(p => p.id === selectedProject.id);
     return projects[(currentIndex - 1 + projects.length) % projects.length];
+  };
+
+  const getProjectSizeClass = (size?: 'normal' | 'large' | 'wide' | 'tall') => {
+    switch (size) {
+      case 'large':
+        return 'md:col-span-2 md:row-span-2';
+      case 'wide':
+        return 'md:col-span-2';
+      case 'tall':
+        return 'md:row-span-2';
+      default:
+        return 'col-span-1 row-span-1';
+    }
   };
 
   const formatCategory = (category: string | string[]) => {
@@ -181,7 +200,7 @@ const ProjectsSection = () => {
 
           {/* Projects Grid */}
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[25rem] grid-flow-dense"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
@@ -189,16 +208,14 @@ const ProjectsSection = () => {
             {filteredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
-                className={`group relative overflow-hidden rounded-2xl cursor-pointer ${
-                  project.size === 'large' ? 'md:col-span-2' : ''
-                }`}
+                className={`group relative overflow-hidden rounded-2xl cursor-pointer ${getProjectSizeClass(project.size)}`}
                 initial={{ opacity: 0, y: 50 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 onClick={() => openProject(project)}
                 whileHover={{ y: -5 }}
               >
-                <div className="aspect-video relative overflow-hidden">
+                <div className="w-full h-full relative overflow-hidden">
                   <img
                     src={project.image}
                     alt={project.title}
