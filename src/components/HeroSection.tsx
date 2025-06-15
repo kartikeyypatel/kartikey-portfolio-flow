@@ -30,7 +30,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <motion.div
-            className="h-52 md:h-64 flex items-center justify-center mb-4"
+            className="h-72 md:h-96 flex items-center justify-center mb-4"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
@@ -39,6 +39,7 @@ const HeroSection = () => {
               text={locales.hero.title}
               flex={true}
               textColor="#FFFFFF"
+              className="mix-blend-difference"
               minFontSize={120}
               scale={true}
             />
