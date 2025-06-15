@@ -20,7 +20,7 @@ interface Experience {
 const ExperienceSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
-  const [openItems, setOpenItems] = useState<string[]>([]);
+  const [openItem, setOpenItem] = useState<string | null>(null);
 
   const experiences: Experience[] = [
     {
@@ -62,10 +62,10 @@ const ExperienceSection = () => {
   ];
 
   const toggleItem = (id: string) => {
-    setOpenItems(prev => 
-      prev.includes(id) 
-        ? prev.filter(item => item !== id)
-        : [...prev, id]
+    setOpenItem(prev => 
+      prev === id
+        ? null
+        : id
     );
   };
 
@@ -103,25 +103,25 @@ const ExperienceSection = () => {
               {/* Accordion Header */}
               <button
                 onClick={() => toggleItem(experience.id)}
-                className="w-full bg-purple-600 hover:bg-purple-700 transition-colors duration-200 p-6 flex items-center justify-between"
+                className="w-full bg-secondary hover:bg-secondary/80 transition-colors duration-200 p-6 flex items-center justify-between"
               >
                 <div className="flex items-center space-x-4 text-left">
                   <div>
-                    <h3 className="text-xl font-semibold text-white">
+                    <h3 className="text-xl font-semibold text-foreground">
                       {experience.title}
                     </h3>
-                    <p className="text-purple-200">
+                    <p className="text-muted-foreground">
                       {experience.company} • {experience.period}
                     </p>
                   </div>
                 </div>
                 
                 <motion.div
-                  animate={{ rotate: openItems.includes(experience.id) ? 45 : 0 }}
+                  animate={{ rotate: openItem === experience.id ? 45 : 0 }}
                   transition={{ duration: 0.2 }}
-                  className="text-white"
+                  className="text-foreground"
                 >
-                  {openItems.includes(experience.id) ? (
+                  {openItem === experience.id ? (
                     <Minus className="h-6 w-6" />
                   ) : (
                     <Plus className="h-6 w-6" />
@@ -133,8 +133,8 @@ const ExperienceSection = () => {
               <motion.div
                 initial={false}
                 animate={{
-                  height: openItems.includes(experience.id) ? 'auto' : 0,
-                  opacity: openItems.includes(experience.id) ? 1 : 0
+                  height: openItem === experience.id ? 'auto' : 0,
+                  opacity: openItem === experience.id ? 1 : 0
                 }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
                 className="overflow-hidden bg-portfolio-gray/30"
