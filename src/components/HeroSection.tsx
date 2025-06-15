@@ -40,7 +40,7 @@ const HeroSection = () => {
               text={locales.hero.title}
               flex={true}
               textColor="#FFFFFF"
-              className="mix-blend-difference uppercase tracking-wider"
+              className="uppercase tracking-wider"
               minFontSize={120}
               scale={true}
             />
