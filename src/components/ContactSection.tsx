@@ -7,10 +7,52 @@ import { useRef } from 'react';
 import { ArrowRight, Linkedin, Github, Twitter, Facebook } from 'lucide-react';
 import locales from '../locales/en.json';
 import { Boxes } from './ui/background-boxes';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
+
+const formSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  subject: z.string().min(5, { message: "Subject must be at least 5 characters." }),
+  message: z.string().min(10, { message: "Message must be at least 10 characters." }),
+});
 
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const { toast } = useToast();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+    toast({
+        title: "Message Sent!",
+        description: "Thank you for reaching out. I'll get back to you soon.",
+    });
+    form.reset();
+  }
 
   return (
     <section id="contact" className="section-padding bg-portfolio-black relative overflow-hidden" ref={ref}>
@@ -56,16 +98,94 @@ const ContactSection = () => {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            {/* Say Hello Button */}
-            <motion.a
-              href="mailto:kartikey.patel@example.com"
-              className="inline-flex items-center space-x-3 bg-transparent border-2 border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 group pointer-events-auto"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span>{locales.contact.sayHello}</span>
-              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
-            </motion.a>
+            <div className="pointer-events-auto text-left">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-portfolio-text-muted">Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Your Name"
+                              {...field}
+                              className="bg-portfolio-gray border-portfolio-gray-lighter focus:ring-portfolio-cyan focus:border-portfolio-cyan text-portfolio-text"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-portfolio-text-muted">Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Your Email"
+                              type="email"
+                              {...field}
+                              className="bg-portfolio-gray border-portfolio-gray-lighter focus:ring-portfolio-cyan focus:border-portfolio-cyan text-portfolio-text"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="subject"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-portfolio-text-muted">Subject</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="What is this about?"
+                            {...field}
+                            className="bg-portfolio-gray border-portfolio-gray-lighter focus:ring-portfolio-cyan focus:border-portfolio-cyan text-portfolio-text"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-portfolio-text-muted">Message</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Your message..."
+                            {...field}
+                            className="bg-portfolio-gray border-portfolio-gray-lighter min-h-[120px] focus:ring-portfolio-cyan focus:border-portfolio-cyan text-portfolio-text"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="text-center pt-4">
+                    <motion.button
+                      type="submit"
+                      className="inline-flex items-center space-x-3 bg-transparent border-2 border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 group"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <span>Send Message</span>
+                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
+                    </motion.button>
+                  </div>
+                </form>
+              </Form>
+            </div>
 
             {/* Social Links */}
             <motion.div
