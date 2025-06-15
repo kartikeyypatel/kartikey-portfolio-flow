@@ -188,7 +188,7 @@ const TextPressure: React.FC<TextPressureProps> = ({
 
             <h1
                 ref={titleRef}
-                className={`text-pressure-title ${className} ${flex ? 'flex justify-between' : ''
+                className={`text-pressure-title ${className} ${flex ? 'flex justify-center' : ''
                     } ${stroke ? 'stroke' : ''} uppercase text-center`}
                 style={{
                     fontFamily,
