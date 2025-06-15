@@ -4,6 +4,15 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu } from 'lucide-react';
 import locales from '../locales/en.json';
+import { Typewriter } from './ui/typewriter-text';
+
+const names = [
+  "KartikeyPatel",    // English
+  "卡蒂克帕特尔", // Mandarin Chinese
+  "कार्तिकेयपटेल", // Hindi
+  "কার্তিকেয়প্যাটেল", // Bengali
+  "КартикейПатель"  // Russian
+];
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -51,8 +60,15 @@ const Header = () => {
             className="flex items-center"
             whileHover={{ scale: 1.05 }}
           >
-            <h1 className="text-3xl font-bold text-portfolio-text">
-              {locales.header.logo}
+            <h1 className="text-3xl font-bold text-portfolio-text flex items-baseline">
+              <Typewriter
+                text={names}
+                speed={100}
+                loop={true}
+                deleteSpeed={50}
+                delay={1500}
+                cursor=""
+              />
               <span className="text-portfolio-cyan">.</span>
               <span className="animate-blink text-portfolio-cyan">|</span>
             </h1>
@@ -77,7 +93,7 @@ const Header = () => {
                     className="group flex flex-col items-center text-sm hover:text-portfolio-cyan transition-colors duration-200"
                   >
                     <span className="text-xs text-portfolio-cyan font-mono">
-                      // {item.number}
+                      {item.number}
                     </span>
                     <span className="font-medium">{item.label}</span>
                   </button>
