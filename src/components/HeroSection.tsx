@@ -4,7 +4,6 @@
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import locales from '../locales/en.json';
-import AnimatedBackground from './AnimatedBackground';
 import { AnimatedText } from './ui/animated-hero';
 import { TextPressure } from './ui/interactive-text-pressure';
 
@@ -19,10 +18,7 @@ const HeroSection = () => {
   const roles = ["Software Engineer", "Full Stack Developer", "Frontend Developer", "Backend Developer"];
 
   return (
-    <section id="home" className="min-h-screen relative flex items-center justify-center overflow-hidden">
-      {/* Animated 3D Background */}
-      <AnimatedBackground />
-
+    <section id="home" className="min-h-screen relative flex items-center justify-center overflow-hidden bg-portfolio-black">
       {/* Content */}
       <div className="relative z-10 text-center">
         <motion.div
