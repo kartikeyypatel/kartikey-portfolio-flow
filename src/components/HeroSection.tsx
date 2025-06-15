@@ -24,9 +24,23 @@ const HeroSection = () => {
       <BackgroundPaths />
 
       {/* Content */}
-      <div className="relative z-10 w-full flex flex-col-reverse md:flex-row items-center justify-center container mx-auto px-4 gap-8">
-        {/* Left content: Text */}
-        <div className="md:w-3/5 text-center md:text-left">
+      <div className="relative w-full container mx-auto px-4 flex items-center justify-start h-screen">
+        
+        {/* Robot on the right, partially behind */}
+        <div className="absolute top-0 right-0 w-full md:w-3/5 h-full flex items-center justify-center z-0 opacity-30 md:opacity-40 pointer-events-none">
+          <Spotlight
+            className="-top-20 left-0 md:left-20 md:-top-10"
+            fill="white"
+          />
+          <div className="w-full h-full">
+            <SplineScene 
+              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            />
+          </div>
+        </div>
+
+        {/* Text on the left, on top */}
+        <div className="relative z-10 w-full md:w-3/5 text-center md:text-left">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -57,19 +71,6 @@ const HeroSection = () => {
             </motion.p>
           </motion.div>
         </div>
-
-        {/* Right content: Robot */}
-        <div className="relative w-full md:w-2/5 h-80 md:h-[500px] flex items-center justify-center">
-          <Spotlight
-            className="-top-20 left-0 md:left-20 md:-top-10"
-            fill="white"
-          />
-          <div className="w-full h-full">
-            <SplineScene 
-              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            />
-          </div>
-        </div>
       </div>
 
       {/* Scroll indicator */}
@@ -97,3 +98,4 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
