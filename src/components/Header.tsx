@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Menu } from 'lucide-react';
 import locales from '../locales/en.json';
 import { Typewriter } from './ui/typewriter-text';
+import { ResumeButton } from './ui/ResumeButton';
 
 const names = [
   "KartikeyPatel",    // English
@@ -102,6 +103,11 @@ const Header = () => {
               ))}
             </ul>
           </nav>
+
+          {/* Resume Button */}
+          <div className="hidden lg:flex items-center">
+            <ResumeButton />
+          </div>
 
           {/* Mobile menu placeholder */}
           <div className="lg:hidden">

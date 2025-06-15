@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -103,6 +102,9 @@ const config: Config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         blink: 'blink 1s infinite',
+      },
+      transitionProperty: {
+        width: 'width',
       },
     },
   },
