@@ -22,7 +22,7 @@
     "categories": {
       "programming": {
         "title": "Programming Languages",
-        "skills": ["C/C++", "Java", "HTML/CSS", "JavaScript", "Python", "TypeScript", "Golang", "Rust"]
+        "skills": ["C/C++", "Java", "Kotlin", "HTML/CSS", "JavaScript", "Python", "TypeScript", "Golang", "Rust"]
       },
       "frameworks": {
         "title": "Frameworks & Tools",
