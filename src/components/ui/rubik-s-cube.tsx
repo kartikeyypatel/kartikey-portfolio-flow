@@ -1,8 +1,6 @@
-
 import { Canvas } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
 import { useThree, useFrame } from "@react-three/fiber";
-import { SpotLight, useDepthBuffer } from '@react-three/drei';
 import * as THREE from 'three';
 import React, { Suspense, useRef, useState, useEffect, forwardRef, useMemo, useCallback } from "react";
 import { Vector3, Matrix4, Quaternion } from "three";
@@ -494,56 +492,21 @@ function CameraController() {
   return null;
 }
 
-function EnhancedSpotlight(props: any) {
-  const light = useRef<THREE.SpotLight>(null);
-  
-  useEffect(() => {
-    if (light.current) {
-      light.current.target.position.set(0, 0, 0);
-      light.current.target.updateMatrixWorld();
-    }
-  }, []);
-  
-  return (
-    <>
-      <SpotLight 
-        castShadow={false}
-        ref={light} 
-        {...props} 
-      />
-    </>
-  );
-}
-
 function SceneContent() {
-  const depthBuffer = useDepthBuffer({ 
-    size: 2048,
-    frames: 1
-  });
-  
-  const [time, setTime] = useState(0);
-  useFrame((state) => {
-    setTime(state.clock.getElapsedTime());
-  });
-  
   return (
     <>
-      <EnhancedSpotlight 
-        depthBuffer={depthBuffer} 
-        color="#aaaace" 
+      <ambientLight intensity={0.4} />
+      <directionalLight 
+        position={[5, 5, 5]} 
+        intensity={0.8}
+        color="#ffffff"
+      />
+      <pointLight
         position={[3, 3, 2]}
-        volumetric={true}
-        opacity={1}
-        penumbra={1}
-        distance={17}
-        angle={0.8}
-        attenuation={30}
-        anglePower={6}
-        intensity={1}
-        shadowMapSize={2048}
-        shadowBias={-0.0001}
-        shadowAutoUpdate={true}
-        castShadow={true}
+        intensity={0.5}
+        color="#aaaace"
+        distance={20}
+        decay={2}
       />
       
       <PerspectiveCamera
@@ -581,7 +544,7 @@ export function Scene() {
   return (
     <div className="h-svh w-screen relative bg-black">
       <Canvas
-        shadows
+        shadows={false}
         gl={{
           antialias: isDesktop,
           preserveDrawingBuffer: isDesktop,
