@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -10,7 +11,7 @@ const names = [
   "KartikeyPatel",    // English
   "卡蒂克帕特尔", // Mandarin Chinese
   "कार्तिकेयपटेल", // Hindi
-  "KartikeyPatel",    // Spanish
+  "كارتيكي باتل",    // Arabic
   "КартикейПатель"  // Russian
 ];
 
