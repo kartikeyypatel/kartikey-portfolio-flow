@@ -1,4 +1,3 @@
-
 {
   "header": {
     "logo": "KartikeyPatel",
@@ -75,7 +74,10 @@
     "description": "I'm always interested in new opportunities and collaborations. Whether you have a project in mind or just want to connect, feel free to reach out!",
     "sayHello": "Say Hello",
     "social": {
-      "linkedin": "LinkedIn"
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "twitter": "Twitter",
+      "facebook": "Facebook"
     }
   }
 }
