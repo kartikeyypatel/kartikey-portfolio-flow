@@ -3,7 +3,7 @@
 
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Float, Box } from '@react-three/drei';
+import { Float } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface FloatingCubeProps {
@@ -30,13 +30,14 @@ const FloatingCube = ({ position, scale, rotationSpeed }: FloatingCubeProps) => 
       floatIntensity={0.2}
       floatingRange={[-0.1, 0.1]}
     >
-      <Box ref={meshRef} position={position} scale={scale}>
+      <mesh ref={meshRef} position={position} scale={scale}>
+        <boxGeometry args={[1, 1, 1]} />
         <meshStandardMaterial 
           color="#1a365d"
           metalness={0.1}
           roughness={0.8}
         />
-      </Box>
+      </mesh>
     </Float>
   );
 };

@@ -3,7 +3,6 @@
 
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
 const PulsingSphere = () => {
@@ -25,13 +24,14 @@ const PulsingSphere = () => {
 
   return (
     <group position={[2, 1, 0]}>
-      <Sphere ref={sphereRef} args={[0.1]} position={[0, 0, 0]}>
+      <mesh ref={sphereRef} position={[0, 0, 0]}>
+        <sphereGeometry args={[0.1, 32, 32]} />
         <meshStandardMaterial 
           color="#ff6b35"
           emissive="#ff6b35"
           emissiveIntensity={0.3}
         />
-      </Sphere>
+      </mesh>
       <pointLight 
         ref={lightRef}
         position={[0, 0, 0]}
