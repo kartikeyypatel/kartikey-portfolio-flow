@@ -28,8 +28,8 @@
         "title": "Frameworks & Tools",
         "skills": [
           "React.js", "Node.js", "Flask", "Django", "Angular", "Spring Boot", 
-          "ASP.NET", "Bootstrap", "Tableau", "Git", "Docker", "Kafka", 
-          "Terraform", "Kubernetes", "LangChain", "Hugging Face", "AWS Bedrock", 
+          "Tableau", "Git", "Docker", "Kafka", 
+          "Terraform", "Kubernetes", "LangChain", "Hugging Face", 
           "PyTorch", "TensorFlow"
         ]
       },
