@@ -11,10 +11,10 @@ interface RubiksCubeRef {
 const FACE_COLORS = {
   front: '#22D3EE',   // Primary cyan (website accent)
   back: '#0891b2',    // Darker cyan
-  left: '#111111',    // Dark gray (website secondary)
+  left: '#0e7490',    // Darker cyan (cyan-700) - better visibility than black
   right: '#888888',   // Muted gray (website muted text)
   top: '#67e8f9',     // Lighter cyan
-  bottom: '#0B0B0B'   // Very dark gray (website background variant)
+  bottom: '#374151'   // Medium gray (gray-700) - better visibility than black
 };
 
 const INITIAL_POSITIONS = [
