@@ -1,3 +1,4 @@
+
 'use client';
 
 import { motion } from 'framer-motion';
@@ -5,7 +6,6 @@ import { ChevronDown } from 'lucide-react';
 import locales from '../locales/en.json';
 import AnimatedBackground from './AnimatedBackground';
 import { AnimatedText } from './ui/animated-hero';
-import { TextPressure } from './ui/interactive-text-pressure';
 
 const HeroSection = () => {
   const scrollToSkills = () => {
@@ -35,14 +35,9 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
           >
-            <TextPressure
-              text={locales.hero.title}
-              flex={true}
-              textColor="#FFFFFF"
-              className="mix-blend-difference"
-              minFontSize={120}
-              scale={true}
-            />
+            <h1 className="text-white text-8xl md:text-9xl font-bold mix-blend-difference uppercase tracking-wider">
+              {locales.hero.title}
+            </h1>
           </motion.div>
           
           <motion.p 
