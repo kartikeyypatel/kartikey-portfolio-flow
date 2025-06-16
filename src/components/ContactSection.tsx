@@ -81,7 +81,6 @@ const ContactSection = () => {
   return (
     <section id="contact" className="section-padding bg-portfolio-black relative overflow-hidden" ref={ref}>
       <Boxes />
-      <div className="absolute inset-0 w-full h-full bg-portfolio-black z-10 [mask-image:radial-gradient(transparent_30%,white)] pointer-events-none" />
       <div className="container-custom relative z-20">
         <motion.div
           className="max-w-3xl mx-auto text-center"
