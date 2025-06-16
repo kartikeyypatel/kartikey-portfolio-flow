@@ -7,7 +7,7 @@ import { AnimatedText } from './ui/animated-hero';
 import { TextPressure } from './ui/interactive-text-pressure';
 import { SplineScene } from './ui/spline';
 import { Spotlight } from './ui/spotlight';
-import { ResumeButton } from './ui/ResumeButton';
+import { HeroResumeButton } from './ui/HeroResumeButton';
 
 const HeroSection = () => {
   const scrollToSkills = () => {
@@ -79,7 +79,7 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             <motion.div
-              className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 mt-12"
+              className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 mt-12 md:ml-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.0 }}
@@ -93,7 +93,7 @@ const HeroSection = () => {
                 <span>View My Work</span>
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
               </motion.button>
-              <ResumeButton />
+              <HeroResumeButton />
             </motion.div>
           </motion.div>
         </div>
