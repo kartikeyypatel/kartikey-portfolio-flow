@@ -21,6 +21,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
+import { useState } from 'react';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -33,6 +34,7 @@ const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,13 +46,36 @@ const ContactSection = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast({
-        title: "Message Sent!",
-        description: "Thank you for reaching out. I'll get back to you soon.",
-    });
-    form.reset();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Message Sent!",
+          description: "Thank you for reaching out. I'll get back to you soon.",
+        });
+        form.reset();
+      } else {
+        throw new Error('Failed to send message.');
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem sending your message. Please try again later.",
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -174,11 +199,12 @@ const ContactSection = () => {
                   <div className="text-center pt-4">
                     <motion.button
                       type="submit"
-                      className="inline-flex items-center space-x-3 bg-transparent border-2 border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 group"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      disabled={isSubmitting}
+                      className="inline-flex items-center space-x-3 bg-transparent border-2 border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed"
+                      whileHover={{ scale: isSubmitting ? 1 : 1.05 }}
+                      whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
                     >
-                      <span>Send Message</span>
+                      <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
                       <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
                     </motion.button>
                   </div>
@@ -211,7 +237,7 @@ const ContactSection = () => {
               transition={{ duration: 0.6, delay: 0.8 }}
             >
               <motion.a
-                href="https://linkedin.com/in/kartikey-patel"
+                href="https://www.linkedin.com/in/patel-kartikey/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200 pointer-events-auto"
@@ -222,7 +248,7 @@ const ContactSection = () => {
               </motion.a>
 
               <motion.a
-                href="https://github.com/kartikey-patel"
+                href="https://github.com/kartikeyypatel?tab=repositories"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200 pointer-events-auto"
@@ -233,7 +259,7 @@ const ContactSection = () => {
               </motion.a>
 
               <motion.a
-                href="https://twitter.com/kartikey_patel"
+                href="https://x.com/senseikartikey"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200 pointer-events-auto"
@@ -244,7 +270,7 @@ const ContactSection = () => {
               </motion.a>
 
               <motion.a
-                href="https://facebook.com/kartikey.patel"
+                href="https://www.facebook.com/senseikartikey/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200 pointer-events-auto"
@@ -253,10 +279,9 @@ const ContactSection = () => {
                 <span className="sr-only">{locales.contact.social.facebook}</span>
                 <Facebook className="h-6 w-6" />
               </motion.a>
+              
               <motion.a
-                href="mailto:contact@kartikeypatel.dev"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="mailto:kartikey.patel1398@gmail.com"
                 className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200 pointer-events-auto"
                 whileHover={{ y: -2 }}
               >
