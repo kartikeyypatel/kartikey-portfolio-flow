@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { BackgroundPaths } from './ui/background-paths';
 import { AnimatedText } from './ui/animated-hero';
@@ -10,6 +11,19 @@ import { Spotlight } from './ui/spotlight';
 import { HeroResumeButton } from './ui/HeroResumeButton';
 
 const HeroSection = () => {
+  const [showSpline, setShowSpline] = useState(false);
+
+  useEffect(() => {
+    const requestIdle = (cb: () => void) => {
+      if (typeof (window as any).requestIdleCallback === 'function') {
+        (window as any).requestIdleCallback(cb);
+      } else {
+        setTimeout(cb, 300);
+      }
+    };
+    requestIdle(() => setShowSpline(true));
+  }, []);
+
   const scrollToSkills = () => {
     const skillsSection = document.querySelector('#skills');
     if (skillsSection) {
@@ -34,15 +48,17 @@ const HeroSection = () => {
       <div className="relative w-full container mx-auto px-4 flex items-center justify-start h-screen">
         
         {/* Robot on the right, partially behind */}
-        <div className="absolute top-0 right-0 w-full md:w-3/5 h-full flex items-center justify-center z-0 opacity-40 md:opacity-50 pointer-events-auto">
+        <div className="absolute top-0 right-0 w-full md:w-3/5 h-full flex items-center justify-center z-0 opacity-40 md:opacity-50 pointer-events-none transform-gpu will-change-transform">
           <Spotlight
             className="-top-20 left-0 md:left-20 md:-top-10"
             fill="white"
           />
           <div className="w-full h-full">
-            <SplineScene 
-              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            />
+            {showSpline && (
+              <SplineScene 
+                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+              />
+            )}
           </div>
         </div>
 
@@ -69,7 +85,7 @@ const HeroSection = () => {
             </motion.div>
             
             <motion.p
-              className="text-2xl md:text-4xl text-portfolio-text mb-8 font-light"
+              className="text-2xl md:text-4xl text-portfolio-text -mt-2 mb-6 font-light will-change-transform"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
