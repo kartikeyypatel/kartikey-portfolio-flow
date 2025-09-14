@@ -1,13 +1,15 @@
 'use client';
 
+import React, { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { BackgroundPaths } from './ui/background-paths';
 import { AnimatedText } from './ui/animated-hero';
 import { TextPressure } from './ui/interactive-text-pressure';
-import { SplineScene } from './ui/spline';
 import { Spotlight } from './ui/spotlight';
 import { HeroResumeButton } from './ui/HeroResumeButton';
+
+const SplineScene = React.lazy(() => import('./ui/spline').then(module => ({ default: module.SplineScene })));
 
 const HeroSection = () => {
   const scrollToSkills = () => {
@@ -40,9 +42,11 @@ const HeroSection = () => {
             fill="white"
           />
           <div className="w-full h-full">
-            <SplineScene 
-              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            />
+            <Suspense fallback={<div className="w-full h-full" />}>
+              <SplineScene 
+                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+              />
+            </Suspense>
           </div>
         </div>
 

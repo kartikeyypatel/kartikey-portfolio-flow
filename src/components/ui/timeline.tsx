@@ -1,4 +1,3 @@
-
 'use client';
 import { useScroll, useTransform, motion } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react';
@@ -34,15 +33,18 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
 
   return (
-    <div className="w-full bg-portfolio-black font-sans" ref={containerRef}>
-      <div className="container-custom text-center mb-16">
+    <motion.div
+      className="w-full bg-portfolio-black font-sans relative pt-20 lg:pt-28"
+      ref={containerRef}
+    >
+      <div className="container-custom text-center mb-16 relative z-10">
         <h2 className="text-5xl md:text-6xl font-bold text-portfolio-text mb-4">
           Education
         </h2>
         <p className="text-xl text-portfolio-text-muted">My academic journey.</p>
       </div>
 
-      <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
+      <div ref={ref} className="relative max-w-7xl mx-auto z-10">
         {data.map((item, index) => (
           <div
             key={index}
@@ -80,6 +82,6 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { motion } from 'framer-motion';
@@ -70,8 +69,12 @@ const ExperienceSection = () => {
   };
 
   return (
-    <section id="experience" className="section-padding bg-portfolio-gray/20" ref={ref}>
-      <div className="container-custom">
+    <motion.section
+      id="experience"
+      className="section-padding bg-portfolio-black relative"
+      ref={ref}
+    >
+      <div className="container-custom relative z-10">
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
@@ -177,7 +180,7 @@ const ExperienceSection = () => {
           ))}
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

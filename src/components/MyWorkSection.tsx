@@ -11,8 +11,11 @@ const MyWorkSection = () => {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id="my-work" className="min-h-screen bg-portfolio-gray/30 relative overflow-hidden">
-      <div className="container-custom h-full flex items-center" ref={ref}>
+    <motion.section
+      id="my-work"
+      className="section-padding relative"
+    >
+      <div className="container-custom h-full flex items-center relative z-10" ref={ref}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
           {/* Left Column - Content */}
           <motion.div
@@ -110,7 +113,7 @@ const MyWorkSection = () => {
           </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

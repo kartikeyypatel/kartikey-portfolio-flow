@@ -1,15 +1,20 @@
-
 'use client';
 
-import { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import Header from '../components/Header';
-import HeroSection from '../components/HeroSection';
-import SkillsSection from '../components/SkillsSection';
-import MyWorkSection from '../components/MyWorkSection';
-import ProjectsSection from '../components/ProjectsSection';
-import EducationSection from '../components/EducationSection';
-import ExperienceSection from '../components/ExperienceSection';
-import ContactSection from '../components/ContactSection';
+
+// Lazy load all the sections
+const HeroSection = React.lazy(() => import('../components/HeroSection'));
+const SkillsSection = React.lazy(() => import('../components/SkillsSection'));
+const MyWorkSection = React.lazy(() => import('../components/MyWorkSection'));
+const ProjectsSection = React.lazy(() => import('../components/ProjectsSection'));
+const EducationSection = React.lazy(() => import('../components/EducationSection'));
+const ExperienceSection = React.lazy(() => import('../components/ExperienceSection'));
+const ContactSection = React.lazy(() => import('../components/ContactSection'));
+
+const SectionLoader = () => (
+  <div className="w-full py-20 bg-portfolio-black" />
+);
 
 const Index = () => {
   useEffect(() => {
@@ -22,16 +27,30 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative bg-portfolio-black">
       <Header />
       <main>
-        <HeroSection />
-        <SkillsSection />
-        <MyWorkSection />
-        <ProjectsSection />
-        <EducationSection />
-        <ExperienceSection />
-        <ContactSection />
+        <Suspense fallback={<SectionLoader />}>
+          <HeroSection />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <SkillsSection />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <MyWorkSection />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <ProjectsSection />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <EducationSection />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <ExperienceSection />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <ContactSection />
+        </Suspense>
       </main>
     </div>
   );

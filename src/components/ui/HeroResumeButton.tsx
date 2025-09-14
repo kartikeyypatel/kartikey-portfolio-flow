@@ -6,10 +6,11 @@ import { motion } from "framer-motion";
 export const HeroResumeButton = () => {
   return (
     <a
-      href="/resume.pdf"
-      download="resume.pdf"
+      href="https://drive.google.com/file/d/1iDxnX1RcRGaX9_MRDuNrx-jcC-S4n9_U/view?usp=drive_link"
+      target="_blank"
+      rel="noopener noreferrer"
       className="relative flex items-center justify-center"
-      aria-label="Download Resume"
+      aria-label="View Resume"
     >
       <motion.div
         className="bg-portfolio-cyan flex items-center justify-center overflow-hidden relative rounded-full"

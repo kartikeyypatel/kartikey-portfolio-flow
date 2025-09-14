@@ -2,10 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { ArrowRight, Linkedin, Github, Twitter, Facebook, Mail, Phone, MapPin } from 'lucide-react';
 import locales from '../locales/en.json';
-import { Boxes } from './ui/background-boxes';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -21,7 +20,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
-import { useState } from 'react';
+import { useStarryBackground } from '@/hooks/useStarryBackground';
+import { StarryCanvas } from './ui/StarryCanvas';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -35,6 +35,7 @@ const ContactSection = () => {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { backgroundImage } = useStarryBackground();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -79,8 +80,13 @@ const ContactSection = () => {
   }
 
   return (
-    <section id="contact" className="section-padding bg-portfolio-black relative overflow-hidden" ref={ref}>
-      <Boxes />
+    <motion.section
+      id="contact"
+      style={{ backgroundImage }}
+      className="section-padding bg-black relative overflow-hidden"
+      ref={ref}
+    >
+      <StarryCanvas />
       <div className="container-custom relative z-20">
         <motion.div
           className="max-w-3xl mx-auto text-center"
@@ -304,7 +310,7 @@ const ContactSection = () => {
           </p>
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

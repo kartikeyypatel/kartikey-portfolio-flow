@@ -74,11 +74,11 @@ const ProjectsSection = () => {
       title: 'Analyzing TV Shows and Movies',
       category: 'AI/ML',
       date: 'Feb 2025',
-      image: 'https://images.unsplash.com/photo-1593335937443-45c9a59a721d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
+      image: '/lovable-uploads/Gemini_Generated_Image_tu7kwutu7kwutu7k.png',
       description: 'Using Python web scraping with Beautiful Soup and Pandas, and mathematical models like Naïve Bayes, K-Nearest Neighbor, and Random Forest, was able to achieve 92% accuracy in prediction of popularity.',
       client: 'Academic Project',
       technologies: ['Python', 'Pandas', 'Beautiful Soup', 'Data Mining', 'Naïve Bayes', 'KNN', 'Random Forest'],
-      gallery: ['https://images.unsplash.com/photo-1593335937443-45c9a59a721d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+      gallery: ['/lovable-uploads/Gemini_Generated_Image_tu7kwutu7kwutu7k.png'],
       size: 'normal',
       githubUrl: 'https://github.com/kartikey-patel'
     },
@@ -87,11 +87,11 @@ const ProjectsSection = () => {
       title: 'Crime Detection using Machine Learning',
       category: 'AI/ML',
       date: 'Jan 2025',
-      image: 'https://images.unsplash.com/photo-1599227694144-a60f5b1d3a5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
+      image: '/lovable-uploads/Gemini_Generated_Image_bmxkq2bmxkq2bmxk.png',
       description: 'Developed a crime prediction website leveraging Machine Learning (ML) algorithms including Naïve Bayes and Random Forest; achieved 83% accuracy in forecasted crime occurrences aiding local law enforcement department in resource allocation and crime prevention efforts.',
       client: 'Academic Project',
       technologies: ['Python', 'HTML/CSS', 'Machine Learning', 'Naïve Bayes', 'Random Forest'],
-      gallery: ['https://images.unsplash.com/photo-1599227694144-a60f5b1d3a5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+      gallery: ['/lovable-uploads/Gemini_Generated_Image_bmxkq2bmxkq2bmxk.png'],
       size: 'wide',
       githubUrl: 'https://github.com/kartikey-patel'
     },
@@ -100,11 +100,11 @@ const ProjectsSection = () => {
       title: 'Real-Time Sentiment Analysis for Social Media',
       category: 'AI/ML',
       date: 'Dec 2024',
-      image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
-      description: 'Developed a real-time social media sentiment tracker using Twitter’s API and NLP for topic extraction, with a dashboard displaying sentiment trends and alerts for significant shifts, providing insights on public opinion for brands and topics.',
+      image: '/lovable-uploads/Gemini_Generated_Image_k83scnk83scnk83s.png',
+      description: 'Developed a real-time social media sentiment tracker using Twitter\'s API and NLP for topic extraction, with a dashboard displaying sentiment trends and alerts for significant shifts, providing insights on public opinion for brands and topics.',
       client: 'Personal Project',
       technologies: ['Python', 'Tweepy', 'TextBlob', 'NLP', 'MongoDB'],
-      gallery: ['https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+      gallery: ['/lovable-uploads/Gemini_Generated_Image_k83scnk83scnk83s.png'],
       size: 'normal',
       githubUrl: 'https://github.com/kartikey-patel'
     },
@@ -113,11 +113,11 @@ const ProjectsSection = () => {
       title: 'AI-Powered Personal Finance Dashboard',
       category: 'Web Development',
       date: 'Sep 2024',
-      image: 'https://images.unsplash.com/photo-1554224155-1696413565d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
+      image: '/lovable-uploads/Gemini_Generated_Image_t2m44yt2m44yt2m4.png',
       description: 'Developed an AI-driven dashboard to track expenses, analyze spending patterns, and forecast budgets; integrated machine learning for tailored savings recommendations, visualized data with D3.js, and ensured secure user authentication.',
       client: 'Personal Project',
       technologies: ['Python', 'Django', 'React.js', 'Pandas', 'Machine Learning', 'scikit-learn', 'D3.js'],
-      gallery: ['https://images.unsplash.com/photo-1554224155-1696413565d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60'],
+      gallery: ['/lovable-uploads/Gemini_Generated_Image_t2m44yt2m44yt2m4.png'],
       size: 'normal',
       githubUrl: 'https://github.com/kartikey-patel'
     }
@@ -174,8 +174,12 @@ const ProjectsSection = () => {
 
   return (
     <>
-      <section id="projects" className="section-padding bg-portfolio-black" ref={ref}>
-        <div className="container-custom">
+      <motion.section
+        id="projects"
+        className="section-padding bg-portfolio-black relative"
+        ref={ref}
+      >
+        <div className="container-custom relative z-10">
           {/* Title */}
           <motion.div
             className="text-center mb-16"
@@ -222,7 +226,7 @@ const ProjectsSection = () => {
             />
           </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Project Detail Modal */}
       {selectedProject && (
