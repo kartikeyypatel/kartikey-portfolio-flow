@@ -75,10 +75,3 @@
     @apply bg-gradient-to-r from-portfolio-cyan to-blue-400 bg-clip-text text-transparent;
   }
 }
-
-/* Performance: reduce offscreen rendering cost */
-main > section:not(#home) {
-  content-visibility: auto;
-  contain-intrinsic-size: 1000px 800px;
-}
-
