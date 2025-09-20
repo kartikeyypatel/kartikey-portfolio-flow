@@ -3,12 +3,14 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 
-export const HeroResumeButton = () => {
+interface HeroResumeButtonProps {
+  onClick: () => void;
+}
+
+export const HeroResumeButton: React.FC<HeroResumeButtonProps> = ({ onClick }) => {
   return (
-    <a
-      href="https://drive.google.com/file/d/1iDxnX1RcRGaX9_MRDuNrx-jcC-S4n9_U/view?usp=drive_link"
-      target="_blank"
-      rel="noopener noreferrer"
+    <button
+      onClick={onClick}
       className="relative flex items-center justify-center"
       aria-label="View Resume"
     >
@@ -39,6 +41,6 @@ export const HeroResumeButton = () => {
           </svg>
         </div>
       </motion.div>
-    </a>
+    </button>
   );
-}; 
+};

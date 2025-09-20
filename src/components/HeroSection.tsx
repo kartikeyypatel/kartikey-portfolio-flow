@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { BackgroundPaths } from './ui/background-paths';
@@ -8,10 +8,13 @@ import { AnimatedText } from './ui/animated-hero';
 import { TextPressure } from './ui/interactive-text-pressure';
 import { Spotlight } from './ui/spotlight';
 import { HeroResumeButton } from './ui/HeroResumeButton';
+import { ResumeModal } from './ui/ResumeModal';
 
 const SplineScene = React.lazy(() => import('./ui/spline').then(module => ({ default: module.SplineScene })));
 
 const HeroSection = () => {
+  const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
+
   const scrollToSkills = () => {
     const skillsSection = document.querySelector('#skills');
     if (skillsSection) {
@@ -97,11 +100,17 @@ const HeroSection = () => {
                 <span>View My Work</span>
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
               </motion.button>
-              <HeroResumeButton />
+              <HeroResumeButton onClick={() => setIsResumeModalOpen(true)} />
             </motion.div>
           </motion.div>
         </div>
       </div>
+
+      {/* Resume Modal */}
+      <ResumeModal 
+        isOpen={isResumeModalOpen}
+        onClose={() => setIsResumeModalOpen(false)}
+      />
 
       {/* Scroll indicator */}
       <motion.button

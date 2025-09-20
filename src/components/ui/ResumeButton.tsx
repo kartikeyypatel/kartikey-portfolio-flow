@@ -3,14 +3,16 @@
 import * as React from "react"
 import { motion } from "framer-motion"
 
-export const ResumeButton = () => {
+interface ResumeButtonProps {
+  onClick: () => void;
+}
+
+export const ResumeButton: React.FC<ResumeButtonProps> = ({ onClick }) => {
   const [isHovered, setIsHovered] = React.useState(false)
 
   return (
-    <a 
-      href="https://drive.google.com/file/d/1iDxnX1RcRGaX9_MRDuNrx-jcC-S4n9_U/view?usp=drive_link"
-      target="_blank"
-      rel="noopener noreferrer"
+    <button 
+      onClick={onClick}
       className="relative flex items-center justify-center"
       aria-label="View Resume"
     >
@@ -44,6 +46,6 @@ export const ResumeButton = () => {
           </span>
         </motion.div>
       </motion.div>
-    </a>
+    </button>
   )
 }

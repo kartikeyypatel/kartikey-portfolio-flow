@@ -7,6 +7,7 @@ import { Menu } from 'lucide-react';
 import locales from '../locales/en.json';
 import { Typewriter } from './ui/typewriter-text';
 import { ResumeButton } from './ui/ResumeButton';
+import { ResumeModal } from './ui/ResumeModal';
 
 const names = [
   "KartikeyPatel",    // English
@@ -19,6 +20,7 @@ const names = [
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isNavHovered, setIsNavHovered] = useState(false);
+  const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -105,7 +107,7 @@ const Header = () => {
 
         {/* Resume Button */}
         <div className="hidden lg:flex items-center justify-end lg:w-80">
-          <ResumeButton />
+          <ResumeButton onClick={() => setIsResumeModalOpen(true)} />
         </div>
 
         {/* Mobile menu placeholder */}
@@ -113,6 +115,12 @@ const Header = () => {
           <Menu className="h-6 w-6 text-portfolio-text" />
         </div>
       </div>
+
+      {/* Resume Modal */}
+      <ResumeModal 
+        isOpen={isResumeModalOpen}
+        onClose={() => setIsResumeModalOpen(false)}
+      />
     </motion.header>
   );
 };

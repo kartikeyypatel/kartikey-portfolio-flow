@@ -3,9 +3,21 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, X, Github } from 'lucide-react';
+import { ArrowLeft, ArrowRight, X, Github, ChevronLeft, ChevronRight } from 'lucide-react';
 import locales from '../locales/en.json';
 import { FocusCards } from '@/components/ui/focus-cards';
+import attendanceTracking from '../assets/attendance-tracking.png';
+import supplyChainForecaster from '../assets/supply-chain-forecaster.png';
+import cicdAnalytics from '../assets/cicd-analytics.png';
+import postgresqlAutomation from '../assets/postgresql-automation.png';
+import financialMigration from '../assets/financial-migration.png';
+import telemetryMonitoring from '../assets/telemetry-monitoring.png';
+import microserviceHealth from '../assets/microservice-health.png';
+import logisticsMonitoring from '../assets/logistics-monitoring.png';
+import membershipUpgrade from '../assets/membership-upgrade.png';
+import ecommerceInventory from '../assets/ecommerce-inventory.png';
+import financialDashboard from '../assets/financial-dashboard.png';
+import mortgageWorkflow from '../assets/mortgage-workflow.png';
 
 interface Project {
   id: string;
@@ -26,8 +38,11 @@ const ProjectsSection = () => {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [activeFilter, setActiveFilter] = useState('All');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const projectsPerPage = 9;
 
   const projects: Project[] = [
+    // Existing Projects
     {
       id: '1',
       title: 'Consumer Safety Application (Capstone)',
@@ -120,6 +135,163 @@ const ProjectsSection = () => {
       gallery: ['/lovable-uploads/Gemini_Generated_Image_t2m44yt2m44yt2m4.png'],
       size: 'normal',
       githubUrl: 'https://github.com/kartikey-patel'
+    },
+    // New Projects
+    {
+      id: '8',
+      title: 'Program Participation & Attendance Tracking System',
+      category: 'App Development',
+      date: 'April 2025',
+      image: attendanceTracking,
+      description: 'Created an automated attendance tracking system that reduced weekly reporting time by 80% by using Advanced Excel (VBA) to process and clean data exported daily from Salesforce.',
+      client: 'Enterprise Project',
+      technologies: ['VBA', 'SQL', 'Salesforce', 'Excel', 'Data Processing'],
+      gallery: [attendanceTracking],
+      size: 'normal',
+      githubUrl: 'https://github.com/kartikey-patel'
+    },
+    {
+      id: '9',
+      title: 'Supply Chain Demand Forecaster',
+      category: ['AI/ML', 'Web Development'],
+      date: 'July 2025',
+      image: supplyChainForecaster,
+      description: 'Architected a full-stack forecasting tool, improving accuracy by 15% in tests, by integrating a Python backend with a RAG-based LLM and a React dashboard for supply chain analysis.',
+      client: 'Enterprise Project',
+      technologies: ['Python', 'React', 'PostgreSQL', 'Docker', 'LLM', 'RAG Architecture'],
+      gallery: [supplyChainForecaster],
+      size: 'wide',
+      githubUrl: 'https://github.com/kartikey-patel'
+    },
+    {
+      id: '10',
+      title: 'CI/CD Test Analytics Dashboard',
+      category: 'Web Development',
+      date: 'July 2025',
+      image: cicdAnalytics,
+      description: 'Constructed a CI/CD test analytics tool, reducing QA log analysis time by 30%, by building a Python Django API and integrating it with a responsive ReactJS dashboard for test triage.',
+      client: 'Enterprise Project',
+      technologies: ['Python', 'Django', 'ReactJS', 'PostgreSQL', 'Docker', 'CI/CD'],
+      gallery: [cicdAnalytics],
+      size: 'normal',
+      githubUrl: 'https://github.com/kartikey-patel'
+    },
+    {
+      id: '11',
+      title: 'PostgreSQL Lifecycle Automation Tool',
+      category: 'Web Development',
+      date: 'June 2025',
+      image: postgresqlAutomation,
+      description: 'Constructed a DBaaS tool, reducing PostgreSQL provisioning time from 1 hour to <5 minutes, by building a Go API backend and a React dashboard for lifecycle management via Docker.',
+      client: 'Enterprise Project',
+      technologies: ['Go', 'React', 'Docker', 'PostgreSQL', 'API Development'],
+      gallery: [postgresqlAutomation],
+      size: 'normal',
+      githubUrl: 'https://github.com/kartikey-patel'
+    },
+    {
+      id: '12',
+      title: 'Cloud-Native Financial Account Migration Service',
+      category: 'Web Development',
+      date: 'June 2025',
+      image: financialMigration,
+      description: 'Created a financial account migration service that automated the conversion of 10,000+ accounts, reducing manual processing time by 95%, by building resilient Java Spring Boot microservices on AWS.',
+      client: 'Enterprise Project',
+      technologies: ['Java', 'Spring Boot', 'AWS', 'Kafka', 'Microservices'],
+      gallery: [financialMigration],
+      size: 'wide',
+      githubUrl: 'https://github.com/kartikey-patel'
+    },
+    {
+      id: '13',
+      title: 'Live Service Telemetry & Alerting System',
+      category: 'Web Development',
+      date: 'May 2025',
+      image: telemetryMonitoring,
+      description: 'Pioneered a monitoring system for real-time alerts, cutting mean time to detection by 40% in tests, by processing telemetry streams with Python and Kafka to flag service anomalies.',
+      client: 'Enterprise Project',
+      technologies: ['Python', 'Kafka', 'Prometheus', 'Grafana', 'Monitoring'],
+      gallery: [telemetryMonitoring],
+      size: 'normal',
+      githubUrl: 'https://github.com/kartikey-patel'
+    },
+    {
+      id: '14',
+      title: 'Scalable Microservice Health Monitoring System',
+      category: 'Web Development',
+      date: 'May 2025',
+      image: microserviceHealth,
+      description: 'Spearheaded a health monitoring system, reducing issue detection time by 50% in simulations, by building fault-tolerant microservices on Azure Service Fabric using C# and .NET.',
+      client: 'Enterprise Project',
+      technologies: ['C#', '.NET', 'App Insights', 'Azure Service Fabric', 'Microservices'],
+      gallery: [microserviceHealth],
+      size: 'normal',
+      githubUrl: 'https://github.com/kartikey-patel'
+    },
+    {
+      id: '15',
+      title: 'Real-Time Logistics Monitoring & Alerting System',
+      category: 'Web Development',
+      date: 'April 2025',
+      image: logisticsMonitoring,
+      description: 'Architected a real-time logistics monitoring system, cutting incident response time by 30%, by building a Java Spring Boot backend to process Kafka event streams for a React dashboard.',
+      client: 'Enterprise Project',
+      technologies: ['Java', 'Spring Boot', 'Kafka', 'React', 'Real-time Processing'],
+      gallery: [logisticsMonitoring],
+      size: 'normal',
+      githubUrl: 'https://github.com/kartikey-patel'
+    },
+    {
+      id: '16',
+      title: 'Predictive Membership Upgrade Engine',
+      category: 'AI/ML',
+      date: 'April 2025',
+      image: membershipUpgrade,
+      description: 'Constructed a service that boosted member upgrade conversions by 15% by deploying a Java/Spring Boot microservice to process Kafka streams and identify high-potential members.',
+      client: 'Enterprise Project',
+      technologies: ['Java', 'Spring Boot', 'Kafka', 'CosmosDB', 'Machine Learning'],
+      gallery: [membershipUpgrade],
+      size: 'normal',
+      githubUrl: 'https://github.com/kartikey-patel'
+    },
+    {
+      id: '17',
+      title: 'Real-Time E-commerce Inventory Monitor',
+      category: 'Web Development',
+      date: 'April 2025',
+      image: ecommerceInventory,
+      description: 'Minimized revenue loss from stockouts by providing real-time alerts with 95% accuracy by developing a React dashboard & Node.js API on GCP that uses an LLM to detect inventory anomalies.',
+      client: 'Enterprise Project',
+      technologies: ['React', 'Node.js', 'PostgreSQL', 'GCP', 'LLM'],
+      gallery: [ecommerceInventory],
+      size: 'wide',
+      githubUrl: 'https://github.com/kartikey-patel'
+    },
+    {
+      id: '18',
+      title: 'Interactive Financial Data Dashboard',
+      category: 'Web Development',
+      date: 'April 2025',
+      image: financialDashboard,
+      description: 'Constructed a real-time data visualization tool, reducing data load times by 40%, by integrating Java Microservices with a responsive Angular frontend on OpenShift.',
+      client: 'Enterprise Project',
+      technologies: ['Angular', 'Java', 'Spring Boot', 'OpenShift', 'Data Visualization'],
+      gallery: [financialDashboard],
+      size: 'normal',
+      githubUrl: 'https://github.com/kartikey-patel'
+    },
+    {
+      id: '19',
+      title: 'Mortgage Application & Approval Workflow System',
+      category: 'Web Development',
+      date: 'March 2025',
+      image: mortgageWorkflow,
+      description: 'Architected a full-stack mortgage processing system that automated application workflows, reducing approval times by 50%, by building a Node.js backend with AWS Lambda and a React frontend.',
+      client: 'Enterprise Project',
+      technologies: ['Node.js', 'React', 'Lambda', 'RDS', 'AWS', 'Workflow Automation'],
+      gallery: [mortgageWorkflow],
+      size: 'normal',
+      githubUrl: 'https://github.com/kartikey-patel'
     }
   ];
 
@@ -132,6 +304,18 @@ const ProjectsSection = () => {
           ? project.category.includes(activeFilter) 
           : project.category === activeFilter
       );
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
+  const startIndex = (currentPage - 1) * projectsPerPage;
+  const endIndex = startIndex + projectsPerPage;
+  const currentProjects = filteredProjects.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filter changes
+  const handleFilterChange = (filter: string) => {
+    setActiveFilter(filter);
+    setCurrentPage(1);
+  };
 
   const openProject = (project: Project) => {
     setSelectedProject(project);
@@ -196,7 +380,7 @@ const ProjectsSection = () => {
               {filters.map((filter) => (
                 <motion.button
                   key={filter}
-                  onClick={() => setActiveFilter(filter)}
+                  onClick={() => handleFilterChange(filter)}
                   className={`px-6 py-3 rounded-full border transition-all duration-200 ${
                     activeFilter === filter
                       ? 'bg-portfolio-cyan text-portfolio-black border-portfolio-cyan'
@@ -219,11 +403,58 @@ const ProjectsSection = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
           >
             <FocusCards
-              cards={filteredProjects}
+              cards={currentProjects}
               onCardClick={openProject}
-              className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[250px]"
+              className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px]"
               getCardClassName={(card) => getProjectSizeClass(card.size)}
             />
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center mt-12 gap-4">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-200 ${
+                    currentPage === 1
+                      ? 'border-portfolio-gray text-portfolio-gray cursor-not-allowed'
+                      : 'border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black'
+                  }`}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  Previous
+                </button>
+
+                <div className="flex items-center gap-2">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`w-10 h-10 rounded-full border transition-all duration-200 ${
+                        currentPage === page
+                          ? 'bg-portfolio-cyan text-portfolio-black border-portfolio-cyan'
+                          : 'border-portfolio-gray-lighter text-portfolio-text hover:border-portfolio-cyan'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-200 ${
+                    currentPage === totalPages
+                      ? 'border-portfolio-gray text-portfolio-gray cursor-not-allowed'
+                      : 'border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black'
+                  }`}
+                >
+                  Next
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            )}
           </motion.div>
         </div>
       </motion.section>
