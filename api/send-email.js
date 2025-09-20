@@ -26,7 +26,9 @@ export default async function handler(req, res) {
   }
 
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
@@ -34,7 +36,8 @@ export default async function handler(req, res) {
   });
 
   const mailOptions = {
-    from: `"${name}" <${email}>`,
+    from: `"${name}" <${process.env.EMAIL_USER}>`,
+    replyTo: email,
     to: process.env.EMAIL_USER,
     subject: `New message from ${name}: ${subject}`,
     text: `You have received a new message from your portfolio contact form.\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
