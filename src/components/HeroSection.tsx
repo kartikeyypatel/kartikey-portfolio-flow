@@ -55,31 +55,31 @@ const HeroSection = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              {/* Animated Name with improved contrast */}
-              <motion.div
-                className="h-32 md:h-40 flex items-center justify-center lg:justify-start mb-6"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.5 }}
-              >
-                <TextPressure
-                  text="Kartikey Patel"
-                  flex={true}
-                  textColor="#FFFFFF"
-                  className="drop-shadow-[0_0_20px_rgba(0,255,255,0.3)]"
-                  minFontSize={100}
-                />
-              </motion.div>
-              
-              {/* Dynamic Job Titles */}
-              <motion.div
-                className="text-2xl md:text-4xl text-portfolio-text mb-6 font-light"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
-              >
-                <AnimatedText texts={roles} className="h-12 md:h-16" />
-              </motion.div>
+               {/* Animated Name with improved contrast */}
+               <motion.div
+                 className="h-32 md:h-40 flex items-center justify-center lg:justify-start mb-2"
+                 initial={{ opacity: 0, y: 30 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 transition={{ duration: 1, delay: 0.5 }}
+               >
+                 <TextPressure
+                   text="Kartikey Patel"
+                   flex={true}
+                   textColor="#FFFFFF"
+                   className="drop-shadow-[0_0_20px_rgba(0,255,255,0.3)]"
+                   minFontSize={100}
+                 />
+               </motion.div>
+               
+               {/* Dynamic Job Titles - Closer to name with better hierarchy */}
+               <motion.div
+                 className="text-xl md:text-3xl text-portfolio-text mb-8 font-light"
+                 initial={{ opacity: 0, y: 20 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 transition={{ duration: 0.8, delay: 0.8 }}
+               >
+                 <AnimatedText texts={roles} className="h-10 md:h-14" />
+               </motion.div>
 
               {/* Professional Tagline */}
               <motion.p
@@ -93,7 +93,7 @@ const HeroSection = () => {
 
                {/* CTA Buttons with proper hierarchy */}
                <motion.div
-                 className="flex flex-col items-center justify-center lg:items-start gap-6"
+                 className="flex flex-col items-center justify-center lg:items-start gap-8"
                  initial={{ opacity: 0, y: 20 }}
                  animate={{ opacity: 1, y: 0 }}
                  transition={{ duration: 0.8, delay: 1.2 }}
@@ -109,11 +109,11 @@ const HeroSection = () => {
                    <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
                  </motion.button>
 
-                 {/* Secondary CTAs - Proper visual hierarchy */}
-                 <div className="flex flex-col sm:flex-row gap-4 items-center">
+                 {/* Secondary CTAs - Perfect alignment and consistent spacing */}
+                 <div className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start">
                    <motion.button
                      onClick={() => setIsResumeModalOpen(true)}
-                     className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black px-6 py-3 rounded-full text-sm font-medium transition-all duration-300"
+                     className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 h-12"
                      whileHover={{ scale: 1.05 }}
                      whileTap={{ scale: 0.95 }}
                    >
@@ -122,7 +122,7 @@ const HeroSection = () => {
                    
                    <motion.button
                      onClick={scrollToContact}
-                     className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-text-muted text-portfolio-text-muted hover:border-portfolio-cyan hover:text-portfolio-cyan px-6 py-3 rounded-full text-sm font-medium transition-all duration-300"
+                     className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-text-muted text-portfolio-text-muted hover:border-portfolio-cyan hover:text-portfolio-cyan px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 h-12"
                      whileHover={{ scale: 1.05 }}
                      whileTap={{ scale: 0.95 }}
                    >
