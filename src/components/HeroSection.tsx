@@ -93,7 +93,7 @@ const HeroSection = () => {
 
               {/* CTA Buttons with proper hierarchy */}
               <motion.div
-                className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
+                className="flex flex-col items-center justify-center lg:items-start gap-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 1.2 }}
@@ -109,8 +109,8 @@ const HeroSection = () => {
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
                 </motion.button>
 
-                {/* Secondary CTAs */}
-                <div className="flex flex-col sm:flex-row gap-3">
+                {/* Secondary CTAs - Consistent styling and alignment */}
+                <div className="flex flex-col sm:flex-row gap-4 items-center">
                   <motion.button
                     onClick={() => setIsResumeModalOpen(true)}
                     className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-cyan/50 text-portfolio-cyan hover:border-portfolio-cyan hover:bg-portfolio-cyan/10 px-6 py-3 rounded-full text-sm font-medium transition-all duration-300"
@@ -122,7 +122,7 @@ const HeroSection = () => {
                   
                   <motion.button
                     onClick={scrollToContact}
-                    className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-text-muted text-portfolio-text-muted hover:border-portfolio-cyan hover:text-portfolio-cyan px-6 py-3 rounded-full text-sm font-medium transition-all duration-300"
+                    className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-cyan/50 text-portfolio-cyan hover:border-portfolio-cyan hover:bg-portfolio-cyan/10 px-6 py-3 rounded-full text-sm font-medium transition-all duration-300"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
