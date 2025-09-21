@@ -91,45 +91,45 @@ const HeroSection = () => {
                 Crafting intelligent web applications and building tomorrow's digital solutions
               </motion.p>
 
-              {/* CTA Buttons with proper hierarchy */}
-              <motion.div
-                className="flex flex-col items-center justify-center lg:items-start gap-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1.2 }}
-              >
-                {/* Primary CTA */}
-                <motion.button
-                  onClick={scrollToProjects}
-                  className="inline-flex items-center space-x-3 bg-portfolio-cyan text-portfolio-black hover:bg-white hover:shadow-[0_0_30px_rgba(0,255,255,0.5)] px-8 py-4 rounded-full text-base font-semibold transition-all duration-300 group shadow-lg"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span>View My Work</span>
-                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
-                </motion.button>
+               {/* CTA Buttons with proper hierarchy */}
+               <motion.div
+                 className="flex flex-col items-center justify-center lg:items-start gap-6"
+                 initial={{ opacity: 0, y: 20 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 transition={{ duration: 0.8, delay: 1.2 }}
+               >
+                 {/* Primary CTA */}
+                 <motion.button
+                   onClick={scrollToProjects}
+                   className="inline-flex items-center space-x-3 bg-portfolio-cyan text-portfolio-black hover:bg-white hover:shadow-[0_0_30px_rgba(0,255,255,0.5)] px-8 py-4 rounded-full text-base font-semibold transition-all duration-300 group shadow-lg"
+                   whileHover={{ scale: 1.05 }}
+                   whileTap={{ scale: 0.95 }}
+                 >
+                   <span>View My Work</span>
+                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
+                 </motion.button>
 
-                {/* Secondary CTAs - Consistent styling and alignment */}
-                <div className="flex flex-col sm:flex-row gap-4 items-center">
-                  <motion.button
-                    onClick={() => setIsResumeModalOpen(true)}
-                    className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-cyan/50 text-portfolio-cyan hover:border-portfolio-cyan hover:bg-portfolio-cyan/10 px-6 py-3 rounded-full text-sm font-medium transition-all duration-300"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Resume
-                  </motion.button>
-                  
-                  <motion.button
-                    onClick={scrollToContact}
-                    className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-cyan/50 text-portfolio-cyan hover:border-portfolio-cyan hover:bg-portfolio-cyan/10 px-6 py-3 rounded-full text-sm font-medium transition-all duration-300"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Let's Connect
-                  </motion.button>
-                </div>
-              </motion.div>
+                 {/* Secondary CTAs - Consistent styling and alignment */}
+                 <div className="flex flex-col sm:flex-row gap-4 items-center">
+                   <motion.button
+                     onClick={() => setIsResumeModalOpen(true)}
+                     className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-cyan/50 text-portfolio-cyan hover:border-portfolio-cyan hover:bg-portfolio-cyan/10 px-6 py-3 rounded-full text-sm font-medium transition-all duration-300"
+                     whileHover={{ scale: 1.05 }}
+                     whileTap={{ scale: 0.95 }}
+                   >
+                     Resume
+                   </motion.button>
+                   
+                   <motion.button
+                     onClick={scrollToContact}
+                     className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-cyan/50 text-portfolio-cyan hover:border-portfolio-cyan hover:bg-portfolio-cyan/10 px-6 py-3 rounded-full text-sm font-medium transition-all duration-300"
+                     whileHover={{ scale: 1.05 }}
+                     whileTap={{ scale: 0.95 }}
+                   >
+                     Let's Connect
+                   </motion.button>
+                 </div>
+               </motion.div>
             </motion.div>
           </div>
 
