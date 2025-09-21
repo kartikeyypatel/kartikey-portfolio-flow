@@ -403,7 +403,7 @@ const ProjectsSection = () => {
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[280px]">
               {currentProjects.map((project, index) => (
                 <motion.div
                   key={project.id}
@@ -431,23 +431,23 @@ const ProjectsSection = () => {
                   
                   {/* Content with consistent padding */}
                   <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    <h3 className="text-lg md:text-xl font-semibold text-white mb-2 line-clamp-2 leading-tight">
+                    <h3 className="text-lg md:text-xl font-semibold text-white mb-3 line-clamp-2 leading-tight">
                       {project.title}
                     </h3>
                     <p className="text-sm text-gray-300 mb-3 font-medium">
                       {formatCategory(project.category)}
                     </p>
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="flex flex-wrap gap-2">
                       {project.technologies.slice(0, 3).map((tech) => (
                         <span
                           key={tech}
-                          className="px-2.5 py-1 bg-portfolio-cyan/20 text-portfolio-cyan text-xs rounded-full font-medium"
+                          className="px-3 py-1 bg-portfolio-cyan/20 text-portfolio-cyan text-xs rounded-full font-medium"
                         >
                           {tech}
                         </span>
                       ))}
                       {project.technologies.length > 3 && (
-                        <span className="px-2.5 py-1 bg-gray-600/20 text-gray-300 text-xs rounded-full font-medium">
+                        <span className="px-3 py-1 bg-gray-600/20 text-gray-300 text-xs rounded-full font-medium">
                           +{project.technologies.length - 3}
                         </span>
                       )}

@@ -146,10 +146,18 @@ const HeroSection = () => {
                 fill="white"
               />
               <div className="w-full h-full">
-                <SplineScene 
-                  scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                  showControls={true}
-                />
+                <Suspense fallback={
+                  <div className="w-full h-full bg-gradient-to-br from-portfolio-gray/20 to-portfolio-cyan/10 rounded-lg flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="w-16 h-16 border-4 border-portfolio-cyan/30 border-t-portfolio-cyan rounded-full animate-spin mx-auto mb-4"></div>
+                      <p className="text-portfolio-text-muted text-sm">Loading 3D Scene...</p>
+                    </div>
+                  </div>
+                }>
+                  <SplineScene 
+                    scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                  />
+                </Suspense>
               </div>
             </motion.div>
           </div>
