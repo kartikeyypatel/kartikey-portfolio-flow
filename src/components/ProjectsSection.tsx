@@ -343,13 +343,13 @@ const ProjectsSection = () => {
   const getProjectSizeClass = (size?: 'normal' | 'large' | 'wide' | 'tall') => {
     switch (size) {
       case 'large':
-        return 'md:col-span-2 md:row-span-2';
+        return 'md:col-span-2 md:row-span-2 h-[520px]';
       case 'wide':
-        return 'md:col-span-2';
+        return 'md:col-span-2 h-[280px]';
       case 'tall':
-        return 'md:row-span-2';
+        return 'md:row-span-2 h-[520px]';
       default:
-        return 'col-span-1 row-span-1';
+        return 'col-span-1 row-span-1 h-[280px]';
     }
   };
 
@@ -403,7 +403,7 @@ const ProjectsSection = () => {
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(250px,auto)]">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {currentProjects.map((project, index) => (
                 <motion.div
                   key={project.id}
@@ -417,30 +417,37 @@ const ProjectsSection = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="object-cover absolute inset-0 w-full h-full transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  {/* Image with consistent scaling */}
+                  <div className="absolute inset-0 overflow-hidden">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  
+                  {/* Content with consistent padding */}
                   <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    <h3 className="text-xl font-semibold text-white mb-2 line-clamp-2">
+                    <h3 className="text-lg md:text-xl font-semibold text-white mb-2 line-clamp-2 leading-tight">
                       {project.title}
                     </h3>
-                    <p className="text-sm text-gray-300 mb-2">
+                    <p className="text-sm text-gray-300 mb-3 font-medium">
                       {formatCategory(project.category)}
                     </p>
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-wrap gap-1.5">
                       {project.technologies.slice(0, 3).map((tech) => (
                         <span
                           key={tech}
-                          className="px-2 py-1 bg-portfolio-cyan/20 text-portfolio-cyan text-xs rounded-full"
+                          className="px-2.5 py-1 bg-portfolio-cyan/20 text-portfolio-cyan text-xs rounded-full font-medium"
                         >
                           {tech}
                         </span>
                       ))}
                       {project.technologies.length > 3 && (
-                        <span className="px-2 py-1 bg-gray-600/20 text-gray-300 text-xs rounded-full">
+                        <span className="px-2.5 py-1 bg-gray-600/20 text-gray-300 text-xs rounded-full font-medium">
                           +{project.technologies.length - 3}
                         </span>
                       )}
