@@ -6,6 +6,7 @@ import { useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, X, Github, ChevronLeft, ChevronRight } from 'lucide-react';
 import locales from '../locales/en.json';
 import { FocusCards } from '@/components/ui/focus-cards';
+import { cn } from '@/lib/utils';
 import attendanceTracking from '../assets/attendance-tracking.png';
 import supplyChainForecaster from '../assets/supply-chain-forecaster.png';
 import cicdAnalytics from '../assets/cicd-analytics.png';
@@ -402,12 +403,52 @@ const ProjectsSection = () => {
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <FocusCards
-              cards={currentProjects}
-              onCardClick={openProject}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px]"
-              getCardClassName={(card) => getProjectSizeClass(card.size)}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(250px,auto)]">
+              {currentProjects.map((project, index) => (
+                <motion.div
+                  key={project.id}
+                  className={cn(
+                    "rounded-lg relative bg-gray-100 dark:bg-neutral-900 overflow-hidden transition-all duration-300 ease-out cursor-pointer group",
+                    getProjectSizeClass(project.size)
+                  )}
+                  onClick={() => openProject(project)}
+                  whileHover={{ scale: 1.02 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="object-cover absolute inset-0 w-full h-full transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 className="text-xl font-semibold text-white mb-2 line-clamp-2">
+                      {project.title}
+                    </h3>
+                    <p className="text-sm text-gray-300 mb-2">
+                      {formatCategory(project.category)}
+                    </p>
+                    <div className="flex flex-wrap gap-1">
+                      {project.technologies.slice(0, 3).map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2 py-1 bg-portfolio-cyan/20 text-portfolio-cyan text-xs rounded-full"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {project.technologies.length > 3 && (
+                        <span className="px-2 py-1 bg-gray-600/20 text-gray-300 text-xs rounded-full">
+                          +{project.technologies.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
 
             {/* Pagination Controls */}
             {totalPages > 1 && (

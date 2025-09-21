@@ -34,10 +34,9 @@ const Header = () => {
   const navItems = [
     { number: '01', label: locales.header.nav.home, href: '#home' },
     { number: '02', label: locales.header.nav.skills, href: '#skills' },
-    { number: '03', label: locales.header.nav.myWork, href: '#my-work' },
-    { number: '04', label: locales.header.nav.projects, href: '#projects' },
-    { number: '05', label: locales.header.nav.experience, href: '#experience' },
-    { number: '06', label: locales.header.nav.contact, href: '#contact' },
+    { number: '03', label: locales.header.nav.projects, href: '#projects' },
+    { number: '04', label: locales.header.nav.experience, href: '#experience' },
+    { number: '05', label: locales.header.nav.contact, href: '#contact' },
   ];
 
   const scrollToSection = (href: string) => {
@@ -83,22 +82,22 @@ const Header = () => {
           onMouseEnter={() => setIsNavHovered(true)}
           onMouseLeave={() => setIsNavHovered(false)}
         >
-          <ul className="flex space-x-8">
+          <ul className="flex space-x-10">
             {navItems.map((item, index) => (
               <motion.li 
                 key={item.label}
-                className={`transition-opacity duration-200 ${
-                  isNavHovered ? 'opacity-50 hover:opacity-100' : 'opacity-100'
+                className={`transition-all duration-300 ${
+                  isNavHovered ? 'opacity-60 hover:opacity-100' : 'opacity-100'
                 }`}
               >
                 <button
                   onClick={() => scrollToSection(item.href)}
-                  className="group flex flex-col items-center text-sm hover:text-portfolio-cyan transition-colors duration-200"
+                  className="group flex flex-col items-center text-sm hover:text-portfolio-cyan transition-all duration-300 py-2 px-3 rounded-lg hover:bg-portfolio-cyan/10"
                 >
-                  <span className="text-xs text-portfolio-cyan font-mono">
+                  <span className="text-xs text-portfolio-cyan font-mono mb-1 group-hover:text-white transition-colors duration-300">
                     {item.number}
                   </span>
-                  <span className="font-medium">{item.label}</span>
+                  <span className="font-medium group-hover:text-white transition-colors duration-300">{item.label}</span>
                 </button>
               </motion.li>
             ))}

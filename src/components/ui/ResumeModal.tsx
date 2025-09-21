@@ -37,6 +37,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
   };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
+    // Close modal when clicking on the backdrop (the dark overlay)
     if (e.target === e.currentTarget) {
       onClose();
     }
@@ -65,21 +66,20 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={handleBackdropClick}
         >
-          <div className="flex items-center justify-center min-h-screen p-4">
-            <motion.div
-              className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden relative"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              onClick={handleModalClick}
-            >
+          <motion.div
+            className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden relative"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={handleModalClick}
+          >
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b bg-gray-50">
                 <h2 className="text-xl font-semibold text-gray-800">Resume - Kartikey Patel</h2>
@@ -138,7 +138,6 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
                 </div>
               </div>
             </motion.div>
-          </div>
         </motion.div>
       )}
     </AnimatePresence>
