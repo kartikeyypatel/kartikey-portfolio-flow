@@ -9,6 +9,7 @@ const SkillsSection = React.lazy(() => import('../components/SkillsSection'));
 const ProjectsSection = React.lazy(() => import('../components/ProjectsSection'));
 const EducationSection = React.lazy(() => import('../components/EducationSection'));
 const ExperienceSection = React.lazy(() => import('../components/ExperienceSection'));
+const AchievementsSection = React.lazy(() => import('../components/AchievementsSection'));
 const ContactSection = React.lazy(() => import('../components/ContactSection'));
 
 const SectionLoader = () => (
@@ -48,6 +49,9 @@ const Index = () => {
         </Suspense>
         <Suspense fallback={<SectionLoader />}>
           <ExperienceSection />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <AchievementsSection />
         </Suspense>
         <Suspense fallback={<SectionLoader />}>
           <ContactSection />

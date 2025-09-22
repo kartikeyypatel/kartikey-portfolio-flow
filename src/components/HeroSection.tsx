@@ -9,6 +9,8 @@ import { TextPressure } from './ui/interactive-text-pressure';
 import { Spotlight } from './ui/spotlight';
 import { HeroResumeButton } from './ui/HeroResumeButton';
 import { ResumeModal } from './ui/ResumeModal';
+import { LinkPreview } from './ui/link-preview';
+import { PlaceholdersAndVanishInput } from './ui/placeholders-and-vanish-input';
 
 const SplineScene = React.lazy(() => 
   import('./ui/spline').then(module => ({ default: module.SplineScene }))
@@ -16,6 +18,23 @@ const SplineScene = React.lazy(() =>
 
 const HeroSection = () => {
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
+
+  const chatPlaceholders = [
+    "Ask about my experience with React and TypeScript...",
+    "What projects has Kartikey worked on recently?",
+    "Tell me about his technical skills and expertise...",
+    "How can I get in touch with Kartikey?",
+    "What makes him a great software engineer?",
+  ];
+
+  const handleChatChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("Chat input:", e.target.value);
+  };
+
+  const handleChatSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Chat submitted - RAG implementation coming soon!");
+  };
 
   const scrollToSkills = () => {
     const skillsSection = document.querySelector('#skills');
@@ -57,7 +76,7 @@ const HeroSection = () => {
             >
                {/* Animated Name with improved contrast */}
                <motion.div
-                 className="h-32 md:h-40 flex items-center justify-center lg:justify-start mb-2"
+                 className="h-32 md:h-40 flex items-center justify-center lg:justify-start mb-4"
                  initial={{ opacity: 0, y: 30 }}
                  animate={{ opacity: 1, y: 0 }}
                  transition={{ duration: 1, delay: 0.5 }}
@@ -71,7 +90,7 @@ const HeroSection = () => {
                  />
                </motion.div>
                
-               {/* Dynamic Job Titles - Closer to name with better hierarchy */}
+               {/* Dynamic Job Titles - Moved closer to name */}
                <motion.div
                  className="text-xl md:text-3xl text-portfolio-text mb-8 font-light"
                  initial={{ opacity: 0, y: 20 }}
@@ -81,19 +100,22 @@ const HeroSection = () => {
                  <AnimatedText texts={roles} className="h-10 md:h-14" />
                </motion.div>
 
-              {/* Professional Tagline */}
+              {/* Professional Tagline with Link Preview */}
               <motion.p
                 className="text-lg md:text-xl text-portfolio-text-muted mb-8 max-w-lg mx-auto lg:mx-0"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 1.0 }}
               >
-                Crafting intelligent web applications and building tomorrow's digital solutions
+                Passionate <LinkPreview url="https://github.com/kartikeyp2" className="font-semibold text-portfolio-cyan">full-stack engineer</LinkPreview> with expertise in{" "}
+                <LinkPreview url="https://react.dev" className="font-semibold text-portfolio-cyan">React</LinkPreview>,{" "}
+                <LinkPreview url="https://spring.io" className="font-semibold text-portfolio-cyan">Java Spring Boot</LinkPreview>, and{" "}
+                <LinkPreview url="https://aws.amazon.com" className="font-semibold text-portfolio-cyan">AWS</LinkPreview> - transforming ideas into scalable digital experiences
               </motion.p>
 
-               {/* CTA Buttons with proper hierarchy */}
+               {/* CTA Buttons with improved alignment */}
                <motion.div
-                 className="flex flex-col items-center justify-center lg:items-start gap-8"
+                 className="flex flex-col items-center justify-center lg:items-start gap-6"
                  initial={{ opacity: 0, y: 20 }}
                  animate={{ opacity: 1, y: 0 }}
                  transition={{ duration: 0.8, delay: 1.2 }}
@@ -109,11 +131,11 @@ const HeroSection = () => {
                    <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
                  </motion.button>
 
-                 {/* Secondary CTAs - Perfect alignment and consistent spacing */}
-                 <div className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start">
+                 {/* Secondary CTAs - Better spacing and alignment */}
+                 <div className="flex flex-row gap-4 items-center justify-center lg:justify-start">
                    <motion.button
                      onClick={() => setIsResumeModalOpen(true)}
-                     className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 h-12"
+                     className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 min-w-[120px]"
                      whileHover={{ scale: 1.05 }}
                      whileTap={{ scale: 0.95 }}
                    >
@@ -122,7 +144,7 @@ const HeroSection = () => {
                    
                    <motion.button
                      onClick={scrollToContact}
-                     className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-text-muted text-portfolio-text-muted hover:border-portfolio-cyan hover:text-portfolio-cyan px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 h-12"
+                     className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-text-muted text-portfolio-text-muted hover:border-portfolio-cyan hover:text-portfolio-cyan px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 min-w-[120px]"
                      whileHover={{ scale: 1.05 }}
                      whileTap={{ scale: 0.95 }}
                    >
@@ -133,7 +155,7 @@ const HeroSection = () => {
             </motion.div>
           </div>
 
-          {/* Right Column - Robot Animation */}
+          {/* Right Column - Robot Animation with Chat */}
           <div className="relative flex items-center justify-center lg:justify-end">
             <motion.div
               className="w-full h-[600px] lg:h-[700px] relative"
@@ -145,7 +167,7 @@ const HeroSection = () => {
                 className="-top-20 left-0 lg:left-10 lg:-top-10"
                 fill="white"
               />
-              <div className="w-full h-full">
+              <div className="w-full h-full relative">
                 <Suspense fallback={
                   <div className="w-full h-full bg-gradient-to-br from-portfolio-gray/20 to-portfolio-cyan/10 rounded-lg flex items-center justify-center">
                     <div className="text-center">
@@ -158,6 +180,25 @@ const HeroSection = () => {
                     scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
                   />
                 </Suspense>
+                
+                {/* Chat Input Overlay */}
+                <motion.div
+                  className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-full max-w-md px-4"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 1.6 }}
+                >
+                  <div className="mb-3 text-center">
+                    <p className="text-portfolio-text-muted text-sm font-medium">
+                      Ask me anything about my work & experience
+                    </p>
+                  </div>
+                  <PlaceholdersAndVanishInput
+                    placeholders={chatPlaceholders}
+                    onChange={handleChatChange}
+                    onSubmit={handleChatSubmit}
+                  />
+                </motion.div>
               </div>
             </motion.div>
           </div>
