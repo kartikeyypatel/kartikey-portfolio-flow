@@ -43,11 +43,11 @@ const ExperienceSection = () => {
     {
       id: '3',
       title: 'Software Engineer',
-      company: 'Parshwa Builders',
-      period: 'Jun. 2020 - Apr. 2021',
-      description: 'Engineered Python Flask APIs for a real estate application, deployed on AWS Lambda, reducing response times by 30%. Collaborated in an Agile environment to define 15+ technical deliverables for a real estate platform on AWS, accelerating project delivery by 15%.',
-      skills: ['Python', 'Flask', 'APIs', 'AWS Lambda'],
-      logo: '/lovable-uploads/426dc987-9df8-4652-862a-3892823ced4d.png'
+      company: 'Epsilon',
+      period: 'Apr 2020 - Apr 2021',
+      description: 'Upgraded user experience and cut page load times by 30% by developing scalable web applications using Java, Spring Boot, Angular, and RESTful APIs. Optimized data retrieval speed by 25% by designing efficient MySQL/Oracle database schemas. Deployed microservices with Docker and Kubernetes, increasing deployment efficiency by 20%. Orchestrated delivery of 4+ full-cycle projects at 98% on-time rate. Strengthened system capabilities to support 5,000+ daily active users by integrating payment, authentication, and marketing APIs. Lifted test coverage to 85% and cut production defects 15% through automated testing.',
+      skills: ['Java', 'Spring Boot', 'Angular', 'MySQL', 'Docker', 'Kubernetes', 'Microservices'],
+      logo: '/lovable-uploads/epsilon-logo.png'
     },
     {
       id: '4',
@@ -165,11 +165,11 @@ const ExperienceSection = () => {
 
                     {/* Company Logo */}
                     <div className="flex items-center justify-center lg:justify-end">
-                      <div className="w-24 h-24 rounded-lg overflow-hidden bg-portfolio-gray-lighter">
+                      <div className="w-24 h-24 rounded-lg overflow-hidden bg-portfolio-gray-lighter flex items-center justify-center p-2">
                         <img
                           src={experience.logo}
                           alt={`${experience.company} logo`}
-                          className="w-full h-full object-cover"
+                          className="max-w-full max-h-full object-contain"
                         />
                       </div>
                     </div>

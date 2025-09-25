@@ -11,6 +11,7 @@ import { HeroResumeButton } from './ui/HeroResumeButton';
 import { ResumeModal } from './ui/ResumeModal';
 import { LinkPreview } from './ui/link-preview';
 import { PlaceholdersAndVanishInput } from './ui/placeholders-and-vanish-input';
+import ChatModal from './ui/ChatModal';
 
 const SplineScene = React.lazy(() => 
   import('./ui/spline').then(module => ({ default: module.SplineScene }))
@@ -18,6 +19,7 @@ const SplineScene = React.lazy(() =>
 
 const HeroSection = () => {
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
+  const [isChatModalOpen, setIsChatModalOpen] = useState(false);
 
   const chatPlaceholders = [
     "Ask about my experience with React and TypeScript...",
@@ -33,7 +35,7 @@ const HeroSection = () => {
 
   const handleChatSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Chat submitted - RAG implementation coming soon!");
+    setIsChatModalOpen(true);
   };
 
   const scrollToSkills = () => {
@@ -90,15 +92,15 @@ const HeroSection = () => {
                  />
                </motion.div>
                
-               {/* Dynamic Job Titles - Moved closer to name */}
-               <motion.div
-                 className="text-xl md:text-3xl text-portfolio-text mb-8 font-light"
-                 initial={{ opacity: 0, y: 20 }}
-                 animate={{ opacity: 1, y: 0 }}
-                 transition={{ duration: 0.8, delay: 0.8 }}
-               >
-                 <AnimatedText texts={roles} className="h-10 md:h-14" />
-               </motion.div>
+                {/* Dynamic Job Titles - Moved closer to name */}
+                <motion.div
+                  className="text-xl md:text-3xl text-portfolio-text mb-6 font-light"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.8 }}
+                >
+                  <AnimatedText texts={roles} className="h-10 md:h-14" />
+                </motion.div>
 
               {/* Professional Tagline with Link Preview */}
               <motion.p
@@ -107,10 +109,10 @@ const HeroSection = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 1.0 }}
               >
-                Passionate <LinkPreview url="https://github.com/kartikeyp2" className="font-semibold text-portfolio-cyan">full-stack engineer</LinkPreview> with expertise in{" "}
+                Passionate <LinkPreview url="https://github.com/kartikeyp2" className="font-semibold text-portfolio-cyan">full-stack engineer</LinkPreview> crafting intelligent solutions with{" "}
                 <LinkPreview url="https://react.dev" className="font-semibold text-portfolio-cyan">React</LinkPreview>,{" "}
-                <LinkPreview url="https://spring.io" className="font-semibold text-portfolio-cyan">Java Spring Boot</LinkPreview>, and{" "}
-                <LinkPreview url="https://aws.amazon.com" className="font-semibold text-portfolio-cyan">AWS</LinkPreview> - transforming ideas into scalable digital experiences
+                <LinkPreview url="https://spring.io" className="font-semibold text-portfolio-cyan">Spring Boot</LinkPreview>, and{" "}
+                <LinkPreview url="https://aws.amazon.com" className="font-semibold text-portfolio-cyan">AWS</LinkPreview> - building tomorrow's digital innovations through scalable, intelligent web applications
               </motion.p>
 
                {/* CTA Buttons with improved alignment */}
@@ -131,26 +133,26 @@ const HeroSection = () => {
                    <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
                  </motion.button>
 
-                 {/* Secondary CTAs - Better spacing and alignment */}
-                 <div className="flex flex-row gap-4 items-center justify-center lg:justify-start">
-                   <motion.button
-                     onClick={() => setIsResumeModalOpen(true)}
-                     className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 min-w-[120px]"
-                     whileHover={{ scale: 1.05 }}
-                     whileTap={{ scale: 0.95 }}
-                   >
-                     Resume
-                   </motion.button>
-                   
-                   <motion.button
-                     onClick={scrollToContact}
-                     className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-text-muted text-portfolio-text-muted hover:border-portfolio-cyan hover:text-portfolio-cyan px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 min-w-[120px]"
-                     whileHover={{ scale: 1.05 }}
-                     whileTap={{ scale: 0.95 }}
-                   >
-                     Let's Connect
-                   </motion.button>
-                 </div>
+                  {/* Secondary CTAs - Better spacing and alignment */}
+                  <div className="flex flex-row gap-3 items-center justify-center lg:justify-start max-w-[240px]">
+                    <motion.button
+                      onClick={() => setIsResumeModalOpen(true)}
+                      className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 flex-1"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Resume
+                    </motion.button>
+                    
+                    <motion.button
+                      onClick={scrollToContact}
+                      className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-text-muted text-portfolio-text-muted hover:border-portfolio-cyan hover:text-portfolio-cyan px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 flex-1"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Connect
+                    </motion.button>
+                  </div>
                </motion.div>
             </motion.div>
           </div>
@@ -181,9 +183,9 @@ const HeroSection = () => {
                   />
                 </Suspense>
                 
-                {/* Chat Input Overlay */}
+                {/* Chat Input Overlay - Centered with robot */}
                 <motion.div
-                  className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-full max-w-md px-4"
+                  className="absolute bottom-16 left-1/2 transform -translate-x-1/2 w-full max-w-lg px-4"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 1.6 }}
@@ -209,6 +211,12 @@ const HeroSection = () => {
       <ResumeModal 
         isOpen={isResumeModalOpen}
         onClose={() => setIsResumeModalOpen(false)}
+      />
+
+      {/* Chat Modal */}
+      <ChatModal 
+        isOpen={isChatModalOpen}
+        onClose={() => setIsChatModalOpen(false)}
       />
 
       {/* Scroll indicator */}

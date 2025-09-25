@@ -13,7 +13,7 @@ const EducationSection = () => {
           <img
             src="/lovable-uploads/2497ec71-a338-4440-8c70-d9e85d5df394.png"
             alt="New Jersey Institute of Technology"
-            className="rounded-lg mb-4 object-cover w-full h-48"
+            className="rounded-lg mb-4 w-full h-48 object-contain bg-white p-4"
           />
           <h3 className="text-xl md:text-2xl font-bold text-portfolio-text mb-2">
             New Jersey Institute of Technology
@@ -32,7 +32,7 @@ const EducationSection = () => {
           <img
             src="/lovable-uploads/d22d6c8b-e05e-4741-82ac-223f409656f8.png"
             alt="University of Mumbai"
-            className="rounded-lg mb-4 object-cover w-full h-48"
+            className="rounded-lg mb-4 w-full h-48 object-contain bg-white p-4"
           />
           <h3 className="text-xl md:text-2xl font-bold text-portfolio-text mb-2">
             University of Mumbai
