@@ -35,7 +35,14 @@ const HeroSection = () => {
 
   const handleChatSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const inputEl = (e.target as HTMLFormElement).querySelector('input[type="text"]') as HTMLInputElement | null;
+    const initial = inputEl?.value?.trim();
     setIsChatModalOpen(true);
+    // Defer setting initial message via state update after modal opens
+    if (initial) {
+      // Store temporarily on window to pass to modal instance
+      (window as any).__initialHeroChat = initial;
+    }
   };
 
   const scrollToSkills = () => {
@@ -102,17 +109,38 @@ const HeroSection = () => {
                   <AnimatedText texts={roles} className="h-10 md:h-14" />
                 </motion.div>
 
-              {/* Professional Tagline with Link Preview */}
+              {/* Professional Tagline with personal callout + curved arrow to name */}
               <motion.p
                 className="text-lg md:text-xl text-portfolio-text-muted mb-8 max-w-lg mx-auto lg:mx-0"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 1.0 }}
               >
-                Passionate <LinkPreview url="https://github.com/kartikeyp2" className="font-semibold text-portfolio-cyan">full-stack engineer</LinkPreview> crafting intelligent solutions with{" "}
+                <span className="relative inline-block">
+                <LinkPreview 
+                  url="https://github.com/kartikeyp2" 
+                  className="font-semibold text-portfolio-cyan"
+                  isStatic
+                  imageSrc="/lovable-uploads/kartikey-profile.jpg"
+                >
+                    This guy
+                  </LinkPreview>
+                  , is a
+                  {/* Curved arrow pointing up-left toward the big name */}
+                  <svg
+                    className="pointer-events-none absolute -top-16 left-0 md:-top-20 md:left-0 w-20 h-20 text-portfolio-cyan"
+                    viewBox="0 0 100 100"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M15 85 C 25 70, 35 50, 45 30, 55 20, 70 15" stroke="currentColor" strokeWidth="4" strokeLinecap="round" fill="none"/>
+                    <path d="M70 15 L65 10 L75 10 Z" fill="currentColor"/>
+                  </svg>
+                </span>{' '}
+                passionate <span className="font-semibold text-portfolio-cyan">full-stack engineer</span> crafting intelligent solutions with{" "}
                 <LinkPreview url="https://react.dev" className="font-semibold text-portfolio-cyan">React</LinkPreview>,{" "}
                 <LinkPreview url="https://spring.io" className="font-semibold text-portfolio-cyan">Spring Boot</LinkPreview>, and{" "}
-                <LinkPreview url="https://aws.amazon.com" className="font-semibold text-portfolio-cyan">AWS</LinkPreview> - building tomorrow's digital innovations through scalable, intelligent web applications
+                <LinkPreview url="https://aws.amazon.com" className="font-semibold text-portfolio-cyan">AWS</LinkPreview> — building tomorrow's digital innovations through scalable, intelligent web applications.
               </motion.p>
 
                {/* CTA Buttons with improved alignment */}
@@ -160,7 +188,7 @@ const HeroSection = () => {
           {/* Right Column - Robot Animation with Chat */}
           <div className="relative flex items-center justify-center lg:justify-end">
             <motion.div
-              className="w-full h-[600px] lg:h-[700px] relative"
+              className="w-full relative"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -169,37 +197,46 @@ const HeroSection = () => {
                 className="-top-20 left-0 lg:left-10 lg:-top-10"
                 fill="white"
               />
-              <div className="w-full h-full relative">
-                <Suspense fallback={
-                  <div className="w-full h-full bg-gradient-to-br from-portfolio-gray/20 to-portfolio-cyan/10 rounded-lg flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-16 h-16 border-4 border-portfolio-cyan/30 border-t-portfolio-cyan rounded-full animate-spin mx-auto mb-4"></div>
-                      <p className="text-portfolio-text-muted text-sm">Loading 3D Scene...</p>
+              {/* Constrained wrapper so input matches robot width */}
+              <div className="relative mx-auto lg:ml-auto lg:mr-8 w-full max-w-[560px] px-4">
+                {/* Robot Canvas */}
+                <div className="w-full h-[520px] lg:h-[640px] relative">
+                  <Suspense fallback={
+                    <div className="w-full h-full bg-gradient-to-br from-portfolio-gray/20 to-portfolio-cyan/10 rounded-lg flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="w-16 h-16 border-4 border-portfolio-cyan/30 border-t-portfolio-cyan rounded-full animate-spin mx-auto mb-4"></div>
+                        <p className="text-portfolio-text-muted text-sm">Loading 3D Scene...</p>
+                      </div>
                     </div>
-                  </div>
-                }>
-                  <SplineScene 
-                    scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                  />
-                </Suspense>
-                
-                {/* Chat Input Overlay - Centered with robot */}
+                  }>
+                    <SplineScene 
+                      scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                    />
+                  </Suspense>
+                </div>
+
+                {/* Chat Input overlaid on robot */}
                 <motion.div
-                  className="absolute bottom-16 left-1/2 transform -translate-x-1/2 w-full max-w-lg px-4"
-                  initial={{ opacity: 0, y: 30 }}
+                  className="absolute inset-x-0 bottom-6 w-full px-4"
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 1.6 }}
+                  transition={{ duration: 0.6, delay: 1.0 }}
                 >
-                  <div className="mb-3 text-center">
+                  <div className="mb-2 text-center">
                     <p className="text-portfolio-text-muted text-sm font-medium">
                       Ask me anything about my work & experience
                     </p>
                   </div>
-                  <PlaceholdersAndVanishInput
-                    placeholders={chatPlaceholders}
-                    onChange={handleChatChange}
-                    onSubmit={handleChatSubmit}
-                  />
+                  <div className="relative mx-auto max-w-[520px]">
+                    <div className="absolute inset-0 bg-portfolio-black/20 backdrop-blur-sm rounded-lg"></div>
+                    <div className="relative z-10">
+                      <PlaceholdersAndVanishInput
+                        placeholders={chatPlaceholders}
+                        onChange={handleChatChange}
+                        onSubmit={handleChatSubmit}
+                      />
+                    </div>
+                  </div>
                 </motion.div>
               </div>
             </motion.div>
@@ -217,6 +254,7 @@ const HeroSection = () => {
       <ChatModal 
         isOpen={isChatModalOpen}
         onClose={() => setIsChatModalOpen(false)}
+        initialMessage={(window as any)?.__initialHeroChat}
       />
 
       {/* Scroll indicator */}

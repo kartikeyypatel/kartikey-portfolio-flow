@@ -341,16 +341,9 @@ const ProjectsSection = () => {
   };
 
   const getProjectSizeClass = (size?: 'normal' | 'large' | 'wide' | 'tall') => {
-    switch (size) {
-      case 'large':
-        return 'md:col-span-2 md:row-span-2 h-[520px]';
-      case 'wide':
-        return 'md:col-span-2 h-[280px]';
-      case 'tall':
-        return 'md:row-span-2 h-[520px]';
-      default:
-        return 'col-span-1 row-span-1 h-[280px]';
-    }
+    // For consistent grid layout, all cards will be the same size
+    // This ensures even spacing and no gaps
+    return 'col-span-1 row-span-1 h-[280px]';
   };
 
   const formatCategory = (category: string | string[]) => {
@@ -403,7 +396,7 @@ const ProjectsSection = () => {
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[280px]">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {currentProjects.map((project, index) => (
                 <motion.div
                   key={project.id}

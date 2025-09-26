@@ -45,7 +45,7 @@ const ExperienceSection = () => {
       title: 'Software Engineer',
       company: 'Epsilon',
       period: 'Apr 2020 - Apr 2021',
-      description: 'Upgraded user experience and cut page load times by 30% by developing scalable web applications using Java, Spring Boot, Angular, and RESTful APIs. Optimized data retrieval speed by 25% by designing efficient MySQL/Oracle database schemas. Deployed microservices with Docker and Kubernetes, increasing deployment efficiency by 20%. Orchestrated delivery of 4+ full-cycle projects at 98% on-time rate. Strengthened system capabilities to support 5,000+ daily active users by integrating payment, authentication, and marketing APIs. Lifted test coverage to 85% and cut production defects 15% through automated testing.',
+      description: 'Built scalable Java/Spring Boot and Angular services, improving UX and cutting page load times by 30%. Optimized MySQL/Oracle schemas for 25% faster queries and containerized microservices with Docker/Kubernetes for 20% quicker deployments. Delivered 4+ projects on time, integrated key payment/auth flows for 5k+ DAUs, and raised test coverage to 85% while reducing defects 15%.',
       skills: ['Java', 'Spring Boot', 'Angular', 'MySQL', 'Docker', 'Kubernetes', 'Microservices'],
       logo: '/lovable-uploads/epsilon-logo.png'
     },

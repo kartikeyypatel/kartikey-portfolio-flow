@@ -11,6 +11,7 @@ import { ChatMessageList } from '@/components/ui/chat-message-list';
 interface ChatModalProps {
   isOpen: boolean;
   onClose: () => void;
+  initialMessage?: string;
 }
 
 interface Message {
@@ -19,44 +20,86 @@ interface Message {
   sender: 'user' | 'ai';
 }
 
-const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
+const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      content: "Hello! I'm Kartikey's AI assistant. I can answer questions about his experience, skills, projects, and background. What would you like to know?",
+      content: "Hi! I'm Kartikey's AI assistant. I can tell you about my experience as a Full Stack Engineer, my projects (like the Consumer Safety App and Document Intelligence Assistant), my technical skills in React, Spring Boot, and AWS, or my education at NJIT. What would you like to know?",
       sender: "ai",
     },
   ]);
 
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [hasSentInitial, setHasSentInitial] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  // Core message processing used by both form submit and Enter key handling
+  const processInput = async (userInput: string) => {
+    if (!userInput.trim()) return;
 
     const newMessage: Message = {
       id: messages.length + 1,
-      content: input,
+      content: userInput,
       sender: "user",
     };
 
     setMessages((prev) => [...prev, newMessage]);
-    setInput("");
     setIsLoading(true);
 
-    // Simulate AI response (this would be replaced with actual RAG implementation)
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/simple-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          message: userInput,
+          conversationHistory: messages.slice(-6), // Last 3 exchanges
+          options: {
+            topK: 5,
+            similarityThreshold: 0.7,
+            maxContextTokens: 2000,
+            includeFollowUps: true
+          }
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to get response from AI');
+      const data = await response.json();
+
       const aiResponse: Message = {
-        id: messages.length + 2,
-        content: "Thanks for your question! This is a placeholder response. The actual RAG-based chatbot will be implemented to provide detailed answers about Kartikey's experience, skills, and projects based on his resume and portfolio data.",
+        id: newMessage.id + 1,
+        content: data.response,
         sender: "ai",
       };
 
       setMessages((prev) => [...prev, aiResponse]);
+    } catch (error) {
+      console.error('Error calling chat API:', error);
+      const errorResponse: Message = {
+        id: newMessage.id + 1,
+        content: "I'm sorry, I'm having trouble processing your question right now. Please try again in a moment.",
+        sender: "ai",
+      };
+      setMessages((prev) => [...prev, errorResponse]);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const userInput = input;
+    setInput("");
+    await processInput(userInput);
+  };
+
+  // Send initial message from hero input when modal opens
+  React.useEffect(() => {
+    if (isOpen && initialMessage && !hasSentInitial) {
+      setHasSentInitial(true);
+      setInput("");
+      processInput(initialMessage);
+    }
+  }, [isOpen, initialMessage, hasSentInitial]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -147,6 +190,16 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
                 <ChatInput
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      const text = input.trim();
+                      if (text && !isLoading) {
+                        setInput("");
+                        processInput(text);
+                      }
+                    }
+                  }}
                   placeholder="Ask about Kartikey's experience, skills, projects..."
                   className="min-h-12 resize-none rounded-lg bg-portfolio-gray border-0 p-3 shadow-none focus-visible:ring-0"
                 />
