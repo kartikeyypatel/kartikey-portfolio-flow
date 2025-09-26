@@ -1,13 +1,11 @@
-// Simple chat API that reads from documents folder
+// Vercel serverless function for RAG chatbot
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import fs from 'fs';
 import path from 'path';
 
 // Initialize Gemini AI client
-console.log('[Simple Chat] Initializing Gemini AI...');
-console.log('[Simple Chat] API Key exists:', !!process.env.GEMINI_API_KEY);
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -35,38 +33,39 @@ export default async function handler(req, res) {
   }
 
   try {
-    console.log(`[Simple Chat] Processing message: "${message}"`);
+    console.log(`[Vercel Chat] Processing message: "${message}"`);
     
     // Read documents from the documents folder
     let relevantContext = '';
     try {
-      const documentsDir = path.resolve(process.cwd(), 'documents');
-      console.log(`[Simple Chat] Reading documents from: ${documentsDir}`);
+      // In Vercel, we need to use the correct path for serverless functions
+      const documentsDir = path.join(process.cwd(), 'documents');
+      console.log(`[Vercel Chat] Reading documents from: ${documentsDir}`);
       
       if (fs.existsSync(documentsDir)) {
         const files = fs.readdirSync(documentsDir);
-        console.log(`[Simple Chat] Found ${files.length} files in documents folder`);
+        console.log(`[Vercel Chat] Found ${files.length} files in documents folder`);
         
         for (const file of files) {
           const filePath = path.join(documentsDir, file);
           const stat = fs.statSync(filePath);
           
           if (stat.isFile() && (file.endsWith('.txt') || file.endsWith('.md'))) {
-            console.log(`[Simple Chat] Reading file: ${file}`);
+            console.log(`[Vercel Chat] Reading file: ${file}`);
             const content = fs.readFileSync(filePath, 'utf-8');
             relevantContext += `\n\n--- ${file} ---\n${content}`;
           }
         }
       } else {
-        console.log('[Simple Chat] Documents folder not found, using fallback');
+        console.log('[Vercel Chat] Documents folder not found, using fallback');
         relevantContext = 'Kartikey Patel - Software Engineer with experience in React, Spring Boot, and AWS.';
       }
     } catch (error) {
-      console.error('[Simple Chat] Error reading documents:', error);
+      console.error('[Vercel Chat] Error reading documents:', error);
       relevantContext = 'Kartikey Patel - Software Engineer with experience in React, Spring Boot, and AWS.';
     }
     
-    console.log(`[Simple Chat] Context length: ${relevantContext.length} characters`);
+    console.log(`[Vercel Chat] Context length: ${relevantContext.length} characters`);
     
     // Create the prompt for Gemini
     const prompt = `You are Kartikey Patel's AI assistant. Use the following information to answer questions accurately and professionally.
@@ -103,14 +102,14 @@ Answer:`;
       metadata: {
         originalQuestion: message,
         contextLength: relevantContext.length,
-        model: 'gemini-1.5-flash',
+        model: 'gemini-2.5-flash',
         timestamp: new Date().toISOString()
       },
       timestamp: new Date().toISOString()
     });
 
   } catch (error) {
-    console.error('[Simple Chat] Error details:', {
+    console.error('[Vercel Chat] Error details:', {
       message: error.message,
       stack: error.stack,
       name: error.name,

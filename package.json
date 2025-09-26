@@ -9,7 +9,9 @@
     "build:dev": "vite build --mode development",
     "rag:build": "node api/simple-build-index.js",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "vercel-build": "vite build",
+    "build:vercel": "npm run build"
   },
   "dependencies": {
     "@google/generative-ai": "^0.2.1",
