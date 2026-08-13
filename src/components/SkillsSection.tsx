@@ -50,16 +50,6 @@ const SkillsSection = () => {
 
   return (
     <section id="skills" className="section-padding relative overflow-hidden">
-      {/* Background */}
-      <div 
-        className="absolute inset-0 bg-skills-pattern bg-cover bg-center bg-fixed"
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80')"
-        }}
-      >
-        <div className="absolute inset-0 bg-portfolio-black/90"></div>
-      </div>
-
       <div className="container-custom relative z-10" ref={ref}>
         <motion.div
           className="text-center mb-16"

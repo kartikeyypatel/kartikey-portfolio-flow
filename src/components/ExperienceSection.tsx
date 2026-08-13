@@ -80,7 +80,7 @@ const ExperienceSection = () => {
   return (
     <motion.section
       id="experience"
-      className="section-padding bg-portfolio-black relative"
+      className="section-padding relative"
       ref={ref}
     >
       <div className="container-custom relative z-10">

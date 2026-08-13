@@ -393,7 +393,7 @@ const ProjectsSection = () => {
     <>
       <motion.section
         id="projects"
-        className="section-padding bg-portfolio-black relative"
+        className="section-padding relative"
         ref={ref}
       >
         <div className="container-custom relative z-10">

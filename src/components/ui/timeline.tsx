@@ -34,7 +34,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
 
   return (
     <motion.div
-      className="w-full bg-portfolio-black font-sans relative pt-20 lg:pt-28"
+      className="w-full font-sans relative pt-20 lg:pt-28"
       ref={containerRef}
     >
       <div className="container-custom text-center mb-16 relative z-10">

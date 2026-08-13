@@ -84,7 +84,7 @@ const AchievementsSection = () => {
   ];
 
   return (
-    <section id="achievements" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-portfolio-gray">
+    <section id="achievements" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Grid Motion */}
       <div className="absolute inset-0 opacity-30">
         <GridMotion 

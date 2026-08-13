@@ -47,7 +47,7 @@ const EducationSection = () => {
   ];
 
   return (
-    <section id="education" className="section-padding bg-portfolio-black">
+    <section id="education" className="section-padding">
       <Timeline data={data} />
     </section>
   );

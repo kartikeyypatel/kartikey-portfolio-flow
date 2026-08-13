@@ -2,6 +2,7 @@
 
 import React, { Suspense, useEffect } from 'react';
 import Header from '../components/Header';
+import SiteBackground from '../components/ui/site-background';
 
 // Lazy load all the sections
 const HeroSection = React.lazy(() => import('../components/HeroSection'));
@@ -33,8 +34,9 @@ const Index = () => {
 
   return (
     <div className="relative bg-portfolio-black">
+      <SiteBackground />
       <Header />
-      <main>
+      <main className="relative z-10">
         <Suspense fallback={<SectionLoader />}>
           <HeroSection />
         </Suspense>

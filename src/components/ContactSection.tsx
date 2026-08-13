@@ -83,7 +83,7 @@ const ContactSection = () => {
     <motion.section
       id="contact"
       style={{ backgroundImage }}
-      className="section-padding bg-black relative overflow-hidden"
+      className="section-padding relative overflow-hidden"
       ref={ref}
     >
       <StarryCanvas />

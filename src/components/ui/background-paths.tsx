@@ -52,7 +52,7 @@ function FloatingPaths({ position }: { position: number }) {
 
 export function BackgroundPaths() {
     return (
-        <div className="absolute inset-0 w-full h-full overflow-hidden bg-portfolio-black text-portfolio-cyan">
+        <div className="absolute inset-0 w-full h-full overflow-hidden text-portfolio-cyan">
             <FloatingPaths position={1} />
             <FloatingPaths position={-1} />
             <div className="absolute inset-0 bg-gradient-to-t from-portfolio-black via-transparent to-portfolio-black/50"></div>
