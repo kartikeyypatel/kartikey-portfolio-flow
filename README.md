@@ -1,73 +1,69 @@
-# Welcome to your Lovable project
+# Kartikey Patel — Portfolio
 
-## Project info
+Personal portfolio site for Kartikey Patel, Software Engineer. Built as a single-page React app with an AI chatbot (RAG over resume/project data via Gemini) and an email-backed contact form.
 
-**URL**: https://lovable.dev/projects/311d0bf8-be7b-40f8-ab02-f262446f0c7d
+**Live site:** [kartikeypatel.com](https://kartikeypatel.com/)
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- Interactive hero, experience, projects, education, and achievements sections
+- AI chat assistant that answers questions about my background using retrieval-augmented generation
+- Contact form that sends email via Nodemailer
+- Resume viewer/downloader
+- Responsive design with Tailwind CSS and shadcn/ui components
 
-**Use Lovable**
+## Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/311d0bf8-be7b-40f8-ab02-f262446f0c7d) and start prompting.
+- [Vite](https://vitejs.dev/) + [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
+- [Framer Motion](https://www.framer.com/motion/) for animations
+- [Express](https://expressjs.com/) (local dev server) / [Vercel serverless functions](https://vercel.com/docs/functions) (production)
+- [Google Gemini](https://ai.google.dev/) for the chat assistant
+- [Nodemailer](https://nodemailer.com/) for the contact form
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting Started
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Requires Node.js and npm.
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Clone the repository
+git clone https://github.com/kartikeyypatel/kartikey-portfolio-flow.git
+cd kartikey-portfolio-flow
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Install dependencies
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the frontend dev server
 npm run dev
+
+# In a separate terminal, start the API server (contact form + chat)
+node server.js
 ```
 
-**Edit a file directly in GitHub**
+The app runs at `http://localhost:8080` by default.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Environment Variables
 
-**Use GitHub Codespaces**
+Create a `.env` file in the project root with:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```
+GEMINI_API_KEY=your_google_gemini_api_key
+EMAIL_USER=your_gmail_address
+EMAIL_PASS=your_gmail_app_password
+```
 
-## What technologies are used for this project?
+## Scripts
 
-This project is built with:
+- `npm run dev` — start the Vite dev server
+- `npm run build` — production build
+- `npm run preview` — preview the production build locally
+- `npm run lint` — run ESLint
+- `npm run rag:build` — rebuild the RAG document index used by the chat assistant
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Deployment
 
-## How can I deploy this project?
+Deployed on [Vercel](https://vercel.com/). Pushes to `main` build automatically via `vercel.json`, with `api/simple-chat.js` and `api/send-email.js` running as serverless functions.
 
-Simply open [Lovable](https://lovable.dev/projects/311d0bf8-be7b-40f8-ab02-f262446f0c7d) and click on Share -> Publish.
+## License
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+This is a personal portfolio project. Feel free to browse the code for reference, but please don't reuse the content/branding as your own.

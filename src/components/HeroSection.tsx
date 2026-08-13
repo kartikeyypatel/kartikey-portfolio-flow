@@ -172,7 +172,7 @@ const HeroSection = () => {
                   url="https://github.com/kartikeyp2"
                   className="font-semibold text-portfolio-cyan"
                   isStatic
-                  imageSrc="/lovable-uploads/kartikey-profile.jpg"
+                  imageSrc="/uploads/kartikey-profile.jpg"
                 >
                     This guy
                   </LinkPreview>

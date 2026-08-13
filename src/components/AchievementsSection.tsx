@@ -10,7 +10,7 @@ const AchievementsSection = () => {
       title: "Hackathon Winner",
       description: "Okada Leasing Agent AI - Intelligent leasing agent with FastAPI backend and RAG system for property listings",
       year: "2024",
-      image: "/lovable-uploads/hackathon-winner.jpg",
+      image: "/uploads/hackathon-winner.jpg",
       link: "https://github.com/kartikeyypatel/okada-leasing-agent"
     },
     {
