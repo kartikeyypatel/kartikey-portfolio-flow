@@ -100,6 +100,15 @@ const TextPressure: React.FC<TextPressureProps> = ({
 
         requestAnimationFrame(() => {
             if (!titleRef.current) return;
+
+            // Safety net: if the rendered text is wider than its container (e.g. a
+            // fallback font with different metrics than the intended one), shrink it
+            // so it never gets clipped by the container's overflow-hidden.
+            if (titleRef.current.scrollWidth > containerW) {
+                setFontSize((prev) => Math.max(prev * (containerW / titleRef.current!.scrollWidth), 1));
+                return;
+            }
+
             const textRect = titleRef.current.getBoundingClientRect();
 
             if (scale && textRect.height > 0) {
@@ -165,11 +174,13 @@ const TextPressure: React.FC<TextPressureProps> = ({
             className="relative w-full h-auto overflow-hidden bg-transparent"
         >
             <style>{`
+        ${fontUrl ? `
         @font-face {
           font-family: '${fontFamily}';
           src: url('${fontUrl}');
           font-style: normal;
         }
+        ` : ''}
         .stroke span {
           position: relative;
           color: ${textColor};

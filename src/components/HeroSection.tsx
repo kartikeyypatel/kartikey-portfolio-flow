@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { BackgroundPaths } from './ui/background-paths';
@@ -20,6 +20,56 @@ const SplineScene = React.lazy(() =>
 const HeroSection = () => {
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
+  const [initialChatMessage, setInitialChatMessage] = useState<string | undefined>(undefined);
+
+  const heroTextRef = useRef<HTMLDivElement>(null);
+  const thisGuyRef = useRef<HTMLSpanElement>(null);
+  const [nameArrowPath, setNameArrowPath] = useState<string | null>(null);
+
+  // Draw a connector from "This guy" up to the name by measuring their actual
+  // rendered positions, since the name's font size (and therefore the gap
+  // between the two) changes with viewport width and text-pressure font metrics.
+  useEffect(() => {
+    const computeArrow = () => {
+      const container = heroTextRef.current;
+      const guyEl = thisGuyRef.current;
+      const nameEl = container?.querySelector<HTMLElement>('.text-pressure-title');
+      if (!container || !guyEl || !nameEl) return;
+
+      const containerRect = container.getBoundingClientRect();
+      const nameRect = nameEl.getBoundingClientRect();
+      const guyRect = guyEl.getBoundingClientRect();
+
+      const startX = guyRect.left - containerRect.left + guyRect.width * 0.2;
+      const startY = guyRect.top - containerRect.top - 4;
+      const endX = nameRect.left - containerRect.left + Math.min(nameRect.width * 0.06, 24);
+      const endY = nameRect.bottom - containerRect.top + 6;
+
+      // Skip drawing if there isn't a clean vertical gap to arc through
+      // (e.g. wrapped text on very small screens pushing them close together).
+      if (startY - endY < 20) {
+        setNameArrowPath(null);
+        return;
+      }
+
+      const midY = (startY + endY) / 2;
+      // Bow the curve out to the left, scaled to the gap so it looks
+      // proportional whether the two elements are close or far apart.
+      const bow = Math.min(Math.max((startY - endY) * 0.3, 20), 50);
+      setNameArrowPath(
+        `M ${startX} ${startY} C ${startX - bow} ${midY}, ${endX - bow} ${midY}, ${endX} ${endY}`
+      );
+    };
+
+    computeArrow();
+    // Recompute after the entrance animations settle, since they animate position.
+    const settleTimeout = setTimeout(computeArrow, 1700);
+    window.addEventListener('resize', computeArrow);
+    return () => {
+      clearTimeout(settleTimeout);
+      window.removeEventListener('resize', computeArrow);
+    };
+  }, []);
 
   const chatPlaceholders = [
     "Ask about my experience with React and TypeScript...",
@@ -37,12 +87,8 @@ const HeroSection = () => {
     e.preventDefault();
     const inputEl = (e.target as HTMLFormElement).querySelector('input[type="text"]') as HTMLInputElement | null;
     const initial = inputEl?.value?.trim();
+    setInitialChatMessage(initial || undefined);
     setIsChatModalOpen(true);
-    // Defer setting initial message via state update after modal opens
-    if (initial) {
-      // Store temporarily on window to pass to modal instance
-      (window as any).__initialHeroChat = initial;
-    }
   };
 
   const scrollToSkills = () => {
@@ -79,6 +125,8 @@ const HeroSection = () => {
           {/* Left Column - Text Content */}
           <div className="relative z-10 flex flex-col justify-center space-y-8 text-center lg:text-left">
             <motion.div
+              ref={heroTextRef}
+              className="relative"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -92,6 +140,9 @@ const HeroSection = () => {
                >
                  <TextPressure
                    text="Kartikey Patel"
+                   fontFamily="Roboto Flex"
+                   fontUrl=""
+                   italic={false}
                    flex={true}
                    textColor="#FFFFFF"
                    className="drop-shadow-[0_0_20px_rgba(0,255,255,0.3)]"
@@ -116,9 +167,9 @@ const HeroSection = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 1.0 }}
               >
-                <span className="relative inline-block">
-                <LinkPreview 
-                  url="https://github.com/kartikeyp2" 
+                <span ref={thisGuyRef} className="inline-block">
+                <LinkPreview
+                  url="https://github.com/kartikeyp2"
                   className="font-semibold text-portfolio-cyan"
                   isStatic
                   imageSrc="/lovable-uploads/kartikey-profile.jpg"
@@ -126,16 +177,6 @@ const HeroSection = () => {
                     This guy
                   </LinkPreview>
                   , is a
-                  {/* Curved arrow pointing up-left toward the big name */}
-                  <svg
-                    className="pointer-events-none absolute -top-16 left-0 md:-top-20 md:left-0 w-20 h-20 text-portfolio-cyan"
-                    viewBox="0 0 100 100"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M15 85 C 25 70, 35 50, 45 30, 55 20, 70 15" stroke="currentColor" strokeWidth="4" strokeLinecap="round" fill="none"/>
-                    <path d="M70 15 L65 10 L75 10 Z" fill="currentColor"/>
-                  </svg>
                 </span>{' '}
                 passionate <span className="font-semibold text-portfolio-cyan">full-stack engineer</span> crafting intelligent solutions with{" "}
                 <LinkPreview url="https://react.dev" className="font-semibold text-portfolio-cyan">React</LinkPreview>,{" "}
@@ -182,6 +223,35 @@ const HeroSection = () => {
                     </motion.button>
                   </div>
                </motion.div>
+
+               {/* Curved connector from "This guy" up to the name, measured to fit whatever gap the current layout/viewport produces */}
+               {nameArrowPath && (
+                 <svg
+                   className="pointer-events-none absolute inset-0 w-full h-full text-portfolio-cyan"
+                   style={{ overflow: 'visible' }}
+                 >
+                   <defs>
+                     <marker
+                       id="hero-name-arrowhead"
+                       markerWidth="8"
+                       markerHeight="8"
+                       refX="4"
+                       refY="4"
+                       orient="auto-start-reverse"
+                     >
+                       <path d="M0,0 L8,4 L0,8 Z" fill="currentColor" />
+                     </marker>
+                   </defs>
+                   <path
+                     d={nameArrowPath}
+                     stroke="currentColor"
+                     strokeWidth="2.5"
+                     strokeLinecap="round"
+                     fill="none"
+                     markerEnd="url(#hero-name-arrowhead)"
+                   />
+                 </svg>
+               )}
             </motion.div>
           </div>
 
@@ -251,10 +321,13 @@ const HeroSection = () => {
       />
 
       {/* Chat Modal */}
-      <ChatModal 
+      <ChatModal
         isOpen={isChatModalOpen}
-        onClose={() => setIsChatModalOpen(false)}
-        initialMessage={(window as any)?.__initialHeroChat}
+        onClose={() => {
+          setIsChatModalOpen(false);
+          setInitialChatMessage(undefined);
+        }}
+        initialMessage={initialChatMessage}
       />
 
       {/* Scroll indicator */}

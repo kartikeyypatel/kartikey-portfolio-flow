@@ -33,7 +33,10 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
   };
 
   const handleDownload = () => {
-    window.open('https://drive.google.com/file/d/1iDxnX1RcRGaX9_MRDuNrx-jcC-S4n9_U/view?usp=drive_link', '_blank');
+    const link = document.createElement('a');
+    link.href = '/Kartikey-Patel-Resume.pdf';
+    link.download = 'Kartikey-Patel-Resume.pdf';
+    link.click();
   };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -129,7 +132,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
                   style={{ transform: `scale(${zoom})`, transformOrigin: 'top center' }}
                 >
                   <iframe
-                    src="https://drive.google.com/file/d/1iDxnX1RcRGaX9_MRDuNrx-jcC-S4n9_U/preview"
+                    src="/Kartikey-Patel-Resume.pdf"
                     className="w-full h-full border-0"
                     title="Resume - Kartikey Patel"
                     onWheel={(e) => e.stopPropagation()}

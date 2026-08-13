@@ -50,19 +50,28 @@ app.post('/api/send-email', async (req, res) => {
     },
   });
 
+  const escapeHtml = (str) =>
+    String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
   const mailOptions = {
-    from: `"${name}" <${email}>`,
+    from: `"${name}" <${process.env.EMAIL_USER}>`,
+    replyTo: email,
     to: process.env.EMAIL_USER,
     subject: `New message from ${name}: ${subject}`,
     text: `You have received a new message from your portfolio contact form.\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
     html: `<p>You have received a new message from your portfolio contact form.</p>
            <h3>Contact Details</h3>
            <ul>
-             <li><strong>Name:</strong> ${name}</li>
-             <li><strong>Email:</strong> ${email}</li>
+             <li><strong>Name:</strong> ${escapeHtml(name)}</li>
+             <li><strong>Email:</strong> ${escapeHtml(email)}</li>
            </ul>
            <h3>Message</h3>
-           <p>${message}</p>`,
+           <p>${escapeHtml(message)}</p>`,
   };
 
   try {
@@ -115,13 +124,18 @@ app.post('/api/simple-chat', async (req, res) => {
     }
     
     console.log(`[Server] Context length: ${relevantContext.length} characters`);
-    
+
+    // Format prior turns so the model has conversational memory
+    const historyText = conversationHistory
+      .map((turn) => `${turn.sender === 'user' ? 'User' : 'Assistant'}: ${turn.content}`)
+      .join('\n');
+
     // Create the prompt for Gemini
     const prompt = `You are Kartikey Patel's AI assistant. Use the following information to answer questions accurately and professionally.
 
 Context from documents:
 ${relevantContext}
-
+${historyText ? `\nConversation so far:\n${historyText}\n` : ''}
 Guidelines:
 - Always speak in first person as Kartikey
 - Be specific about technologies, projects, and achievements mentioned in the context
@@ -130,6 +144,7 @@ Guidelines:
 - Highlight key achievements and technical skills
 - Be enthusiastic about technology and problem-solving
 - Reference specific projects, technologies, or metrics when relevant
+- Use the conversation so far to keep continuity with earlier questions and answers
 
 User Question: ${message}
 

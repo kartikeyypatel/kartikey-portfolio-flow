@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, FormEvent } from 'react';
+import React, { useState, useRef, FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Bot, User, CornerDownLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -32,13 +32,14 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [hasSentInitial, setHasSentInitial] = useState(false);
+  const nextMessageId = useRef(2);
 
   // Core message processing used by both form submit and Enter key handling
   const processInput = async (userInput: string) => {
     if (!userInput.trim()) return;
 
     const newMessage: Message = {
-      id: messages.length + 1,
+      id: nextMessageId.current++,
       content: userInput,
       sender: "user",
     };
@@ -66,7 +67,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
       const data = await response.json();
 
       const aiResponse: Message = {
-        id: newMessage.id + 1,
+        id: nextMessageId.current++,
         content: data.response,
         sender: "ai",
       };
@@ -75,7 +76,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
     } catch (error) {
       console.error('Error calling chat API:', error);
       const errorResponse: Message = {
-        id: newMessage.id + 1,
+        id: nextMessageId.current++,
         content: "I'm sorry, I'm having trouble processing your question right now. Please try again in a moment.",
         sender: "ai",
       };
@@ -100,6 +101,13 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
       processInput(initialMessage);
     }
   }, [isOpen, initialMessage, hasSentInitial]);
+
+  // Allow the next hero-input message to be sent once the modal is closed
+  React.useEffect(() => {
+    if (!isOpen) {
+      setHasSentInitial(false);
+    }
+  }, [isOpen]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {

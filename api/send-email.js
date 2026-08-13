@@ -2,7 +2,6 @@ import nodemailer from 'nodemailer';
 
 export default async function handler(req, res) {
   // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader(
@@ -35,6 +34,14 @@ export default async function handler(req, res) {
     },
   });
 
+  const escapeHtml = (str) =>
+    String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
   const mailOptions = {
     from: `"${name}" <${process.env.EMAIL_USER}>`,
     replyTo: email,
@@ -44,11 +51,11 @@ export default async function handler(req, res) {
     html: `<p>You have received a new message from your portfolio contact form.</p>
            <h3>Contact Details</h3>
            <ul>
-             <li><strong>Name:</strong> ${name}</li>
-             <li><strong>Email:</strong> ${email}</li>
+             <li><strong>Name:</strong> ${escapeHtml(name)}</li>
+             <li><strong>Email:</strong> ${escapeHtml(email)}</li>
            </ul>
            <h3>Message</h3>
-           <p>${message}</p>`,
+           <p>${escapeHtml(message)}</p>`,
   };
 
   try {

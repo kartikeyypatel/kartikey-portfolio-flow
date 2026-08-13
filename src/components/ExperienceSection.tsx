@@ -24,33 +24,42 @@ const ExperienceSection = () => {
   const experiences: Experience[] = [
     {
       id: '1',
-      title: 'Information Technology Intern',
-      company: 'PSE&G',
-      period: 'May 2024 - Aug. 2024',
-      description: 'Executed cybersecurity strategies by performing over 15 risk and vulnerability assessments across AWS, Azure, and GCP environments, ensuring alignment with NERC CIP, GDPR, and HIPAA compliance standards. Performed 100+ security scans with Veracode and Dome9, cutting vulnerabilities by 25%. Integrated automated security scans into CI/CD pipelines using Jenkins, identifying and mitigating over 300 vulnerabilities. Contributed to developing an internal portal using React, TypeScript, and Node.js.',
-      skills: ['Cybersecurity', 'AWS', 'Veracode', 'Dome9', 'CI/CD', 'Jenkins', 'React', 'Node.js'],
-      logo: '/lovable-uploads/f4e6c158-e728-46fd-88f4-7f764885e7b7.png'
+      title: 'Data Analyst',
+      company: 'Harlem Children\'s Zone',
+      period: 'Jan 2026 - Present',
+      description: 'Architected high-volume data pipelines using Node.js and Azure Data Fabric, cutting event processing latency by 40% while improving cross-functional team collaboration. Designed scalable frontend frameworks with React and Next.js, elevating UI performance metrics by 35% and enabling real-time dashboard analytics for senior stakeholders. Mentored junior engineering teams, raising technical standards and boosting throughput by 30%. Built reliable asynchronous workflows with BullMQ, sustaining 100% uptime for mission-critical processes, and optimized NoSQL queries for a 25% increase in retrieval speeds.',
+      skills: ['Node.js', 'Azure Data Fabric', 'React', 'Next.js', 'BullMQ', 'NoSQL'],
+      logo: '/lovable-uploads/harlem-childrens-zone-logo.svg'
     },
     {
       id: '2',
       title: 'Software Engineer',
-      company: 'TCS',
-      period: 'May 2021 - May 2023',
-      description: 'Automated user data monitoring with SQL, reducing manual interventions by 80% for 205M+ users. Built and maintained 150+ Java RESTful APIs for call center dashboards, reducing troubleshooting times. Managed 10 TB+ of business reports using Tableau. Achieved 95% automation of server monitoring with Unix Shell scripts.',
-      skills: ['SQL', 'Java', 'RESTful APIs', 'Tableau', 'Unix Shell Scripting'],
-      logo: '/lovable-uploads/0a120f1b-970b-4375-9a4a-a1ee89b1e56c.png'
+      company: 'Capital One',
+      period: 'Jul 2025 - Jan 2026',
+      description: 'Engineered high-performance backend microservices using Node.js and NestJS, scaling distributed platforms to support over 2M client transactions daily. Orchestrated resilient, event-driven CI/CD pipelines deploying to Azure App Services, cutting deployment times by 50%. Built server-side rendering components and state management patterns that reduced frontend latency by 40%, and integrated scalable REST APIs to boost application throughput by 35%. Resolved production incidents under pressure, sustaining 99% reliability.',
+      skills: ['Node.js', 'NestJS', 'Azure App Services', 'CI/CD', 'REST APIs'],
+      logo: '/lovable-uploads/capital-one-logo.svg'
     },
     {
       id: '3',
-      title: 'Software Engineer',
-      company: 'Epsilon',
-      period: 'Apr 2020 - Apr 2021',
-      description: 'Built scalable Java/Spring Boot and Angular services, improving UX and cutting page load times by 30%. Optimized MySQL/Oracle schemas for 25% faster queries and containerized microservices with Docker/Kubernetes for 20% quicker deployments. Delivered 4+ projects on time, integrated key payment/auth flows for 5k+ DAUs, and raised test coverage to 85% while reducing defects 15%.',
-      skills: ['Java', 'Spring Boot', 'Angular', 'MySQL', 'Docker', 'Kubernetes', 'Microservices'],
-      logo: '/lovable-uploads/epsilon-logo.png'
+      title: 'Information Technology Intern',
+      company: 'PSE&G',
+      period: 'May 2024 - Aug. 2024',
+      description: 'Fortified mission-critical cloud infrastructure across complex Linux environments, remediating 95% of system anomalies and resolving Azure service faults with precision. Analyzed large-scale messaging queue architectures to support technical teams, cutting deployment risks by 40% while translating business needs into clean technical outcomes. Advanced distributed system workflows using TypeORM and complex SQL queries, validating massive datasets to ensure 100% event integrity across SQL platforms.',
+      skills: ['Azure', 'Linux', 'Messaging Queues', 'TypeORM', 'SQL'],
+      logo: '/lovable-uploads/f4e6c158-e728-46fd-88f4-7f764885e7b7.png'
     },
     {
       id: '4',
+      title: 'Software Engineer',
+      company: 'Epsilon',
+      period: 'Apr 2020 - May 2023',
+      description: 'Spearheaded the complete software development lifecycle for scalable real-time systems, improving platform performance by 25% and reducing latency by 30%. Partnered with cross-functional stakeholders to deliver 10+ distributed solutions on schedule, aligning closely with core architectural decisions and enterprise objectives. Streamlined event-driven infrastructure pipelines, cutting manual service configuration effort by 40%, and optimized Kafka streaming data processes for 20% faster query execution and message flow.',
+      skills: ['Distributed Systems', 'Event-Driven Architecture', 'Kafka'],
+      logo: '/lovable-uploads/epsilon-logo.png'
+    },
+    {
+      id: '5',
       title: 'Software Developer Intern',
       company: 'CRISIL Limited',
       period: 'Jun. 2019 - Jul. 2019',

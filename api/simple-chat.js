@@ -7,7 +7,6 @@ const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 export default async function handler(req, res) {
   // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader(
@@ -55,33 +54,30 @@ Testing & Tools: Jest, Mocha, Cypress, Selenium, Postman, Git, GitHub, GitLab, B
 
 PROFESSIONAL EXPERIENCE
 
-HP | Software Engineer Intern | Sep 2024 – May 2025
-Engineered Java microservices for internal tools, improving API response times by 25%.
-Authored Python automation scripts saving 30+ hours of manual testing monthly.
-Built a React.js dashboard to visualize system metrics, reducing bottleneck resolution time by ~40%.
-Spearheaded CI/CD pipeline integration (Jenkins, GitHub Actions), cutting deployment time from days to under 2 hours.
-Achieved 95%+ test coverage using JUnit and PyTest.
+Harlem Children's Zone | Data Analyst | Jan 2026 – Present
+Architected high-volume data pipelines using Node.js and Azure Data Fabric, cutting event processing latency by 40%.
+Designed scalable frontend frameworks with React and Next.js, elevating UI performance metrics by 35%.
+Mentored junior engineering teams, raising technical standards and boosting throughput by 30%.
+Built reliable asynchronous workflows with BullMQ, sustaining 100% uptime for mission-critical processes.
+Optimized NoSQL database queries, driving a 25% increase in retrieval speeds.
+
+Capital One | Software Engineer | Jul 2025 – Jan 2026
+Engineered high-performance backend microservices using Node.js and NestJS, scaling distributed platforms to support over 2M client transactions daily.
+Orchestrated resilient, event-driven CI/CD pipelines deploying to Azure App Services, cutting deployment times by 50%.
+Built server-side rendering components and state management patterns, reducing frontend latency by 40%.
+Integrated scalable REST APIs with modern component-driven designs, boosting application throughput by 35%.
+Resolved production incidents under pressure, sustaining 99% reliability.
 
 Public Service Enterprise Group (PSE&G) | IT Intern | May 2024 – Aug 2024
-Ensured NERC, GDPR, & HIPAA compliance; remediated 95% of vulnerabilities across AWS, Azure, GCP.
-Reduced deployment risk by 40% and mitigated 300+ vulnerabilities using 100+ Veracode scans integrated with CI/CD.
-Built a React/TypeScript/Node.js portal and SQL-backed dashboard, improving internal efficiency by 25%.
-Automated IT operations for 200+ endpoints using PowerShell, saving 10+ hours monthly.
+Fortified mission-critical cloud infrastructure across complex Linux environments, remediating 95% of system anomalies.
+Analyzed large-scale messaging queue architectures, cutting deployment risks by 40%.
+Advanced distributed system workflows using TypeORM and complex SQL queries, ensuring 100% event integrity across SQL platforms.
 
-Tata Consultancy Services (TCS) | Software Engineer | May 2021 – May 2023
-Improved data reliability for 205M VIL users; automated monitoring processes, cutting manual interventions by 80%.
-Developed 150+ Java RESTful APIs for incident workflows, reducing troubleshooting times by up to 90 minutes.
-Architected Tableau dashboards for 10TB of reports, reducing data retrieval from 15 mins to under 3 mins.
-Improved issue resolution time by 15% for 200+ endpoints with proactive monitoring and escalation.
-Contributed to 20% improvement in system availability by migrating legacy applications.
-
-Epsilon | Software Engineer | Apr 2020 – Apr 2021
-Enhanced UX and cut page load times by 30% via scalable web apps using Java, Spring Boot, Angular, RESTful APIs.
-Optimized database schemas and queries, improving data retrieval speed by 25%.
-Deployed microservices with Docker/Kubernetes, improving deployment efficiency by 20%.
-Delivered 4+ full-cycle projects on time at a 98% success rate.
-Supported 5,000+ daily active users by integrating APIs for payments, authentication, and marketing.
-Increased test coverage to 85%, reducing production defects by 15%.
+Epsilon | Software Engineer | Apr 2020 – May 2023
+Spearheaded the complete software development lifecycle for scalable real-time systems, improving platform performance by 25% and reducing latency by 30%.
+Partnered with cross-functional stakeholders to deliver 10+ distributed solutions on schedule.
+Streamlined event-driven infrastructure pipelines, cutting manual service configuration effort by 40%.
+Optimized Kafka streaming data processes, yielding 20% faster query execution and message flow.
 
 PROJECTS
 Consumer Safety Application (Capstone Project) | May 2025
@@ -98,13 +94,18 @@ Master of Science in Computer Science | New Jersey Institute of Technology | New
 Bachelor of Science in Computer Science | University of Mumbai | Mumbai, India | Aug 2016 – May 2020`;
     
     console.log(`[Vercel Chat] Context length: ${relevantContext.length} characters`);
-    
+
+    // Format prior turns so the model has conversational memory
+    const historyText = conversationHistory
+      .map((turn) => `${turn.sender === 'user' ? 'User' : 'Assistant'}: ${turn.content}`)
+      .join('\n');
+
     // Create the prompt for Gemini
     const prompt = `You are Kartikey Patel's AI assistant. Use the following information to answer questions accurately and professionally.
 
 Context from documents:
 ${relevantContext}
-
+${historyText ? `\nConversation so far:\n${historyText}\n` : ''}
 Guidelines:
 - Always speak in first person as Kartikey
 - Be specific about technologies, projects, and achievements mentioned in the context
@@ -113,6 +114,7 @@ Guidelines:
 - Highlight key achievements and technical skills
 - Be enthusiastic about technology and problem-solving
 - Reference specific projects, technologies, or metrics when relevant
+- Use the conversation so far to keep continuity with earlier questions and answers
 
 User Question: ${message}
 

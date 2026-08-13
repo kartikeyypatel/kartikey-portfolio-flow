@@ -57,7 +57,7 @@ const ProjectsSection = () => {
         '/lovable-uploads/4e145dc9-9986-473d-a061-cc6b95b27460.png',
       ],
       size: 'wide',
-      githubUrl: 'https://github.com/kartikey-patel'
+      githubUrl: 'https://github.com/kartikeyypatel/urrecalls-server-automation'
     },
     {
       id: '2',
@@ -70,7 +70,7 @@ const ProjectsSection = () => {
       technologies: ['LangChain', 'OpenAI GPT-4', 'AWS', 'Docker', 'Pinecone', 'Kubernetes', 'Weights & Biases', 'RAG Architecture'],
       gallery: ['/lovable-uploads/5269f9aa-d080-4608-bdf5-d13a7458b3b9.png'],
       size: 'normal',
-      githubUrl: 'https://github.com/kartikey-patel'
+      githubUrl: 'https://github.com/kartikeyypatel/enterprise-doc-assistant-gemini-rag-app'
     },
     {
       id: '3',
@@ -292,7 +292,46 @@ const ProjectsSection = () => {
       technologies: ['Node.js', 'React', 'Lambda', 'RDS', 'AWS', 'Workflow Automation'],
       gallery: [mortgageWorkflow],
       size: 'normal',
-      githubUrl: 'https://github.com/kartikey-patel'
+      githubUrl: 'https://github.com/kartikeyypatel/Mortgage-Application-Approval-Workflow-System'
+    },
+    {
+      id: '20',
+      title: 'Okada Leasing Agent AI',
+      category: ['AI/ML', 'Web Development'],
+      date: '2024',
+      image: '/lovable-uploads/hackathon-winner.jpg',
+      description: 'Built an intelligent leasing agent chatbot combining a FastAPI backend with a hybrid RAG pipeline (semantic + BM25 search) to answer property listing questions. Features a MongoDB-based CRM for user profiles and conversation history, CSV document ingestion, and Google Calendar-integrated viewing scheduling. Winner, Okada & Co. hackathon.',
+      client: 'Hackathon Project',
+      technologies: ['FastAPI', 'Python', 'LlamaIndex', 'Google Gemini', 'MongoDB', 'RAG Architecture'],
+      gallery: ['/lovable-uploads/hackathon-winner.jpg'],
+      size: 'normal',
+      githubUrl: 'https://github.com/kartikeyypatel/okada-leasing-agent'
+    },
+    {
+      id: '21',
+      title: 'Okada Voice Conversational Agent',
+      category: ['AI/ML', 'Web Development'],
+      date: '2025',
+      image: '/lovable-uploads/okada-voice-agent.png',
+      description: 'Built a bi-directional voice and text conversational AI agent using FastAPI, LangGraph, and Gemini 2.5 Flash, with RAG over user-uploaded documents (PDF, DOCX, CSV) backed by ChromaDB, toggleable live web search via Tavily, and Redis-backed chat history. Frontend built with React 19, Vite, and Tailwind CSS.',
+      client: 'Hackathon Project',
+      technologies: ['FastAPI', 'LangGraph', 'Gemini 2.5 Flash', 'React', 'ChromaDB', 'Redis'],
+      gallery: ['/lovable-uploads/okada-voice-agent.png'],
+      size: 'wide',
+      githubUrl: 'https://github.com/senseikartikey/Okada_hackathon_voice_conversational_agent'
+    },
+    {
+      id: '22',
+      title: 'Raisin Variety Classification (Data Mining)',
+      category: 'AI/ML',
+      date: 'Nov 2024',
+      image: '/lovable-uploads/Gemini_Generated_Image_1bbqxw1bbqxw1bbq.png',
+      description: 'Performed binary classification on a raisin varieties dataset, comparing KNN, LSTM, and Random Forest models for prediction accuracy, achieving an average accuracy of around 92% across models.',
+      client: 'Academic Project',
+      technologies: ['Python', 'KNN', 'LSTM', 'Random Forest', 'Data Mining'],
+      gallery: ['/lovable-uploads/Gemini_Generated_Image_1bbqxw1bbqxw1bbq.png'],
+      size: 'normal',
+      githubUrl: 'https://github.com/kartikeyypatel/FinalTerm_DataMining_Project'
     }
   ];
 
