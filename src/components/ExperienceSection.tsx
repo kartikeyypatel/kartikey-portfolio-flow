@@ -18,6 +18,9 @@ interface Experience {
   cropLogo?: boolean;
 }
 
+const descriptionToBullets = (description: string) =>
+  description.split('. ').map((sentence) => sentence.endsWith('.') ? sentence : `${sentence}.`);
+
 const ExperienceSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
@@ -165,9 +168,17 @@ const ExperienceSection = () => {
                   <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_180px]">
                     {/* Description */}
                     <div>
-                      <p className="mb-6 max-w-3xl text-[15px] leading-7 text-portfolio-text-muted">
+                      <p className="mb-5 max-w-3xl border-l-2 border-portfolio-cyan pl-4 text-[15px] font-medium leading-7 text-portfolio-text">
                         {experience.summary}
                       </p>
+                      <ul className="mb-6 max-w-3xl space-y-3">
+                        {descriptionToBullets(experience.description).map((achievement) => (
+                          <li key={achievement} className="flex gap-3 text-[15px] leading-7 text-portfolio-text-muted">
+                            <span className="mt-[0.7rem] h-1.5 w-1.5 shrink-0 rounded-full bg-portfolio-cyan" aria-hidden="true" />
+                            <span>{achievement}</span>
+                          </li>
+                        ))}
+                      </ul>
                       
                       {/* Skills */}
                       <div className="flex flex-wrap gap-2">
