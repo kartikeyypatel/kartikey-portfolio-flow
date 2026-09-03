@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { Plus, Minus } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import locales from '../locales/en.json';
 
 interface Experience {
@@ -14,7 +14,13 @@ interface Experience {
   description: string;
   skills: string[];
   logo: string;
+  cropLogo?: boolean;
 }
+
+const descriptionToBullets = (description: string) =>
+  description.split('. ').map((sentence) => sentence.endsWith('.') ? sentence : `${sentence}.`);
+
+const firstMetric = (description: string) => description.match(/\b\d+(?:\.\d+)?%/)?.[0];
 
 const ExperienceSection = () => {
   const ref = useRef(null);
@@ -56,7 +62,8 @@ const ExperienceSection = () => {
       period: 'Apr 2020 - May 2023',
       description: 'Spearheaded the complete software development lifecycle for scalable real-time systems, improving platform performance by 25% and reducing latency by 30%. Partnered with cross-functional stakeholders to deliver 10+ distributed solutions on schedule, aligning closely with core architectural decisions and enterprise objectives. Streamlined event-driven infrastructure pipelines, cutting manual service configuration effort by 40%, and optimized Kafka streaming data processes for 20% faster query execution and message flow.',
       skills: ['Distributed Systems', 'Event-Driven Architecture', 'Kafka'],
-      logo: '/uploads/epsilon-logo.png'
+      logo: '/uploads/epsilon-logo.png',
+      cropLogo: true,
     },
     {
       id: '5',
@@ -65,7 +72,8 @@ const ExperienceSection = () => {
       period: 'Jun. 2019 - Jul. 2019',
       description: 'Created a chatbot using IBM Watson, integrating Java and JavaScript APIs with IBM Cloud services to deliver context-aware responses, resulting in a 35% increase in customer satisfaction.',
       skills: ['Chatbot', 'IBM Watson', 'Java API', 'IBM Cloud'],
-      logo: '/uploads/dd039a77-d180-4eb1-8feb-227df0fd9c8b.png'
+      logo: '/uploads/dd039a77-d180-4eb1-8feb-227df0fd9c8b.png',
+      cropLogo: true,
     }
   ];
 
@@ -107,64 +115,76 @@ const ExperienceSection = () => {
           {experiences.map((experience, index) => (
             <motion.div
               key={experience.id}
-              className="border border-portfolio-gray-lighter rounded-lg overflow-hidden"
+              className={`overflow-hidden rounded-2xl border bg-[#0d1213]/92 shadow-[inset_0_1px_0_rgba(226,250,250,0.045),0_16px_45px_rgba(0,0,0,0.2)] transition-colors ${openItem === experience.id ? 'border-portfolio-cyan/35' : 'border-white/[0.09] hover:border-white/[0.16]'}`}
               initial={{ opacity: 0, y: 50 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
               {/* Accordion Header */}
               <button
+                type="button"
                 onClick={() => toggleItem(experience.id)}
-                className="w-full bg-portfolio-cyan hover:bg-portfolio-cyan/90 transition-colors duration-200 p-6 flex items-center justify-between"
+                className="flex min-h-[104px] w-full items-center justify-between gap-5 bg-white/[0.018] p-5 text-left transition-colors hover:bg-white/[0.035] sm:p-6"
+                aria-expanded={openItem === experience.id}
+                aria-controls={`experience-panel-${experience.id}`}
               >
-                <div className="flex items-center space-x-4 text-left">
-                  <div>
-                    <h3 className="text-xl font-semibold text-portfolio-black">
+                <div className="flex min-w-0 items-start gap-4 sm:gap-5">
+                  <span className="mt-1 font-mono text-[10px] tracking-[0.12em] text-portfolio-cyan">0{index + 1}</span>
+                  <div className="min-w-0">
+                    <h3 className="text-lg font-semibold text-portfolio-text sm:text-xl">
                       {experience.title}
                     </h3>
-                    <p className="text-portfolio-black/80">
+                    <p className="mt-1 text-sm text-portfolio-text-muted sm:text-base">
                       {experience.company} • {experience.period}
                     </p>
                   </div>
                 </div>
                 
                 <motion.div
-                  animate={{ rotate: openItem === experience.id ? 45 : 0 }}
+                  animate={{ rotate: openItem === experience.id ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
-                  className="text-portfolio-black"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/[0.09] text-portfolio-cyan"
                 >
-                  {openItem === experience.id ? (
-                    <Minus className="h-6 w-6" />
-                  ) : (
-                    <Plus className="h-6 w-6" />
-                  )}
+                  <ChevronDown className="h-5 w-5" />
                 </motion.div>
               </button>
 
               {/* Accordion Content */}
               <motion.div
+                id={`experience-panel-${experience.id}`}
                 initial={false}
                 animate={{
                   height: openItem === experience.id ? 'auto' : 0,
                   opacity: openItem === experience.id ? 1 : 0
                 }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="overflow-hidden bg-portfolio-gray/30"
+                className="overflow-hidden bg-black/20"
               >
-                <div className="p-6">
-                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <div className="border-t border-white/[0.07] p-5 sm:p-6">
+                  <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_180px]">
                     {/* Description */}
-                    <div className="lg:col-span-3">
-                      <p className="text-portfolio-text-muted leading-relaxed mb-6">
-                        {experience.description}
-                      </p>
+                    <div>
+                      {firstMetric(experience.description) && (
+                        <div className="mb-6 flex items-baseline gap-3 border-l-2 border-portfolio-cyan pl-4">
+                          <strong className="font-['Fraunces'] text-4xl font-semibold text-portfolio-text">{firstMetric(experience.description)}</strong>
+                          <span className="text-xs uppercase tracking-[0.08em] text-portfolio-text-muted">highlighted impact</span>
+                        </div>
+                      )}
+                      <ul className="mb-6 max-w-3xl space-y-3">
+                        {descriptionToBullets(experience.description).map((achievement) => (
+                          <li key={achievement} className="flex gap-3 text-[15px] leading-7 text-portfolio-text-muted">
+                            <span className="mt-[0.7rem] h-1.5 w-1.5 shrink-0 rounded-full bg-portfolio-cyan" aria-hidden="true" />
+                            <span>{achievement}</span>
+                          </li>
+                        ))}
+                      </ul>
                       
                       {/* Skills */}
                       <div className="flex flex-wrap gap-2">
                         {experience.skills.map((skill) => (
                           <span
                             key={skill}
-                            className="px-3 py-1 bg-portfolio-cyan text-portfolio-black text-sm rounded-full font-medium"
+                            className="rounded-md border border-portfolio-cyan/20 bg-portfolio-cyan/[0.065] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.04em] text-portfolio-cyan"
                           >
                             {skill}
                           </span>
@@ -174,11 +194,11 @@ const ExperienceSection = () => {
 
                     {/* Company Logo */}
                     <div className="flex items-center justify-center lg:justify-end">
-                      <div className="w-24 h-24 rounded-lg overflow-hidden bg-portfolio-gray-lighter flex items-center justify-center p-2">
+                      <div className="flex aspect-[2/1] w-full max-w-[180px] items-center justify-center overflow-hidden rounded-xl border border-black/10 bg-[#f4f6f5] p-5 shadow-[0_10px_30px_rgba(0,0,0,0.18)]">
                         <img
                           src={experience.logo}
                           alt={`${experience.company} logo`}
-                          className="max-w-full max-h-full object-contain"
+                          className={`h-full w-full ${experience.cropLogo ? 'scale-[1.08] object-cover' : 'object-contain'}`}
                         />
                       </div>
                     </div>

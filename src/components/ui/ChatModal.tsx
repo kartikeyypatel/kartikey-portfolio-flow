@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, FormEvent } from 'react';
+import React, { useCallback, useState, useRef, FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Bot, User, CornerDownLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -35,7 +35,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
   const nextMessageId = useRef(2);
 
   // Core message processing used by both form submit and Enter key handling
-  const processInput = async (userInput: string) => {
+  const processInput = useCallback(async (userInput: string) => {
     if (!userInput.trim()) return;
 
     const newMessage: Message = {
@@ -84,7 +84,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [messages]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -100,7 +100,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
       setInput("");
       processInput(initialMessage);
     }
-  }, [isOpen, initialMessage, hasSentInitial]);
+  }, [isOpen, initialMessage, hasSentInitial, processInput]);
 
   // Allow the next hero-input message to be sent once the modal is closed
   React.useEffect(() => {
@@ -108,6 +108,15 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
       setHasSentInitial(false);
     }
   }, [isOpen]);
+
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', closeOnEscape);
+    return () => document.removeEventListener('keydown', closeOnEscape);
+  }, [isOpen, onClose]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -124,6 +133,9 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
           exit={{ opacity: 0 }}
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={handleBackdropClick}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="portfolio-assistant-title"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -139,7 +151,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
                   <Bot className="h-6 w-6 text-portfolio-cyan" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-portfolio-text">
+                  <h3 id="portfolio-assistant-title" className="text-lg font-semibold text-portfolio-text">
                     Ask about Kartikey
                   </h3>
                   <p className="text-sm text-portfolio-text-muted">
@@ -152,6 +164,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
                 size="icon"
                 onClick={onClose}
                 className="text-portfolio-text-muted hover:text-portfolio-text"
+                aria-label="Close portfolio assistant"
               >
                 <X className="h-5 w-5" />
               </Button>

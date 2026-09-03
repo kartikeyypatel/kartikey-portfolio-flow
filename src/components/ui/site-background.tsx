@@ -1,19 +1,14 @@
+import { BackgroundPaths } from './background-paths';
+
 // Shared ambient backdrop rendered once behind the whole page (fixed, so it
 // never scrolls away) so every section reads as one continuous canvas
 // instead of each having its own disconnected background treatment.
 const SiteBackground = () => (
-  <div className="fixed inset-0 z-0 overflow-hidden bg-portfolio-black pointer-events-none">
-    <div className="absolute -top-32 left-[10%] w-[500px] h-[500px] bg-portfolio-cyan/10 rounded-full blur-[150px]" />
-    <div className="absolute top-[40%] -right-40 w-[450px] h-[450px] bg-blue-500/10 rounded-full blur-[150px]" />
-    <div className="absolute bottom-[-10%] left-[20%] w-[500px] h-[500px] bg-portfolio-cyan/5 rounded-full blur-[150px]" />
-    <div
-      className="absolute inset-0 opacity-[0.03]"
-      style={{
-        backgroundImage:
-          'linear-gradient(to right, #22D3EE 1px, transparent 1px), linear-gradient(to bottom, #22D3EE 1px, transparent 1px)',
-        backgroundSize: '56px 56px',
-      }}
-    />
+  <div className="fixed inset-0 z-0 overflow-hidden bg-[#070a0a] pointer-events-none" aria-hidden="true">
+    <BackgroundPaths />
+    <div className="absolute -top-32 left-[10%] h-[500px] w-[500px] rounded-full bg-portfolio-cyan/[0.045] blur-[170px]" />
+    <div className="absolute bottom-[-10%] right-[8%] h-[520px] w-[520px] rounded-full bg-portfolio-cyan/[0.025] blur-[180px]" />
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_58%_48%_at_50%_45%,transparent_0%,rgba(7,10,10,0.18)_58%,rgba(7,10,10,0.62)_100%)]" />
   </div>
 );
 

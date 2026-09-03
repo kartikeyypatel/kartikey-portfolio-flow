@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Users, BookOpen } from 'lucide-react';
-import { GridMotion } from './ui/grid-motion';
 
 const AchievementsSection = () => {
   const achievements = [
@@ -52,47 +51,8 @@ const AchievementsSection = () => {
     }
   ];
 
-  const gridItems = [
-    "🏆 Innovation Excellence",
-    "⭐ Star Performer", 
-    "🎯 Best Project Award",
-    "👨‍🏫 Teaching Excellence",
-    "📊 McKinsey Forward",
-    "🔬 Academic Achievement",
-    "🏅 Leadership Award",
-    "💡 Creative Problem Solving",
-    "🎓 Graduate Assistant",
-    "📈 Performance Excellence",
-    "🚀 Innovation Leader",
-    "⚡ Outstanding Results",
-    "🌟 Recognition",
-    "💎 Excellence in Action",
-    "🎪 Strategic Thinking",
-    "🔥 High Performance",
-    "✨ Distinguished Service",
-    "🎯 Goal Achievement",
-    "🌊 Continuous Growth",
-    "🎨 Creative Solutions",
-    "💪 Leadership Impact",
-    "🔍 Analytical Skills",
-    "🎊 Success Stories",
-    "🏆 Award Winner",
-    "📚 Knowledge Sharing",
-    "🚀 Future Ready",
-    "⭐ Excellence Recognized",
-    "💫 Outstanding Achievement"
-  ];
-
   return (
-    <section id="achievements" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Grid Motion */}
-      <div className="absolute inset-0 opacity-30">
-        <GridMotion 
-          items={gridItems}
-          gradientColor="rgba(34, 211, 238, 0.1)"
-        />
-      </div>
-      
+    <section id="achievements" className="section-padding relative flex items-center justify-center overflow-hidden">
       {/* Content */}
       <div className="relative z-10 w-full container mx-auto px-4 py-20">
         <motion.div
@@ -146,6 +106,9 @@ const AchievementsSection = () => {
                     </div>
                     
                     <div className="flex flex-col items-center gap-2">
+                      <span className={`font-mono text-[9px] uppercase tracking-[0.08em] ${achievement.link ? 'text-emerald-300' : 'text-portfolio-text-muted'}`}>
+                        {achievement.link ? 'Evidence linked' : 'Résumé highlight'}
+                      </span>
                       <div className="inline-block px-3 py-1 bg-portfolio-cyan/20 text-portfolio-cyan text-xs font-medium rounded-full">
                         {achievement.year}
                       </div>

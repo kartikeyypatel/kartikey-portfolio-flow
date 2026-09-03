@@ -71,8 +71,8 @@ const config: Config = {
           },
           cyan: '#22D3EE',
           text: {
-            DEFAULT: '#E0E0E0',
-            muted: '#888888',
+            DEFAULT: '#EDF6F6',
+            muted: '#9AA9A9',
           },
         },
       },

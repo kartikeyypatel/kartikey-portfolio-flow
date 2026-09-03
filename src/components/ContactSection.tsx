@@ -20,8 +20,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
-import { useStarryBackground } from '@/hooks/useStarryBackground';
-import { StarryCanvas } from './ui/StarryCanvas';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -35,7 +33,6 @@ const ContactSection = () => {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { backgroundImage } = useStarryBackground();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -71,7 +68,7 @@ const ContactSection = () => {
       console.error(error);
       toast({
         title: "Uh oh! Something went wrong.",
-        description: "There was a problem sending your message. Please try again later.",
+        description: "The form could not send your message. Please email me directly at kartikey.patel1398@gmail.com.",
         variant: 'destructive',
       });
     } finally {
@@ -82,11 +79,9 @@ const ContactSection = () => {
   return (
     <motion.section
       id="contact"
-      style={{ backgroundImage }}
       className="section-padding relative overflow-hidden"
       ref={ref}
     >
-      <StarryCanvas />
       <div className="container-custom relative z-20">
         <motion.div
           className="max-w-3xl mx-auto text-center"
@@ -127,7 +122,7 @@ const ContactSection = () => {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <div className="pointer-events-auto text-left">
+            <div className="pointer-events-auto rounded-2xl border border-portfolio-gray-lighter bg-portfolio-gray/70 p-5 text-left shadow-2xl shadow-black/20 backdrop-blur-xl sm:p-8">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -212,6 +207,12 @@ const ContactSection = () => {
                       <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
                       <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
                     </motion.button>
+                    <p className="mt-4 text-xs text-portfolio-text-muted">
+                      Prefer email?{' '}
+                      <a className="text-portfolio-cyan underline underline-offset-4 hover:text-white" href="mailto:kartikey.patel1398@gmail.com">
+                        kartikey.patel1398@gmail.com
+                      </a>
+                    </p>
                   </div>
                 </form>
               </Form>
@@ -245,7 +246,7 @@ const ContactSection = () => {
                 href="https://www.linkedin.com/in/patel-kartikey/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200 pointer-events-auto"
+                className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-lg text-portfolio-text-muted transition-colors duration-200 hover:bg-white/5 hover:text-portfolio-cyan"
                 whileHover={{ y: -2 }}
               >
                 <span className="sr-only">{locales.contact.social.linkedin}</span>
@@ -256,7 +257,7 @@ const ContactSection = () => {
                 href="https://github.com/kartikeyypatel?tab=repositories"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200 pointer-events-auto"
+                className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-lg text-portfolio-text-muted transition-colors duration-200 hover:bg-white/5 hover:text-portfolio-cyan"
                 whileHover={{ y: -2 }}
               >
                 <span className="sr-only">{locales.contact.social.github}</span>
@@ -267,7 +268,7 @@ const ContactSection = () => {
                 href="https://x.com/senseikartikey"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200 pointer-events-auto"
+                className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-lg text-portfolio-text-muted transition-colors duration-200 hover:bg-white/5 hover:text-portfolio-cyan"
                 whileHover={{ y: -2 }}
               >
                 <span className="sr-only">{locales.contact.social.twitter}</span>
@@ -278,7 +279,7 @@ const ContactSection = () => {
                 href="https://www.facebook.com/senseikartikey/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200 pointer-events-auto"
+                className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-lg text-portfolio-text-muted transition-colors duration-200 hover:bg-white/5 hover:text-portfolio-cyan"
                 whileHover={{ y: -2 }}
               >
                 <span className="sr-only">{locales.contact.social.facebook}</span>
@@ -287,7 +288,7 @@ const ContactSection = () => {
               
               <motion.a
                 href="mailto:kartikey.patel1398@gmail.com"
-                className="text-portfolio-text-muted hover:text-portfolio-cyan transition-colors duration-200 pointer-events-auto"
+                className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-lg text-portfolio-text-muted transition-colors duration-200 hover:bg-white/5 hover:text-portfolio-cyan"
                 whileHover={{ y: -2 }}
               >
                 <span className="sr-only">Email</span>
@@ -298,17 +299,35 @@ const ContactSection = () => {
         </motion.div>
 
         {/* Footer */}
-        <motion.div
-          className="text-center mt-20 pt-8 border-t border-portfolio-gray-lighter"
+        <motion.footer
+          className="mt-20 border-t border-white/[0.1] pt-8"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.6, delay: 1 }}
         >
-          <p className="text-portfolio-text-muted leading-relaxed">
-            {locales.contact.footerLine1} <br />
-            {locales.contact.footerLine2}
-          </p>
-        </motion.div>
+          <div className="grid gap-8 text-left sm:grid-cols-[1fr_auto] sm:items-end">
+            <div>
+              <a href="#home" className="font-['Fraunces'] text-2xl font-semibold text-portfolio-text hover:text-portfolio-cyan">
+                Kartikey Patel<span className="italic text-portfolio-cyan">.</span>
+              </a>
+              <p className="mt-2 max-w-md text-sm leading-6 text-portfolio-text-muted">
+                Full-stack software engineer building reliable cloud products, data platforms, and AI-enabled experiences.
+              </p>
+            </div>
+            <nav aria-label="Footer navigation">
+              <ul className="flex flex-wrap gap-x-5 gap-y-3 text-sm text-portfolio-text-muted sm:justify-end">
+                <li><a className="hover:text-portfolio-cyan" href="mailto:kartikey.patel1398@gmail.com">Email</a></li>
+                <li><a className="hover:text-portfolio-cyan" href="https://www.linkedin.com/in/patel-kartikey/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                <li><a className="hover:text-portfolio-cyan" href="https://github.com/senseikartikey" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                <li><a className="hover:text-portfolio-cyan" href="/Kartikey-Patel-Resume.pdf" target="_blank" rel="noopener noreferrer">Résumé</a></li>
+              </ul>
+            </nav>
+          </div>
+          <div className="mt-8 flex flex-col gap-2 border-t border-white/[0.07] py-5 font-mono text-[10px] uppercase tracking-[0.08em] text-portfolio-text-muted sm:flex-row sm:items-center sm:justify-between">
+            <span>Designed &amp; built by Kartikey Patel</span>
+            <span>© {new Date().getFullYear()} · React, TypeScript &amp; Tailwind CSS</span>
+          </div>
+        </motion.footer>
       </div>
     </motion.section>
   );

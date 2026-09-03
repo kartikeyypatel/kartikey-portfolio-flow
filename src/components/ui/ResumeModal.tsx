@@ -51,19 +51,16 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
     e.stopPropagation();
   };
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      onClose();
-    }
-  };
-
   // Add keyboard event listener for ESC key
   useEffect(() => {
     if (isOpen) {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+      };
       document.addEventListener('keydown', handleKeyDown);
       return () => document.removeEventListener('keydown', handleKeyDown);
     }
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   return (
     <AnimatePresence>
@@ -74,6 +71,9 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={handleBackdropClick}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="resume-dialog-title"
         >
           <motion.div
             className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden relative"
@@ -85,9 +85,10 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
           >
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b bg-gray-50">
-                <h2 className="text-xl font-semibold text-gray-800">Resume - Kartikey Patel</h2>
+                <h2 id="resume-dialog-title" className="text-base font-semibold text-gray-800 sm:text-xl">Resume - Kartikey Patel</h2>
                 <div className="flex items-center gap-2">
                   <button
+                    type="button"
                     onClick={handleZoomOut}
                     className="p-2 hover:bg-gray-200 rounded-full transition-colors"
                     title="Zoom Out"
@@ -98,6 +99,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
                     {Math.round(zoom * 100)}%
                   </span>
                   <button
+                    type="button"
                     onClick={handleZoomIn}
                     className="p-2 hover:bg-gray-200 rounded-full transition-colors"
                     title="Zoom In"
@@ -105,6 +107,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
                     <ZoomIn className="h-5 w-5" />
                   </button>
                   <button
+                    type="button"
                     onClick={handleDownload}
                     className="p-2 hover:bg-gray-200 rounded-full transition-colors"
                     title="Download PDF"
@@ -112,6 +115,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
                     <Download className="h-5 w-5" />
                   </button>
                   <button
+                    type="button"
                     onClick={onClose}
                     className="p-2 hover:bg-gray-200 rounded-full transition-colors"
                     title="Close"

@@ -2,11 +2,10 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, X, Github, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { ArrowLeft, ArrowRight, X, Github, ChevronLeft, ChevronRight, ExternalLink, Search, Star } from 'lucide-react';
 import locales from '../locales/en.json';
-import { FocusCards } from '@/components/ui/focus-cards';
-import { cn } from '@/lib/utils';
 import attendanceTracking from '../assets/attendance-tracking.png';
 import supplyChainForecaster from '../assets/supply-chain-forecaster.png';
 import cicdAnalytics from '../assets/cicd-analytics.png';
@@ -32,7 +31,110 @@ interface Project {
   gallery: string[];
   size?: 'normal' | 'large' | 'wide' | 'tall';
   githubUrl?: string;
+  liveUrl?: string;
+  account?: string;
+  language?: string;
+  stars?: number;
+  updatedAt?: string;
+  problem?: string;
+  approach?: string;
+  outcome?: string;
 }
+
+interface GitHubRepository {
+  id: number;
+  name: string;
+  description: string | null;
+  html_url: string;
+  homepage: string | null;
+  language: string | null;
+  topics: string[];
+  fork: boolean;
+  archived: boolean;
+  pushed_at: string;
+  owner: { login: string };
+  stargazers_count: number;
+}
+
+const GITHUB_ACCOUNTS = ['kartikeyypatel', 'senseikartikey'] as const;
+const HIDDEN_REPOSITORIES = new Set(
+  (import.meta.env.VITE_HIDDEN_GITHUB_REPOSITORIES ?? '')
+    .split(',')
+    .map((name: string) => name.trim().toLowerCase())
+    .filter(Boolean),
+);
+
+const titleFromRepositoryName = (name: string) =>
+  name
+    .replace(/[-_]+/g, ' ')
+    .replace(/\b\w/g, (character) => character.toUpperCase());
+
+const categoryFromRepository = (repository: GitHubRepository): Project['category'] => {
+  const searchable = `${repository.name} ${repository.description ?? ''} ${repository.language ?? ''} ${repository.topics.join(' ')}`.toLowerCase();
+  const categories: string[] = [];
+  if (/ai|ml|rag|llm|gemini|openai|data.?mining|machine.?learning|langgraph|llama/.test(searchable)) categories.push('AI/ML');
+  if (/react|next|web|frontend|backend|api|django|spring|node|typescript|javascript/.test(searchable)) categories.push('Web Development');
+  if (/mobile|android|ios|expo|react.?native|app/.test(searchable)) categories.push('App Development');
+  if (/security|oauth|encrypt|auth/.test(searchable)) categories.push('Security');
+  return categories.length > 1 ? categories : categories[0] ?? 'Web Development';
+};
+
+const formatTopic = (topic: string) =>
+  topic
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+
+const repositoryToProject = (repository: GitHubRepository): Project => ({
+  id: `gh-${repository.id}`,
+  title: titleFromRepositoryName(repository.name),
+  category: categoryFromRepository(repository),
+  date: new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(new Date(repository.pushed_at)),
+  image: '',
+  description: repository.description || 'Explore the source code, implementation details, and latest development activity on GitHub.',
+  client: `GitHub · @${repository.owner.login}`,
+  technologies: Array.from(new Set([repository.language, ...repository.topics.map(formatTopic)].filter(Boolean) as string[])).slice(0, 8),
+  gallery: [],
+  size: 'normal',
+  githubUrl: repository.html_url,
+  liveUrl: repository.homepage || undefined,
+  account: repository.owner.login,
+  language: repository.language || undefined,
+  stars: repository.stargazers_count,
+  updatedAt: repository.pushed_at,
+});
+
+const ProjectSignal = ({ project, large = false }: { project: Project; large?: boolean }) => {
+  const seed = Number(project.id) || 1;
+  const category = Array.isArray(project.category) ? project.category[0] : project.category;
+  const bars = Array.from({ length: large ? 18 : 12 }, (_, index) =>
+    22 + ((seed * 17 + index * 29) % 68)
+  );
+
+  return (
+    <div
+      className={`relative overflow-hidden rounded-xl border border-white/[0.07] bg-[#090d0e] ${large ? 'min-h-[360px]' : 'h-32'}`}
+      aria-hidden="true"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_25%,rgba(34,211,238,0.12),transparent_38%)]" />
+      <div className="absolute inset-0 opacity-[0.16] [background-image:linear-gradient(rgba(226,250,250,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(226,250,250,0.12)_1px,transparent_1px)] [background-size:28px_28px]" />
+      <div className="absolute inset-x-5 top-4 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.12em] text-portfolio-text-muted">
+        <span>{category}</span>
+        <span className="text-portfolio-cyan">PRJ-{project.id.padStart(2, '0')}</span>
+      </div>
+      <div className={`absolute inset-x-5 bottom-5 flex items-end gap-1 ${large ? 'top-20' : 'top-12'}`}>
+        {bars.map((height, index) => (
+          <span
+            key={index}
+            className="flex-1 rounded-t-[2px] border-t border-portfolio-cyan/55 bg-gradient-to-t from-portfolio-cyan/[0.025] to-portfolio-cyan/20"
+            style={{ height: `${height}%`, opacity: 0.45 + (index % 4) * 0.12 }}
+          />
+        ))}
+      </div>
+      <div className="absolute bottom-5 left-5 h-1.5 w-1.5 rounded-full bg-portfolio-cyan shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
+    </div>
+  );
+};
 
 const ProjectsSection = () => {
   const ref = useRef(null);
@@ -40,9 +142,53 @@ const ProjectsSection = () => {
   const [activeFilter, setActiveFilter] = useState('All');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [githubProjects, setGithubProjects] = useState<Project[]>([]);
+  const [githubSyncState, setGithubSyncState] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [repositorySearch, setRepositorySearch] = useState('');
+  const [repositoryLanguage, setRepositoryLanguage] = useState('All');
+  const [repositorySort, setRepositorySort] = useState<'updated' | 'stars'>('updated');
+  const [repositoryPage, setRepositoryPage] = useState(1);
+  const lockedScrollY = useRef(0);
+  const projectDialogRef = useRef<HTMLDivElement>(null);
+  const projectBackButtonRef = useRef<HTMLButtonElement>(null);
+  const lastProjectTriggerRef = useRef<HTMLButtonElement | null>(null);
   const projectsPerPage = 9;
 
-  const projects: Project[] = [
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const syncRepositories = async () => {
+      try {
+        const responses = await Promise.all(
+          GITHUB_ACCOUNTS.map((account) =>
+            fetch(`https://api.github.com/users/${account}/repos?per_page=100&sort=pushed&direction=desc`, {
+              headers: { Accept: 'application/vnd.github+json' },
+              signal: controller.signal,
+            }),
+          ),
+        );
+
+        if (responses.some((response) => !response.ok)) throw new Error('GitHub repository sync failed');
+        const repositories = (await Promise.all(responses.map((response) => response.json()))) as GitHubRepository[][];
+        const projects = repositories
+          .flat()
+          .filter((repository) => !repository.fork && !repository.archived)
+          .filter((repository) => !HIDDEN_REPOSITORIES.has(repository.name.toLowerCase()))
+          .sort((a, b) => new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime())
+          .map(repositoryToProject);
+
+        setGithubProjects(projects);
+        setGithubSyncState('ready');
+      } catch (error) {
+        if ((error as Error).name !== 'AbortError') setGithubSyncState('error');
+      }
+    };
+
+    syncRepositories();
+    return () => controller.abort();
+  }, []);
+
+  const curatedProjects: Project[] = [
     // Existing Projects
     {
       id: '1',
@@ -58,6 +204,9 @@ const ProjectsSection = () => {
       ],
       size: 'wide',
       githubUrl: 'https://github.com/kartikeyypatel/urrecalls-server-automation'
+      ,problem: 'Consumer safety reporting required users to complete a long, multi-page FDA MedWatch workflow.',
+      approach: 'Built a React Native experience backed by Node.js, Express, and Puppeteer automation, with Google Cloud services supporting the submission flow.',
+      outcome: 'Reduced a complex six-page reporting process to a guided application workflow.'
     },
     {
       id: '2',
@@ -71,6 +220,9 @@ const ProjectsSection = () => {
       gallery: ['/uploads/5269f9aa-d080-4608-bdf5-d13a7458b3b9.png'],
       size: 'normal',
       githubUrl: 'https://github.com/kartikeyypatel/enterprise-doc-assistant-gemini-rag-app'
+      ,problem: 'Large document collections were difficult to search and use as reliable organizational knowledge.',
+      approach: 'Implemented retrieval-augmented generation with LangChain and Pinecone, containerized for cloud deployment on AWS.',
+      outcome: 'Processed more than 10,000 files with reported evaluation accuracy of 89%.'
     },
     {
       id: '3',
@@ -293,6 +445,9 @@ const ProjectsSection = () => {
       gallery: [mortgageWorkflow],
       size: 'normal',
       githubUrl: 'https://github.com/kartikeyypatel/Mortgage-Application-Approval-Workflow-System'
+      ,problem: 'Manual mortgage application processing created slow, repetitive approval workflows.',
+      approach: 'Combined a React interface with a Node.js backend, AWS Lambda, and RDS to automate workflow stages.',
+      outcome: 'Reduced simulated approval time by 50%.'
     },
     {
       id: '20',
@@ -306,6 +461,9 @@ const ProjectsSection = () => {
       gallery: ['/uploads/hackathon-winner.jpg'],
       size: 'normal',
       githubUrl: 'https://github.com/kartikeyypatel/okada-leasing-agent'
+      ,problem: 'Prospective tenants needed faster answers and a simpler way to schedule property viewings.',
+      approach: 'Built a FastAPI conversational agent with hybrid semantic and BM25 retrieval, MongoDB CRM storage, and Google Calendar scheduling.',
+      outcome: 'Delivered the winning project at the Okada & Co. hackathon.'
     },
     {
       id: '21',
@@ -319,6 +477,9 @@ const ProjectsSection = () => {
       gallery: ['/uploads/okada-voice-agent.png'],
       size: 'wide',
       githubUrl: 'https://github.com/senseikartikey/Okada_hackathon_voice_conversational_agent'
+      ,problem: 'Document-based assistants often separate voice, text, retrieval, and current web information into disconnected experiences.',
+      approach: 'Created a bidirectional voice and text agent with FastAPI, LangGraph, Gemini, ChromaDB, Redis, and optional Tavily search.',
+      outcome: 'Unified uploaded-document retrieval, live web search, and persistent conversations in one React application.'
     },
     {
       id: '22',
@@ -335,11 +496,35 @@ const ProjectsSection = () => {
     }
   ];
 
+  const curatedUrls = new Set(curatedProjects.map((project) => project.githubUrl?.toLowerCase()));
+  const unmatchedGithubProjects = githubProjects.filter(
+    (project) => !project.githubUrl || !curatedUrls.has(project.githubUrl.toLowerCase()),
+  );
+  const projects = [...curatedProjects, ...unmatchedGithubProjects];
+  const featuredProjects = curatedProjects.filter((project) => ['1', '2', '19', '20', '21'].includes(project.id));
+  const repositoryLanguages = Array.from(new Set(githubProjects.map((project) => project.language).filter(Boolean) as string[])).sort();
+  const visibleRepositories = githubProjects
+    .filter((project) => repositoryLanguage === 'All' || project.language === repositoryLanguage)
+    .filter((project) => `${project.title} ${project.description} ${project.technologies.join(' ')}`.toLowerCase().includes(repositorySearch.toLowerCase()))
+    .sort((a, b) => repositorySort === 'stars'
+      ? (b.stars ?? 0) - (a.stars ?? 0)
+      : new Date(b.updatedAt ?? 0).getTime() - new Date(a.updatedAt ?? 0).getTime());
+  const repositoriesPerPage = 9;
+  const repositoryPageCount = Math.max(1, Math.ceil(visibleRepositories.length / repositoriesPerPage));
+  const paginatedRepositories = visibleRepositories.slice(
+    (repositoryPage - 1) * repositoriesPerPage,
+    repositoryPage * repositoriesPerPage,
+  );
+
+  useEffect(() => {
+    setRepositoryPage(1);
+  }, [repositorySearch, repositoryLanguage, repositorySort]);
+
   const filters = locales.projects.filters;
 
   const filteredProjects = activeFilter === 'All' 
-    ? projects 
-    : projects.filter(project => 
+    ? featuredProjects
+    : featuredProjects.filter(project =>
         Array.isArray(project.category) 
           ? project.category.includes(activeFilter) 
           : project.category === activeFilter
@@ -357,15 +542,73 @@ const ProjectsSection = () => {
     setCurrentPage(1);
   };
 
-  const openProject = (project: Project) => {
+  const openProject = (project: Project, trigger: HTMLButtonElement) => {
+    lastProjectTriggerRef.current = trigger;
     setSelectedProject(project);
-    document.body.style.overflow = 'hidden';
   };
 
   const closeProject = () => {
     setSelectedProject(null);
-    document.body.style.overflow = 'unset';
   };
+
+  const isProjectOpen = selectedProject !== null;
+
+  useEffect(() => {
+    if (!isProjectOpen) return;
+
+    lockedScrollY.current = window.scrollY;
+    const body = document.body;
+    const root = document.documentElement;
+    const previousBodyStyles = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      overflow: body.style.overflow,
+    };
+    const previousRootOverflow = root.style.overflow;
+
+    body.style.position = 'fixed';
+    body.style.top = `-${lockedScrollY.current}px`;
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.width = '100%';
+    body.style.overflow = 'hidden';
+    root.style.overflow = 'hidden';
+
+    window.requestAnimationFrame(() => projectBackButtonRef.current?.focus());
+
+    const handleDialogKeyboard = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSelectedProject(null);
+        return;
+      }
+      if (event.key !== 'Tab' || !projectDialogRef.current) return;
+      const focusable = Array.from(
+        projectDialogRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', handleDialogKeyboard);
+
+    return () => {
+      document.removeEventListener('keydown', handleDialogKeyboard);
+      Object.assign(body.style, previousBodyStyles);
+      root.style.overflow = previousRootOverflow;
+      window.scrollTo(0, lockedScrollY.current);
+      window.requestAnimationFrame(() => lastProjectTriggerRef.current?.focus());
+    };
+  }, [isProjectOpen]);
 
   const getNextProject = () => {
     if (!selectedProject) return null;
@@ -377,12 +620,6 @@ const ProjectsSection = () => {
     if (!selectedProject) return null;
     const currentIndex = projects.findIndex(p => p.id === selectedProject.id);
     return projects[(currentIndex - 1 + projects.length) % projects.length];
-  };
-
-  const getProjectSizeClass = (size?: 'normal' | 'large' | 'wide' | 'tall') => {
-    // For consistent grid layout, all cards will be the same size
-    // This ensures even spacing and no gaps
-    return 'col-span-1 row-span-1 h-[280px]';
   };
 
   const formatCategory = (category: string | string[]) => {
@@ -404,20 +641,21 @@ const ProjectsSection = () => {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-5xl md:text-6xl font-bold text-portfolio-text mb-8">
-              {locales.projects.title}
+            <h2 className="mb-8 font-['Fraunces'] text-[clamp(2.8rem,6vw,5.25rem)] font-semibold leading-[1.02] tracking-[-0.035em] text-portfolio-text">
+              Featured Projects
+              <span className="italic text-portfolio-cyan">.</span>
             </h2>
 
             {/* Filter Buttons */}
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-wrap justify-center gap-2">
               {filters.map((filter) => (
                 <motion.button
                   key={filter}
                   onClick={() => handleFilterChange(filter)}
-                  className={`px-6 py-3 rounded-full border transition-all duration-200 ${
+                  className={`rounded-[10px] border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.08em] transition-all duration-200 ${
                     activeFilter === filter
-                      ? 'bg-portfolio-cyan text-portfolio-black border-portfolio-cyan'
-                      : 'text-portfolio-text border-portfolio-gray-lighter hover:border-portfolio-cyan'
+                      ? 'border-portfolio-cyan/60 bg-portfolio-cyan/[0.1] text-portfolio-cyan'
+                      : 'border-white/[0.09] bg-white/[0.02] text-portfolio-text-muted hover:border-portfolio-cyan/35 hover:text-portfolio-text'
                   }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -437,55 +675,46 @@ const ProjectsSection = () => {
           >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {currentProjects.map((project, index) => (
-                <motion.div
+                <motion.button
+                  type="button"
                   key={project.id}
-                  className={cn(
-                    "rounded-lg relative bg-gray-100 dark:bg-neutral-900 overflow-hidden transition-all duration-300 ease-out cursor-pointer group",
-                    getProjectSizeClass(project.size)
-                  )}
-                  onClick={() => openProject(project)}
-                  whileHover={{ scale: 1.02 }}
+                  className="group relative flex min-h-[330px] flex-col overflow-hidden rounded-2xl border border-white/[0.09] bg-[#0d1213]/95 p-4 text-left shadow-[inset_0_1px_0_rgba(226,250,250,0.055),0_18px_55px_rgba(0,0,0,0.25)] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-portfolio-cyan/35 hover:shadow-[inset_0_1px_0_rgba(226,250,250,0.075),0_24px_70px_rgba(0,0,0,0.38)]"
+                  onClick={(event) => openProject(project, event.currentTarget)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  {/* Image with consistent scaling */}
-                  <div className="absolute inset-0 overflow-hidden">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-                  
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
-                  {/* Content with consistent padding */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    <h3 className="text-lg md:text-xl font-semibold text-white mb-3 line-clamp-2 leading-tight">
+                  <ProjectSignal project={project} />
+
+                  <div className="flex flex-1 flex-col px-1 pb-1 pt-5">
+                    <span className="mb-3 w-fit rounded-md border border-portfolio-cyan/20 bg-portfolio-cyan/[0.07] px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-portfolio-cyan">Case study</span>
+                    <div className="mb-3 flex items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.08em] text-portfolio-text-muted">
+                      <span>{project.client}</span>
+                      <span>{project.date}</span>
+                    </div>
+                    <h3 className="line-clamp-2 text-xl font-semibold leading-tight text-portfolio-text transition-colors group-hover:text-white">
                       {project.title}
                     </h3>
-                    <p className="text-sm text-gray-300 mb-3 font-medium">
-                      {formatCategory(project.category)}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="mt-auto flex items-end justify-between gap-4 pt-5">
+                      <div className="flex flex-wrap gap-1.5">
                       {project.technologies.slice(0, 3).map((tech) => (
                         <span
                           key={tech}
-                          className="px-3 py-1 bg-portfolio-cyan/20 text-portfolio-cyan text-xs rounded-full font-medium"
+                            className="rounded-md border border-white/[0.07] bg-white/[0.025] px-2 py-1 font-mono text-[9px] uppercase tracking-[0.04em] text-portfolio-text-muted"
                         >
                           {tech}
                         </span>
                       ))}
                       {project.technologies.length > 3 && (
-                        <span className="px-3 py-1 bg-gray-600/20 text-gray-300 text-xs rounded-full font-medium">
+                          <span className="rounded-md px-2 py-1 font-mono text-[9px] text-portfolio-cyan">
                           +{project.technologies.length - 3}
                         </span>
                       )}
+                      </div>
+                      <ArrowRight className="h-4 w-4 shrink-0 text-portfolio-cyan transition-transform group-hover:translate-x-1" />
                     </div>
                   </div>
-                </motion.div>
+                </motion.button>
               ))}
             </div>
 
@@ -505,7 +734,7 @@ const ProjectsSection = () => {
                   Previous
                 </button>
 
-                <div className="flex items-center gap-2">
+                <div className="hidden items-center gap-2 sm:flex">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                     <button
                       key={page}
@@ -520,6 +749,10 @@ const ProjectsSection = () => {
                     </button>
                   ))}
                 </div>
+
+                <span className="min-w-[72px] text-center font-mono text-xs text-portfolio-text-muted sm:hidden">
+                  {currentPage} / {totalPages}
+                </span>
 
                 <button
                   onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
@@ -536,35 +769,124 @@ const ProjectsSection = () => {
               </div>
             )}
           </motion.div>
+
+          <div className="mt-24 border-t border-white/[0.09] pt-16">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.14em] text-portfolio-cyan">Connected repositories</p>
+                <h3 className="font-['Fraunces'] text-4xl font-semibold tracking-[-0.03em] text-portfolio-text sm:text-5xl">Live from GitHub<span className="italic text-portfolio-cyan">.</span></h3>
+                <p className="mt-3 max-w-xl text-sm leading-6 text-portfolio-text-muted">Public, non-fork repositories from both active accounts, refreshed whenever this page loads.</p>
+              </div>
+              <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.08em] text-portfolio-text-muted" aria-live="polite">
+                <span className={`h-2 w-2 rounded-full ${githubSyncState === 'ready' ? 'bg-emerald-400' : githubSyncState === 'error' ? 'bg-amber-400' : 'animate-pulse bg-portfolio-cyan'}`} />
+                {githubSyncState === 'ready' ? `${githubProjects.length} public repositories` : githubSyncState === 'error' ? 'Curated work remains available' : 'Loading repositories'}
+              </div>
+            </div>
+
+            <div className="mt-8 grid gap-3 rounded-2xl border border-white/[0.08] bg-[#0d1213]/75 p-3 sm:grid-cols-2 sm:p-4 lg:grid-cols-[minmax(260px,1fr)_auto_auto]">
+              <label className="relative sm:col-span-2 lg:col-span-1">
+                <span className="sr-only">Search repositories</span>
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-portfolio-text-muted" />
+                <input value={repositorySearch} onChange={(event) => setRepositorySearch(event.target.value)} placeholder="Search repositories" className="h-11 w-full border-white/[0.1] pl-10 text-sm" />
+              </label>
+              <label>
+                <span className="sr-only">Filter by language</span>
+                <select value={repositoryLanguage} onChange={(event) => setRepositoryLanguage(event.target.value)} className="h-11 w-full rounded-lg border border-white/[0.1] bg-[#090d0e] px-3 text-sm text-portfolio-text sm:w-auto">
+                  <option>All</option>
+                  {repositoryLanguages.map((language) => <option key={language}>{language}</option>)}
+                </select>
+              </label>
+              <label>
+                <span className="sr-only">Sort repositories</span>
+                <select value={repositorySort} onChange={(event) => setRepositorySort(event.target.value as 'updated' | 'stars')} className="h-11 w-full rounded-lg border border-white/[0.1] bg-[#090d0e] px-3 text-sm text-portfolio-text sm:w-auto">
+                  <option value="updated">Recently updated</option>
+                  <option value="stars">Most starred</option>
+                </select>
+              </label>
+            </div>
+
+            {githubSyncState === 'loading' && (
+              <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3" aria-label="Loading GitHub repositories">
+                {Array.from({ length: 6 }, (_, index) => <div key={index} className="h-52 animate-pulse rounded-2xl border border-white/[0.07] bg-white/[0.025]" />)}
+              </div>
+            )}
+
+            {githubSyncState === 'ready' && visibleRepositories.length === 0 && (
+              <div className="mt-6 rounded-2xl border border-dashed border-white/[0.12] p-10 text-center text-sm text-portfolio-text-muted">No repositories match these filters.</div>
+            )}
+
+            {githubSyncState === 'ready' && visibleRepositories.length > 0 && (
+              <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {paginatedRepositories.map((project) => (
+                  <article key={project.id} className="flex min-h-56 flex-col rounded-2xl border border-white/[0.08] bg-[#0d1213]/90 p-5 transition-colors hover:border-portfolio-cyan/30">
+                    <div className="flex items-center justify-between gap-3 font-mono text-[9px] uppercase tracking-[0.08em] text-portfolio-text-muted">
+                      <span>@{project.account}</span>
+                      <span className="inline-flex items-center gap-1"><Star className="h-3 w-3" />{project.stars ?? 0}</span>
+                    </div>
+                    <button type="button" onClick={(event) => openProject(project, event.currentTarget)} className="mt-4 text-left">
+                      <h4 className="text-lg font-semibold leading-tight text-portfolio-text hover:text-portfolio-cyan">{project.title}</h4>
+                      <p className="mt-3 line-clamp-3 text-sm leading-6 text-portfolio-text-muted">{project.description}</p>
+                    </button>
+                    <div className="mt-auto flex items-end justify-between gap-3 pt-5">
+                      <span className="font-mono text-[10px] text-portfolio-cyan">{project.language ?? 'Repository'}</span>
+                      <div className="flex gap-2">
+                        {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-emerald-400/25 px-3 text-xs text-emerald-300 hover:bg-emerald-400/10">Live <ExternalLink className="h-3.5 w-3.5" /></a>}
+                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-white/[0.1] px-3 text-xs text-portfolio-text hover:border-portfolio-cyan/30"><Github className="h-3.5 w-3.5" />Source</a>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+
+            {githubSyncState === 'ready' && visibleRepositories.length > repositoriesPerPage && (
+              <nav className="mt-8 flex items-center justify-center gap-4" aria-label="GitHub repository pages">
+                <button type="button" onClick={() => setRepositoryPage((page) => Math.max(1, page - 1))} disabled={repositoryPage === 1} className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-white/[0.1] px-4 text-sm text-portfolio-text transition-colors hover:border-portfolio-cyan/40 disabled:cursor-not-allowed disabled:opacity-35">
+                  <ChevronLeft className="h-4 w-4" /> Previous
+                </button>
+                <span className="min-w-20 text-center font-mono text-xs text-portfolio-text-muted">{repositoryPage} / {repositoryPageCount}</span>
+                <button type="button" onClick={() => setRepositoryPage((page) => Math.min(repositoryPageCount, page + 1))} disabled={repositoryPage === repositoryPageCount} className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-white/[0.1] px-4 text-sm text-portfolio-text transition-colors hover:border-portfolio-cyan/40 disabled:cursor-not-allowed disabled:opacity-35">
+                  Next <ChevronRight className="h-4 w-4" />
+                </button>
+              </nav>
+            )}
+          </div>
         </div>
       </motion.section>
 
       {/* Project Detail Modal */}
-      {selectedProject && (
+      {selectedProject && createPortal((
         <motion.div
-          className="fixed inset-0 z-50 bg-portfolio-black"
+          ref={projectDialogRef}
+          className="fixed inset-0 z-[100] isolate bg-[#070a0a]"
           initial={{ x: '100%' }}
           animate={{ x: 0 }}
-          exit={{ x: '100%' }}
-          transition={{ duration: 0.5, ease: 'easeInOut' }}
+          transition={{ duration: 0.35, ease: 'easeOut' }}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${selectedProject.title} project details`}
         >
           <div className="h-full overflow-y-auto">
-            <div className="container-custom py-8">
+            <div className="container-custom pb-8">
               {/* Header */}
-              <div className="flex items-center justify-between mb-8">
+              <div className="sticky top-0 z-30 mb-8 flex items-center justify-between border-b border-white/[0.08] bg-[#070a0a]/95 py-4 backdrop-blur-xl">
                 <button
+                  ref={projectBackButtonRef}
+                  type="button"
                   onClick={closeProject}
-                  className="flex items-center space-x-2 text-portfolio-cyan hover:text-white transition-colors"
+                  className="inline-flex min-h-11 items-center gap-2 rounded-[10px] border border-portfolio-cyan/35 bg-portfolio-cyan/[0.08] px-4 text-sm font-semibold text-portfolio-cyan transition-colors hover:border-portfolio-cyan hover:bg-portfolio-cyan hover:text-black"
                 >
-                  <ArrowLeft className="h-6 w-6" />
+                  <ArrowLeft className="h-4 w-4" />
                   <span>{locales.projects.backToProjects}</span>
                 </button>
                 
                 <button
+                  type="button"
                   onClick={closeProject}
-                  className="text-portfolio-text hover:text-white transition-colors"
+                  className="flex h-11 w-11 items-center justify-center rounded-[10px] border border-white/[0.1] text-portfolio-text-muted transition-colors hover:border-portfolio-cyan/40 hover:text-white"
+                  aria-label="Close project details"
                 >
-                  <X className="h-6 w-6" />
+                  <X className="h-5 w-5" />
                 </button>
               </div>
 
@@ -574,10 +896,23 @@ const ProjectsSection = () => {
               </div>
 
               {/* Project Title */}
-              <h1 className="text-4xl md:text-6xl font-bold text-portfolio-text mb-2">
+              <h1 className="mb-2 max-w-5xl font-['Fraunces'] text-4xl font-semibold leading-[1.05] tracking-[-0.035em] text-portfolio-text md:text-6xl">
                 {selectedProject.title}
               </h1>
               <p className="text-portfolio-cyan mb-8">{formatCategory(selectedProject.category)} • {selectedProject.date}</p>
+
+              <div className="mb-10 flex flex-wrap gap-3">
+                {selectedProject.liveUrl && (
+                  <a href={selectedProject.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-emerald-400/30 bg-emerald-400/[0.08] px-4 text-sm font-semibold text-emerald-300 hover:bg-emerald-400/[0.14]">
+                    View live project <ExternalLink className="h-4 w-4" />
+                  </a>
+                )}
+                {selectedProject.githubUrl && (
+                  <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-white/[0.12] px-4 text-sm font-semibold text-portfolio-text hover:border-portfolio-cyan/40">
+                    View source <Github className="h-4 w-4" />
+                  </a>
+                )}
+              </div>
 
               {/* Project Content */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -586,17 +921,22 @@ const ProjectsSection = () => {
                     {selectedProject.description}
                   </p>
 
-                  {/* Project Gallery */}
-                  <div className="space-y-6">
-                    {selectedProject.gallery.map((image, index) => (
-                      <img
-                        key={index}
-                        src={image}
-                        alt={`${selectedProject.title} ${index + 1}`}
-                        className="w-full rounded-lg"
-                      />
-                    ))}
-                  </div>
+                  {selectedProject.problem && selectedProject.approach && selectedProject.outcome && (
+                    <div className="mb-10 grid gap-3 sm:grid-cols-3">
+                      {[
+                        ['Problem', selectedProject.problem],
+                        ['Approach', selectedProject.approach],
+                        ['Outcome', selectedProject.outcome],
+                      ].map(([label, value]) => (
+                        <div key={label} className="rounded-xl border border-white/[0.08] bg-white/[0.025] p-5">
+                          <h2 className="font-mono text-[10px] uppercase tracking-[0.12em] text-portfolio-cyan">{label}</h2>
+                          <p className="mt-3 text-sm leading-6 text-portfolio-text-muted">{value}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <ProjectSignal project={selectedProject} large />
                 </div>
 
                 <div className="space-y-8">
@@ -604,7 +944,7 @@ const ProjectsSection = () => {
                   {selectedProject.githubUrl && (
                     <div>
                       <h3 className="text-xl font-semibold text-portfolio-text mb-4">
-                        {(locales.projects as any).github}
+                        {locales.projects.github}
                       </h3>
                       <a
                         href={selectedProject.githubUrl}
@@ -627,7 +967,7 @@ const ProjectsSection = () => {
                       {selectedProject.technologies.map((tech) => (
                         <span
                           key={tech}
-                          className="px-3 py-1 bg-portfolio-gray text-portfolio-cyan text-sm rounded-full"
+                          className="rounded-md border border-white/[0.08] bg-white/[0.025] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.05em] text-portfolio-cyan"
                         >
                           {tech}
                         </span>
@@ -658,7 +998,7 @@ const ProjectsSection = () => {
             </div>
           </div>
         </motion.div>
-      )}
+      ), document.body)}
     </>
   );
 };

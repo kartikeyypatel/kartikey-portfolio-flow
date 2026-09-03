@@ -1,326 +1,168 @@
 'use client';
 
-import React, { Suspense, useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { ChevronDown, ArrowRight } from 'lucide-react';
-import { BackgroundPaths } from './ui/background-paths';
-import { AnimatedText } from './ui/animated-hero';
-import { TextPressure } from './ui/interactive-text-pressure';
-import { Spotlight } from './ui/spotlight';
-import { HeroResumeButton } from './ui/HeroResumeButton';
-import { ResumeModal } from './ui/ResumeModal';
-import { LinkPreview } from './ui/link-preview';
+import React, { Suspense, useEffect, useState, type FormEvent } from 'react';
+import { ArrowRight } from 'lucide-react';
+import { Typewriter } from './ui/typewriter-text';
 import { PlaceholdersAndVanishInput } from './ui/placeholders-and-vanish-input';
+import { ResumeModal } from './ui/ResumeModal';
 import ChatModal from './ui/ChatModal';
 
-const SplineScene = React.lazy(() => 
-  import('./ui/spline').then(module => ({ default: module.SplineScene }))
+const SplineScene = React.lazy(() =>
+  import('./ui/spline').then((module) => ({ default: module.SplineScene }))
 );
+
+const roles = ['full-stack software engineer', 'software engineer', 'frontend developer', 'backend developer'];
+
+const chatPlaceholders = [
+  'Ask about my experience with React and TypeScript...',
+  'What projects has Kartikey worked on recently?',
+  'Tell me about his technical skills and expertise...',
+  'How can I get in touch with Kartikey?',
+  'What makes him a great software engineer?',
+];
 
 const HeroSection = () => {
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
-  const [initialChatMessage, setInitialChatMessage] = useState<string | undefined>(undefined);
+  const [initialChatMessage, setInitialChatMessage] = useState<string>();
+  const [loadSpline, setLoadSpline] = useState(false);
 
-  const heroTextRef = useRef<HTMLDivElement>(null);
-  const thisGuyRef = useRef<HTMLSpanElement>(null);
-  const [nameArrowPath, setNameArrowPath] = useState<string | null>(null);
-
-  // Draw a connector from "This guy" up to the name by measuring their actual
-  // rendered positions, since the name's font size (and therefore the gap
-  // between the two) changes with viewport width and text-pressure font metrics.
   useEffect(() => {
-    const computeArrow = () => {
-      const container = heroTextRef.current;
-      const guyEl = thisGuyRef.current;
-      const nameEl = container?.querySelector<HTMLElement>('.text-pressure-title');
-      if (!container || !guyEl || !nameEl) return;
-
-      const containerRect = container.getBoundingClientRect();
-      const nameRect = nameEl.getBoundingClientRect();
-      const guyRect = guyEl.getBoundingClientRect();
-
-      const startX = guyRect.left - containerRect.left + guyRect.width * 0.2;
-      const startY = guyRect.top - containerRect.top - 4;
-      const endX = nameRect.left - containerRect.left + Math.min(nameRect.width * 0.06, 24);
-      const endY = nameRect.bottom - containerRect.top + 6;
-
-      // Skip drawing if there isn't a clean vertical gap to arc through
-      // (e.g. wrapped text on very small screens pushing them close together).
-      if (startY - endY < 20) {
-        setNameArrowPath(null);
-        return;
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    const scheduleLoad = () => {
+      if (!desktop.matches || reducedMotion.matches || connection?.saveData) {
+        setLoadSpline(false);
+        return undefined;
       }
-
-      const midY = (startY + endY) / 2;
-      // Bow the curve out to the left, scaled to the gap so it looks
-      // proportional whether the two elements are close or far apart.
-      const bow = Math.min(Math.max((startY - endY) * 0.3, 20), 50);
-      setNameArrowPath(
-        `M ${startX} ${startY} C ${startX - bow} ${midY}, ${endX - bow} ${midY}, ${endX} ${endY}`
-      );
+      return window.setTimeout(() => setLoadSpline(true), 900);
     };
-
-    computeArrow();
-    // Recompute after the entrance animations settle, since they animate position.
-    const settleTimeout = setTimeout(computeArrow, 1700);
-    window.addEventListener('resize', computeArrow);
+    let timer = scheduleLoad();
+    const reevaluate = () => {
+      if (timer) window.clearTimeout(timer);
+      timer = scheduleLoad();
+    };
+    desktop.addEventListener('change', reevaluate);
+    reducedMotion.addEventListener('change', reevaluate);
     return () => {
-      clearTimeout(settleTimeout);
-      window.removeEventListener('resize', computeArrow);
+      if (timer) window.clearTimeout(timer);
+      desktop.removeEventListener('change', reevaluate);
+      reducedMotion.removeEventListener('change', reevaluate);
     };
   }, []);
 
-  const chatPlaceholders = [
-    "Ask about my experience with React and TypeScript...",
-    "What projects has Kartikey worked on recently?",
-    "Tell me about his technical skills and expertise...",
-    "How can I get in touch with Kartikey?",
-    "What makes him a great software engineer?",
-  ];
-
-  const handleChatChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("Chat input:", e.target.value);
+  const scrollTo = (selector: string) => {
+    window.requestAnimationFrame(() => {
+      document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' });
+    });
   };
 
-  const handleChatSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const inputEl = (e.target as HTMLFormElement).querySelector('input[type="text"]') as HTMLInputElement | null;
-    const initial = inputEl?.value?.trim();
-    setInitialChatMessage(initial || undefined);
+  const handleChatSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const input = event.currentTarget.querySelector<HTMLInputElement>('input[type="text"]');
+    setInitialChatMessage(input?.value.trim() || undefined);
     setIsChatModalOpen(true);
   };
 
-  const scrollToSkills = () => {
-    const skillsSection = document.querySelector('#skills');
-    if (skillsSection) {
-      skillsSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const scrollToProjects = () => {
-    const projectsSection = document.querySelector('#projects');
-    if (projectsSection) {
-      projectsSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const scrollToContact = () => {
-    const contactSection = document.querySelector('#contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const roles = ["Software Engineer", "Full Stack Developer", "Frontend Developer", "Backend Developer"];
-
   return (
-    <section id="home" className="min-h-screen relative flex items-center justify-center overflow-hidden">
-      <BackgroundPaths />
+    <section id="home" className="relative min-h-screen overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(1,3,3,0.76)_0%,rgba(2,5,5,0.64)_68%,rgba(7,10,10,0.2)_100%)]"
+          aria-hidden="true"
+        />
+        <div className="relative z-10 mx-auto grid min-h-screen max-w-[1400px] items-center px-5 pb-20 pt-24 sm:px-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(440px,0.8fr)] lg:gap-10 lg:px-10 xl:gap-16 xl:px-12">
+          <div className="min-w-0 max-w-3xl">
+            <div className="mb-6 flex w-fit max-w-full items-start gap-2 rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.055] px-3 py-2 font-mono text-[9px] uppercase leading-4 tracking-[0.09em] text-emerald-300 sm:items-center sm:rounded-full sm:py-1.5">
+              <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400 sm:mt-0" aria-hidden="true" />
+              <span className="min-w-0">Based in New York · Hybrid + remote</span>
+            </div>
 
-      {/* Two-Column Grid Layout */}
-      <div className="relative w-full container mx-auto px-4 h-screen">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full items-center">
-          
-          {/* Left Column - Text Content */}
-          <div className="relative z-10 flex flex-col justify-center space-y-8 text-center lg:text-left">
-            <motion.div
-              ref={heroTextRef}
-              className="relative"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-               {/* Animated Name with improved contrast */}
-               <motion.div
-                 className="h-32 md:h-40 flex items-center justify-center lg:justify-start mb-4"
-                 initial={{ opacity: 0, y: 30 }}
-                 animate={{ opacity: 1, y: 0 }}
-                 transition={{ duration: 1, delay: 0.5 }}
-               >
-                 <TextPressure
-                   text="Kartikey Patel"
-                   fontFamily="Roboto Flex"
-                   fontUrl=""
-                   italic={false}
-                   flex={true}
-                   textColor="#FFFFFF"
-                   className="drop-shadow-[0_0_20px_rgba(0,255,255,0.3)]"
-                   minFontSize={100}
-                 />
-               </motion.div>
-               
-                {/* Dynamic Job Titles - Moved closer to name */}
-                <motion.div
-                  className="text-xl md:text-3xl text-portfolio-text mb-6 font-light"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.8 }}
-                >
-                  <AnimatedText texts={roles} className="h-10 md:h-14" />
-                </motion.div>
+            <h1 className="font-['Fraunces'] text-[clamp(3.5rem,9vw,7.75rem)] font-semibold leading-[0.88] tracking-[-0.055em] text-portfolio-text drop-shadow-2xl">
+              Kartikey
+              <br />
+              <span className="italic text-portfolio-cyan">Patel.</span>
+            </h1>
 
-              {/* Professional Tagline with personal callout + curved arrow to name */}
-              <motion.p
-                className="text-lg md:text-xl text-portfolio-text-muted mb-8 max-w-lg mx-auto lg:mx-0"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1.0 }}
+            <p className="mt-7 w-full max-w-2xl break-words !font-sans text-[15px] !normal-case !tracking-normal leading-7 text-portfolio-text-muted sm:text-base">
+              I&apos;m a{' '}
+              <span className="mt-1 flex min-w-0 items-baseline font-semibold text-portfolio-cyan sm:mt-0 sm:inline-flex sm:min-w-[17.5rem]">
+                <span className="mr-1 font-mono text-[0.8em] font-medium" aria-hidden="true">&gt;</span>
+                <Typewriter
+                  text={roles}
+                  speed={58}
+                  deleteSpeed={32}
+                  delay={1700}
+                  loop
+                  cursor="_"
+                  className="whitespace-nowrap"
+                />
+              </span>{' '}
+              focused on building reliable, intelligent products with React, Spring Boot, and AWS. I turn complex requirements into scalable systems, thoughtful interfaces, and measurable outcomes.
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => scrollTo('#projects')}
+                className="inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-[10px] border border-portfolio-cyan bg-portfolio-cyan px-6 text-sm font-semibold text-black transition-transform hover:-translate-y-px sm:w-auto"
               >
-                <span ref={thisGuyRef} className="inline-block">
-                <LinkPreview
-                  url="https://github.com/kartikeyp2"
-                  className="font-semibold text-portfolio-cyan"
-                  isStatic
-                  imageSrc="/uploads/kartikey-profile.jpg"
-                >
-                    This guy
-                  </LinkPreview>
-                  , is a
-                </span>{' '}
-                passionate <span className="font-semibold text-portfolio-cyan">full-stack engineer</span> crafting intelligent solutions with{" "}
-                <LinkPreview url="https://react.dev" className="font-semibold text-portfolio-cyan">React</LinkPreview>,{" "}
-                <LinkPreview url="https://spring.io" className="font-semibold text-portfolio-cyan">Spring Boot</LinkPreview>, and{" "}
-                <LinkPreview url="https://aws.amazon.com" className="font-semibold text-portfolio-cyan">AWS</LinkPreview> — building tomorrow's digital innovations through scalable, intelligent web applications.
-              </motion.p>
-
-               {/* CTA Buttons with improved alignment */}
-               <motion.div
-                 className="flex flex-col items-center justify-center lg:items-start gap-6"
-                 initial={{ opacity: 0, y: 20 }}
-                 animate={{ opacity: 1, y: 0 }}
-                 transition={{ duration: 0.8, delay: 1.2 }}
-               >
-                 {/* Primary CTA */}
-                 <motion.button
-                   onClick={scrollToProjects}
-                   className="inline-flex items-center space-x-3 bg-portfolio-cyan text-portfolio-black hover:bg-white hover:shadow-[0_0_30px_rgba(0,255,255,0.5)] px-8 py-4 rounded-full text-base font-semibold transition-all duration-300 group shadow-lg"
-                   whileHover={{ scale: 1.05 }}
-                   whileTap={{ scale: 0.95 }}
-                 >
-                   <span>View My Work</span>
-                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
-                 </motion.button>
-
-                  {/* Secondary CTAs - Better spacing and alignment */}
-                  <div className="flex flex-row gap-3 items-center justify-center lg:justify-start max-w-[240px]">
-                    <motion.button
-                      onClick={() => setIsResumeModalOpen(true)}
-                      className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-cyan text-portfolio-cyan hover:bg-portfolio-cyan hover:text-portfolio-black px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 flex-1"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Resume
-                    </motion.button>
-                    
-                    <motion.button
-                      onClick={scrollToContact}
-                      className="inline-flex items-center justify-center bg-transparent border-2 border-portfolio-text-muted text-portfolio-text-muted hover:border-portfolio-cyan hover:text-portfolio-cyan px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 flex-1"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Connect
-                    </motion.button>
-                  </div>
-               </motion.div>
-
-               {/* Curved connector from "This guy" up to the name, measured to fit whatever gap the current layout/viewport produces */}
-               {nameArrowPath && (
-                 <svg
-                   className="pointer-events-none absolute inset-0 w-full h-full text-portfolio-cyan"
-                   style={{ overflow: 'visible' }}
-                 >
-                   <defs>
-                     <marker
-                       id="hero-name-arrowhead"
-                       markerWidth="8"
-                       markerHeight="8"
-                       refX="4"
-                       refY="4"
-                       orient="auto-start-reverse"
-                     >
-                       <path d="M0,0 L8,4 L0,8 Z" fill="currentColor" />
-                     </marker>
-                   </defs>
-                   <path
-                     d={nameArrowPath}
-                     stroke="currentColor"
-                     strokeWidth="2.5"
-                     strokeLinecap="round"
-                     fill="none"
-                     markerEnd="url(#hero-name-arrowhead)"
-                   />
-                 </svg>
-               )}
-            </motion.div>
+                View my work <ArrowRight className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsResumeModalOpen(true)}
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-[10px] border border-white/15 bg-black/25 px-6 text-sm font-semibold text-portfolio-text backdrop-blur-md transition-colors hover:border-portfolio-cyan/50 hover:bg-portfolio-cyan/[0.06] sm:w-auto"
+              >
+                View résumé
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollTo('#contact')}
+                className="inline-flex min-h-12 items-center px-3 text-sm font-medium text-portfolio-text-muted underline decoration-white/20 underline-offset-4 transition-colors hover:text-portfolio-text"
+              >
+                Connect
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsChatModalOpen(true)}
+                className="inline-flex min-h-12 items-center px-3 text-sm font-medium text-portfolio-text-muted underline decoration-white/20 underline-offset-4 transition-colors hover:text-portfolio-text lg:hidden"
+              >
+                Ask AI
+              </button>
+            </div>
           </div>
 
-          {/* Right Column - Robot Animation with Chat */}
-          <div className="relative flex items-center justify-center lg:justify-end">
-            <motion.div
-              className="w-full relative"
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              <Spotlight
-                className="-top-20 left-0 lg:left-10 lg:-top-10"
-                fill="white"
-              />
-              {/* Constrained wrapper so input matches robot width */}
-              <div className="relative mx-auto lg:ml-auto lg:mr-8 w-full max-w-[560px] px-4">
-                {/* Robot Canvas */}
-                <div className="w-full h-[520px] lg:h-[640px] relative">
-                  <Suspense fallback={
-                    <div className="w-full h-full bg-gradient-to-br from-portfolio-gray/20 to-portfolio-cyan/10 rounded-lg flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-16 h-16 border-4 border-portfolio-cyan/30 border-t-portfolio-cyan rounded-full animate-spin mx-auto mb-4"></div>
-                        <p className="text-portfolio-text-muted text-sm">Loading 3D Scene...</p>
-                      </div>
-                    </div>
-                  }>
-                    <SplineScene 
-                      scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                    />
-                  </Suspense>
-                </div>
-
-                {/* Chat Input overlaid on robot */}
-                <motion.div
-                  className="absolute inset-x-0 bottom-6 w-full px-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 1.0 }}
-                >
-                  <div className="mb-2 text-center">
-                    <p className="text-portfolio-text-muted text-sm font-medium">
-                      Ask me anything about my work & experience
-                    </p>
-                  </div>
-                  <div className="relative mx-auto max-w-[520px]">
-                    <div className="absolute inset-0 bg-portfolio-black/20 backdrop-blur-sm rounded-lg"></div>
-                    <div className="relative z-10">
-                      <PlaceholdersAndVanishInput
-                        placeholders={chatPlaceholders}
-                        onChange={handleChatChange}
-                        onSubmit={handleChatSubmit}
-                      />
-                    </div>
-                  </div>
-                </motion.div>
+          <div className="relative hidden h-[min(78vh,720px)] min-h-[590px] w-full self-center overflow-visible lg:block">
+            <div className="absolute inset-x-[8%] inset-y-[5%] rounded-full bg-black/25 blur-3xl" />
+            {loadSpline ? (
+              <Suspense fallback={<div className="h-full w-full" />}>
+                <SplineScene
+                  scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                  className="absolute -left-[10%] top-0 !h-full !w-[120%] -translate-y-4 xl:-left-[12%] xl:!w-[124%] xl:-translate-y-5"
+                />
+              </Suspense>
+            ) : (
+              <div className="absolute left-1/2 top-1/2 flex h-48 w-48 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-portfolio-cyan/15 bg-portfolio-cyan/[0.025] font-mono text-sm uppercase tracking-[0.14em] text-portfolio-cyan/70 shadow-[0_0_100px_rgba(34,211,238,0.08)]" aria-hidden="true">
+                Portfolio AI
               </div>
-            </motion.div>
+            )}
+            <div className="absolute inset-x-0 bottom-0 z-20 mx-auto max-w-[560px] px-3 xl:px-0">
+              <p className="mb-3 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-portfolio-text-muted">
+                Ask the portfolio assistant
+              </p>
+              <div className="rounded-2xl border border-white/10 bg-black/55 p-2 shadow-2xl backdrop-blur-xl">
+                <PlaceholdersAndVanishInput
+                  placeholders={chatPlaceholders}
+                  onChange={() => undefined}
+                  onSubmit={handleChatSubmit}
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Resume Modal */}
-      <ResumeModal 
-        isOpen={isResumeModalOpen}
-        onClose={() => setIsResumeModalOpen(false)}
-      />
-
-      {/* Chat Modal */}
+      <ResumeModal isOpen={isResumeModalOpen} onClose={() => setIsResumeModalOpen(false)} />
       <ChatModal
         isOpen={isChatModalOpen}
         onClose={() => {
@@ -329,29 +171,6 @@ const HeroSection = () => {
         }}
         initialMessage={initialChatMessage}
       />
-
-      {/* Scroll indicator */}
-      <motion.button
-        onClick={scrollToSkills}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-portfolio-cyan hover:text-white transition-colors duration-200 z-20 group"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1.4 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        aria-label="Scroll to Skills section"
-      >
-        <div className="flex flex-col items-center">
-          <span className="text-sm mb-2 font-mono group-hover:text-white transition-colors duration-200">Skills</span>
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="group-hover:text-white transition-colors duration-200"
-          >
-            <ChevronDown className="h-6 w-6" />
-          </motion.div>
-        </div>
-      </motion.button>
     </section>
   );
 };

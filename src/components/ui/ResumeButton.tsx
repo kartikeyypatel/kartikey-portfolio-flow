@@ -1,51 +1,20 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
 
 interface ResumeButtonProps {
   onClick: () => void;
 }
 
 export const ResumeButton: React.FC<ResumeButtonProps> = ({ onClick }) => {
-  const [isHovered, setIsHovered] = React.useState(false)
-
   return (
     <button 
       onClick={onClick}
-      className="relative flex items-center justify-center"
+      className="inline-flex min-h-10 items-center justify-center gap-2 rounded-[10px] border border-portfolio-cyan/50 bg-portfolio-cyan/[0.06] px-[18px] text-[13px] font-semibold text-portfolio-text transition-[border-color,background,transform] duration-200 hover:-translate-y-px hover:border-portfolio-cyan hover:bg-portfolio-cyan/[0.1]"
       aria-label="View Resume"
     >
-      <motion.div
-        initial={{ width: 48, height: 48 }}
-        whileHover={{ width: 120 }}
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="bg-portfolio-cyan flex items-center justify-center overflow-hidden relative rounded-full"
-      >
-        <motion.div
-          className="absolute"
-          animate={{ 
-            opacity: isHovered ? 0 : 1,
-            scale: isHovered ? 0.8 : 1
-          }}
-          transition={{ duration: 0.2 }}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-        </motion.div>
-
-        <motion.div
-          className="w-full flex justify-center items-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isHovered ? 1 : 0 }}
-          transition={{ duration: 0.2, delay: isHovered ? 0.2 : 0 }}
-        >
-          <span className="text-black text-sm font-bold whitespace-nowrap">
-            Resume
-          </span>
-        </motion.div>
-      </motion.div>
+      <span>Resume</span>
+      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
     </button>
   )
 }

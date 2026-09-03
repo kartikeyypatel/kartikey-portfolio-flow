@@ -6,11 +6,11 @@ import SiteBackground from '../components/ui/site-background';
 
 // Lazy load all the sections
 const HeroSection = React.lazy(() => import('../components/HeroSection'));
+const AboutSection = React.lazy(() => import('../components/AboutSection'));
 const SkillsSection = React.lazy(() => import('../components/SkillsSection'));
 const ProjectsSection = React.lazy(() => import('../components/ProjectsSection'));
 const EducationSection = React.lazy(() => import('../components/EducationSection'));
 const ExperienceSection = React.lazy(() => import('../components/ExperienceSection'));
-const AchievementsSection = React.lazy(() => import('../components/AchievementsSection'));
 const ContactSection = React.lazy(() => import('../components/ContactSection'));
 
 const SectionLoader = () => (
@@ -33,12 +33,16 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="relative bg-portfolio-black">
+    <div className="portfolio-editorial relative bg-portfolio-black">
+      <a href="#main-content" className="skip-link">Skip to content</a>
       <SiteBackground />
       <Header />
-      <main className="relative z-10">
+      <main id="main-content" className="relative z-10">
         <Suspense fallback={<SectionLoader />}>
           <HeroSection />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <AboutSection />
         </Suspense>
         <Suspense fallback={<SectionLoader />}>
           <SkillsSection />
@@ -51,9 +55,6 @@ const Index = () => {
         </Suspense>
         <Suspense fallback={<SectionLoader />}>
           <ExperienceSection />
-        </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <AchievementsSection />
         </Suspense>
         <Suspense fallback={<SectionLoader />}>
           <ContactSection />

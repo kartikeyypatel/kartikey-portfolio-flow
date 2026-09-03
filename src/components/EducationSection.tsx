@@ -9,13 +9,15 @@ const EducationSection = () => {
     {
       title: '2023 - 2025',
       content: (
-        <div className="bg-portfolio-gray/20 p-6 rounded-lg border border-portfolio-gray-lighter">
-          <img
-            src="/uploads/2497ec71-a338-4440-8c70-d9e85d5df394.png"
-            alt="New Jersey Institute of Technology"
-            className="rounded-lg mb-4 w-full h-64 object-cover bg-white p-4"
-          />
-          <h3 className="text-xl md:text-2xl font-bold text-portfolio-text mb-2">
+        <div className="w-full max-w-[680px] rounded-xl border border-portfolio-gray-lighter bg-portfolio-gray/20 p-4 sm:p-5">
+          <div className="mb-5 aspect-[3/2] overflow-hidden rounded-lg bg-portfolio-gray">
+            <img
+              src="/uploads/2497ec71-a338-4440-8c70-d9e85d5df394.png"
+              alt="New Jersey Institute of Technology campus"
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <h3 className="mb-2 text-xl font-bold text-portfolio-text md:text-2xl">
             New Jersey Institute of Technology
           </h3>
           <p className="text-portfolio-text text-lg mb-1">
@@ -28,13 +30,15 @@ const EducationSection = () => {
     {
       title: '2016 - 2020',
       content: (
-        <div className="bg-portfolio-gray/20 p-6 rounded-lg border border-portfolio-gray-lighter">
-          <img
-            src="/uploads/d22d6c8b-e05e-4741-82ac-223f409656f8.png"
-            alt="University of Mumbai"
-            className="rounded-lg mb-4 w-full h-64 object-cover bg-white p-4"
-          />
-          <h3 className="text-xl md:text-2xl font-bold text-portfolio-text mb-2">
+        <div className="w-full max-w-[680px] rounded-xl border border-portfolio-gray-lighter bg-portfolio-gray/20 p-4 sm:p-5">
+          <div className="mb-5 aspect-[3/2] overflow-hidden rounded-lg bg-portfolio-gray">
+            <img
+              src="/uploads/d22d6c8b-e05e-4741-82ac-223f409656f8.png"
+              alt="University of Mumbai campus"
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <h3 className="mb-2 text-xl font-bold text-portfolio-text md:text-2xl">
             University of Mumbai
           </h3>
           <p className="text-portfolio-text text-lg mb-1">
