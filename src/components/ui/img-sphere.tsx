@@ -60,6 +60,8 @@ const SphereImageGrid: React.FC<SphereImageGridProps> = ({
   const velocityRef = useRef<Velocity>({ x: 0, y: 0 });
   const draggingRef = useRef(false);
   const frameRef = useRef<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   const positions = useMemo<SphericalPosition[]>(() => {
     const goldenAngle = Math.PI * (3 - Math.sqrt(5));
@@ -107,9 +109,24 @@ const SphereImageGrid: React.FC<SphereImageGridProps> = ({
   );
 
   useEffect(() => {
+    const element = containerRef.current;
+    if (!element) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { rootMargin: '120px' },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion || (!autoRotate && Math.abs(velocityRef.current.x) < 0.01 && Math.abs(velocityRef.current.y) < 0.01)) {
+      return;
+    }
     const animate = () => {
-      if (!draggingRef.current && !reduceMotion) {
+      if (!draggingRef.current) {
         const velocity = velocityRef.current;
         velocityRef.current = { x: velocity.x * momentumDecay, y: velocity.y * momentumDecay };
         setRotation((current) => ({
@@ -123,7 +140,7 @@ const SphereImageGrid: React.FC<SphereImageGridProps> = ({
     return () => {
       if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
     };
-  }, [autoRotate, autoRotateSpeed, clampSpeed, momentumDecay]);
+  }, [autoRotate, autoRotateSpeed, clampSpeed, isVisible, momentumDecay]);
 
   const startDrag = (clientX: number, clientY: number) => {
     draggingRef.current = true;
@@ -147,7 +164,6 @@ const SphereImageGrid: React.FC<SphereImageGridProps> = ({
       if (!draggingRef.current) return;
       const touch = event.touches[0];
       if (touch) moveDrag(touch.clientX, touch.clientY);
-      event.preventDefault();
     };
     const end = () => {
       draggingRef.current = false;
@@ -155,7 +171,7 @@ const SphereImageGrid: React.FC<SphereImageGridProps> = ({
     };
     document.addEventListener('mousemove', mouseMove);
     document.addEventListener('mouseup', end);
-    document.addEventListener('touchmove', touchMove, { passive: false });
+    document.addEventListener('touchmove', touchMove, { passive: true });
     document.addEventListener('touchend', end);
     return () => {
       document.removeEventListener('mousemove', mouseMove);
@@ -172,7 +188,8 @@ const SphereImageGrid: React.FC<SphereImageGridProps> = ({
   return (
     <>
       <div
-        className={`relative cursor-grab select-none touch-none active:cursor-grabbing ${className}`}
+        ref={containerRef}
+        className={`relative cursor-grab select-none touch-pan-y active:cursor-grabbing ${className}`}
         style={{ width: containerSize, height: containerSize, perspective }}
         onMouseDown={(event) => startDrag(event.clientX, event.clientY)}
         onTouchStart={(event) => {
@@ -208,7 +225,7 @@ const SphereImageGrid: React.FC<SphereImageGridProps> = ({
               aria-label={image.title ?? image.alt}
             >
               <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full border border-white/15 bg-[#111718]/95 p-[18%] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_8px_28px_rgba(0,0,0,0.42)] backdrop-blur-md">
-                <img src={image.src} alt="" className={`h-full w-full object-contain transition-[filter] duration-300 ${isDimmed ? 'grayscale' : ''}`} draggable={false} loading={index < 8 ? 'eager' : 'lazy'} />
+                <img src={image.src} alt="" className={`h-full w-full object-contain transition-[filter] duration-300 ${isDimmed ? 'grayscale' : ''}`} draggable={false} loading="lazy" decoding="async" />
               </span>
               <span className="pointer-events-none absolute left-1/2 top-[calc(100%+8px)] z-[2000] -translate-x-1/2 whitespace-nowrap rounded-md border border-white/10 bg-[#080c0d]/95 px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.08em] text-portfolio-text opacity-0 shadow-xl backdrop-blur-md transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100">
                 {image.title ?? image.alt}

@@ -132,6 +132,11 @@
     background: transparent !important;
   }
 
+  .portfolio-editorial section[id]:not(#home) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
+  }
+
   .portfolio-editorial section[id]:not(#home):not(#projects) h2 {
     font-family: 'Fraunces', Georgia, serif;
     font-size: clamp(2.8rem, 6vw, 5.25rem) !important;
@@ -151,7 +156,7 @@
     letter-spacing: -0.015em;
   }
 
-  .portfolio-editorial section[id]:not(#projects) > div > div:first-child > p,
+  .portfolio-editorial section[id]:not(#home):not(#projects) > div > div:first-child > p,
   .portfolio-editorial section[id]:not(#projects) .font-mono {
     font-family: 'JetBrains Mono', monospace;
     letter-spacing: 0.12em;
@@ -206,6 +211,9 @@
   }
 
   @media (max-width: 639px) {
+    body::before {
+      display: none;
+    }
     .section-padding {
       padding-top: 4rem !important;
       padding-bottom: 4rem !important;

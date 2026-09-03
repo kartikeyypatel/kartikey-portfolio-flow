@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Download, ZoomIn, ZoomOut } from 'lucide-react';
+import { createPortal } from 'react-dom';
 
 interface ResumeModalProps {
   isOpen: boolean;
@@ -9,18 +10,19 @@ interface ResumeModalProps {
 
 export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => {
   const [zoom, setZoom] = useState(1);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   // Prevent background scrolling when modal is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    // Cleanup function to restore scrolling when component unmounts
+    if (!isOpen) return;
+    const body = document.body;
+    const previousOverflow = body.style.overflow;
+    body.style.overflow = 'hidden';
+    setZoom(1);
     return () => {
-      document.body.style.overflow = 'unset';
+      body.style.overflow = previousOverflow;
     };
   }, [isOpen]);
 
@@ -62,11 +64,13 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
     }
   }, [isOpen, onClose]);
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-[1000] flex h-[100dvh] items-center justify-center bg-black/85 p-3 sm:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -76,7 +80,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
           aria-labelledby="resume-dialog-title"
         >
           <motion.div
-            className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden relative"
+            className="relative flex h-[min(88dvh,760px)] w-full max-w-4xl flex-col overflow-hidden rounded-xl bg-white shadow-2xl"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
@@ -84,24 +88,24 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
             onClick={handleModalClick}
           >
               {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b bg-gray-50">
-                <h2 id="resume-dialog-title" className="text-base font-semibold text-gray-800 sm:text-xl">Resume - Kartikey Patel</h2>
-                <div className="flex items-center gap-2">
+              <div className="relative z-10 flex min-h-14 shrink-0 items-center justify-between border-b bg-gray-50 px-3 py-2 sm:px-4">
+                <h2 id="resume-dialog-title" className="truncate pr-2 text-sm font-semibold text-gray-800 sm:text-xl">Resume — Kartikey Patel</h2>
+                <div className="flex shrink-0 items-center gap-1 sm:gap-2">
                   <button
                     type="button"
                     onClick={handleZoomOut}
-                    className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+                    className="hidden p-2 hover:bg-gray-200 rounded-full transition-colors sm:block"
                     title="Zoom Out"
                   >
                     <ZoomOut className="h-5 w-5" />
                   </button>
-                  <span className="text-sm text-gray-600 min-w-[60px] text-center">
+                  <span className="hidden min-w-[52px] text-center text-sm text-gray-600 sm:block">
                     {Math.round(zoom * 100)}%
                   </span>
                   <button
                     type="button"
                     onClick={handleZoomIn}
-                    className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+                    className="hidden p-2 hover:bg-gray-200 rounded-full transition-colors sm:block"
                     title="Zoom In"
                   >
                     <ZoomIn className="h-5 w-5" />
@@ -109,7 +113,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
                   <button
                     type="button"
                     onClick={handleDownload}
-                    className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+                    className="flex h-10 w-10 items-center justify-center rounded-full text-gray-700 transition-colors hover:bg-gray-200"
                     title="Download PDF"
                   >
                     <Download className="h-5 w-5" />
@@ -117,8 +121,9 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
                   <button
                     type="button"
                     onClick={onClose}
-                    className="p-2 hover:bg-gray-200 rounded-full transition-colors"
-                    title="Close"
+                    className="flex h-11 w-11 items-center justify-center rounded-full bg-gray-200 text-gray-900 transition-colors hover:bg-gray-300"
+                    title="Close resume"
+                    aria-label="Close resume"
                   >
                     <X className="h-5 w-5" />
                   </button>
@@ -127,12 +132,12 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
 
               {/* Resume Content */}
               <div 
-                className="h-[calc(90vh-80px)] overflow-auto"
+                className="min-h-0 flex-1 overflow-auto bg-gray-200"
                 onWheel={(e) => e.stopPropagation()}
                 onTouchMove={(e) => e.stopPropagation()}
               >
                 <div 
-                  className="w-full h-full"
+                  className="h-full w-full"
                   style={{ transform: `scale(${zoom})`, transformOrigin: 'top center' }}
                 >
                   <iframe
@@ -147,6 +152,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
             </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 };

@@ -63,6 +63,7 @@ const SkillsSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
   const [sphereSize, setSphereSize] = useState(360);
+  const [isMobile, setIsMobile] = useState(false);
   const [activeDivision, setActiveDivision] = useState<string>('All');
 
   const highlightedImageIds = activeDivision === 'All'
@@ -72,7 +73,10 @@ const SkillsSection = () => {
         .map((technology) => technology.id);
 
   useEffect(() => {
-    const resize = () => setSphereSize(Math.min(620, Math.max(280, window.innerWidth - 32)));
+    const resize = () => {
+      setSphereSize(Math.min(620, Math.max(280, window.innerWidth - 32)));
+      setIsMobile(window.innerWidth < 768);
+    };
     resize();
     window.addEventListener('resize', resize);
     return () => window.removeEventListener('resize', resize);
@@ -113,7 +117,7 @@ const SkillsSection = () => {
             maxRotationSpeed={4}
             hoverScale={1.16}
             perspective={1100}
-            autoRotate
+            autoRotate={!isMobile}
             autoRotateSpeed={0.075}
             highlightedImageIds={highlightedImageIds}
           />

@@ -29,10 +29,11 @@ const HeroSection = () => {
 
   useEffect(() => {
     const desktop = window.matchMedia('(min-width: 1024px)');
+    const coarsePointer = window.matchMedia('(pointer: coarse)');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
     const scheduleLoad = () => {
-      if (!desktop.matches || reducedMotion.matches || connection?.saveData) {
+      if (!desktop.matches || coarsePointer.matches || reducedMotion.matches || connection?.saveData) {
         setLoadSpline(false);
         return undefined;
       }
@@ -44,10 +45,12 @@ const HeroSection = () => {
       timer = scheduleLoad();
     };
     desktop.addEventListener('change', reevaluate);
+    coarsePointer.addEventListener('change', reevaluate);
     reducedMotion.addEventListener('change', reevaluate);
     return () => {
       if (timer) window.clearTimeout(timer);
       desktop.removeEventListener('change', reevaluate);
+      coarsePointer.removeEventListener('change', reevaluate);
       reducedMotion.removeEventListener('change', reevaluate);
     };
   }, []);
@@ -78,13 +81,13 @@ const HeroSection = () => {
               <span className="min-w-0">Based in New York · Hybrid + remote</span>
             </div>
 
-            <h1 className="font-['Fraunces'] text-[clamp(3.5rem,9vw,7.75rem)] font-semibold leading-[0.88] tracking-[-0.055em] text-portfolio-text drop-shadow-2xl">
+            <h1 className="font-['Fraunces'] text-[clamp(3.15rem,8.2vw,7.15rem)] font-medium leading-[0.92] tracking-[-0.045em] text-portfolio-text">
               Kartikey
               <br />
-              <span className="italic text-portfolio-cyan">Patel.</span>
+              Patel<span className="text-portfolio-cyan">.</span>
             </h1>
 
-            <p className="mt-7 w-full max-w-2xl break-words !font-sans text-[15px] !normal-case !tracking-normal leading-7 text-portfolio-text-muted sm:text-base">
+            <p className="mt-7 w-full max-w-xl break-words font-sans text-[15px] font-normal normal-case tracking-normal leading-7 text-portfolio-text-muted sm:text-[16px]">
               I&apos;m a{' '}
               <span className="mt-1 flex min-w-0 items-baseline font-semibold text-portfolio-cyan sm:mt-0 sm:inline-flex sm:min-w-[17.5rem]">
                 <span className="mr-1 font-mono text-[0.8em] font-medium" aria-hidden="true">&gt;</span>
@@ -98,7 +101,7 @@ const HeroSection = () => {
                   className="whitespace-nowrap"
                 />
               </span>{' '}
-              focused on building reliable, intelligent products with React, Spring Boot, and AWS. I turn complex requirements into scalable systems, thoughtful interfaces, and measurable outcomes.
+              building reliable digital products with React, Spring Boot, and AWS. I turn complex requirements into scalable systems and thoughtful user experiences.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
