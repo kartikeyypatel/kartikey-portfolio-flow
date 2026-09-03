@@ -569,15 +569,18 @@ const ProjectsSection = () => {
     };
     const previousRootOverflow = root.style.overflow;
 
-    body.style.position = 'fixed';
-    body.style.top = `-${lockedScrollY.current}px`;
-    body.style.left = '0';
-    body.style.right = '0';
-    body.style.width = '100%';
+    const mobileViewport = window.matchMedia('(max-width: 767px)').matches;
+    if (!mobileViewport) {
+      body.style.position = 'fixed';
+      body.style.top = `-${lockedScrollY.current}px`;
+      body.style.left = '0';
+      body.style.right = '0';
+      body.style.width = '100%';
+    }
     body.style.overflow = 'hidden';
     root.style.overflow = 'hidden';
 
-    window.requestAnimationFrame(() => projectBackButtonRef.current?.focus());
+    window.requestAnimationFrame(() => projectBackButtonRef.current?.focus({ preventScroll: true }));
 
     const handleDialogKeyboard = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -605,8 +608,8 @@ const ProjectsSection = () => {
       document.removeEventListener('keydown', handleDialogKeyboard);
       Object.assign(body.style, previousBodyStyles);
       root.style.overflow = previousRootOverflow;
-      window.scrollTo(0, lockedScrollY.current);
-      window.requestAnimationFrame(() => lastProjectTriggerRef.current?.focus());
+      if (!mobileViewport) window.scrollTo(0, lockedScrollY.current);
+      window.requestAnimationFrame(() => lastProjectTriggerRef.current?.focus({ preventScroll: true }));
     };
   }, [isProjectOpen]);
 
