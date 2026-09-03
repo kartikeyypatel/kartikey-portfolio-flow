@@ -93,7 +93,24 @@ EDUCATION
 Master of Science in Computer Science | New Jersey Institute of Technology | Newark, NJ, US | Sep 2023 – May 2025
 Bachelor of Science in Computer Science | University of Mumbai | Mumbai, India | Aug 2016 – May 2020`;
     
-    console.log(`[Vercel Chat] Context length: ${relevantContext.length} characters`);
+    // Lightweight keyword retrieval keeps the prompt small and grounded. The
+    // portfolio is a compact knowledge base, so ranking its paragraph-sized
+    // chunks is faster and more predictable than sending the entire résumé on
+    // every request.
+    const queryTerms = message.toLowerCase().match(/[a-z0-9+#.-]{2,}/g) || [];
+    const retrievedContext = relevantContext
+      .split(/\n\s*\n/)
+      .map((chunk, index) => ({
+        chunk,
+        index,
+        score: queryTerms.reduce((score, term) => score + (chunk.toLowerCase().includes(term) ? 1 : 0), 0),
+      }))
+      .sort((a, b) => b.score - a.score || a.index - b.index)
+      .slice(0, 8)
+      .map(({ chunk }) => chunk)
+      .join('\n\n');
+
+    console.log(`[Vercel Chat] Retrieved context length: ${retrievedContext.length} characters`);
 
     // Format prior turns so the model has conversational memory
     const historyText = conversationHistory
@@ -101,10 +118,10 @@ Bachelor of Science in Computer Science | University of Mumbai | Mumbai, India |
       .join('\n');
 
     // Create the prompt for Gemini
-    const prompt = `You are Kartikey Patel's AI assistant. Use the following information to answer questions accurately and professionally.
+    const prompt = `You are Kartikey Patel's AI assistant. Use only the provided portfolio context to answer accurately and professionally.
 
 Context from documents:
-${relevantContext}
+${retrievedContext}
 ${historyText ? `\nConversation so far:\n${historyText}\n` : ''}
 Guidelines:
 - Always speak in first person as Kartikey
@@ -121,7 +138,10 @@ User Question: ${message}
 Answer:`;
 
     // Call Gemini API
-    const result = await model.generateContent(prompt);
+    const result = await model.generateContent({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.25, maxOutputTokens: 350 },
+    });
     const response = await result.response;
     const aiResponse = response.text();
 
@@ -131,11 +151,11 @@ Answer:`;
     res.status(200).json({
       response: aiResponse,
       confidence: confidence,
-      contextUsed: relevantContext.length > 0,
+      contextUsed: retrievedContext.length > 0,
       followUpQuestions: [],
       metadata: {
         originalQuestion: message,
-        contextLength: relevantContext.length,
+        contextLength: retrievedContext.length,
         model: 'gemini-2.5-flash',
         timestamp: new Date().toISOString()
       },

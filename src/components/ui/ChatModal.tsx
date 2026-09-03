@@ -20,6 +20,15 @@ interface Message {
   sender: 'user' | 'ai';
 }
 
+const renderAssistantText = (content: string) => {
+  const parts = content.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, index) =>
+    part.startsWith('**') && part.endsWith('**')
+      ? <strong key={index}>{part.slice(2, -2)}</strong>
+      : <React.Fragment key={index}>{part}</React.Fragment>,
+  );
+};
+
 const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -185,7 +194,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
                     <ChatBubbleMessage
                       variant={message.sender === "user" ? "sent" : "received"}
                     >
-                      {message.content}
+                      {message.sender === 'ai' ? renderAssistantText(message.content) : message.content}
                     </ChatBubbleMessage>
                   </ChatBubble>
                 ))}

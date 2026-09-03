@@ -194,6 +194,12 @@
     border-color: var(--editorial-rule) !important;
   }
 
+  .portfolio-editorial input::placeholder,
+  .portfolio-editorial textarea::placeholder {
+    color: #b7c5c5 !important;
+    opacity: 1 !important;
+  }
+
   .portfolio-editorial :is(a, button, input, textarea):focus-visible {
     outline: 2px solid var(--editorial-accent);
     outline-offset: 3px;
