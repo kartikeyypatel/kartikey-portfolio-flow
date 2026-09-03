@@ -12,15 +12,11 @@ interface Experience {
   company: string;
   period: string;
   description: string;
+  summary: string;
   skills: string[];
   logo: string;
   cropLogo?: boolean;
 }
-
-const descriptionToBullets = (description: string) =>
-  description.split('. ').map((sentence) => sentence.endsWith('.') ? sentence : `${sentence}.`);
-
-const firstMetric = (description: string) => description.match(/\b\d+(?:\.\d+)?%/)?.[0];
 
 const ExperienceSection = () => {
   const ref = useRef(null);
@@ -34,6 +30,7 @@ const ExperienceSection = () => {
       company: 'Harlem Children\'s Zone',
       period: 'Jan 2026 - Present',
       description: 'Architected high-volume data pipelines using Node.js and Azure Data Fabric, cutting event processing latency by 40% while improving cross-functional team collaboration. Designed scalable frontend frameworks with React and Next.js, elevating UI performance metrics by 35% and enabling real-time dashboard analytics for senior stakeholders. Mentored junior engineering teams, raising technical standards and boosting throughput by 30%. Built reliable asynchronous workflows with BullMQ, sustaining 100% uptime for mission-critical processes, and optimized NoSQL queries for a 25% increase in retrieval speeds.',
+      summary: 'Built high-volume data and frontend systems that reduced processing latency by 40%, improved UI performance by 35%, and increased team throughput by 30%.',
       skills: ['Node.js', 'Azure Data Fabric', 'React', 'Next.js', 'BullMQ', 'NoSQL'],
       logo: '/uploads/harlem-childrens-zone-logo.svg'
     },
@@ -43,6 +40,7 @@ const ExperienceSection = () => {
       company: 'Capital One',
       period: 'Jul 2025 - Jan 2026',
       description: 'Engineered high-performance backend microservices using Node.js and NestJS, scaling distributed platforms to support over 2M client transactions daily. Orchestrated resilient, event-driven CI/CD pipelines deploying to Azure App Services, cutting deployment times by 50%. Built server-side rendering components and state management patterns that reduced frontend latency by 40%, and integrated scalable REST APIs to boost application throughput by 35%. Resolved production incidents under pressure, sustaining 99% reliability.',
+      summary: 'Scaled backend services to support 2M+ daily transactions while cutting deployment time by 50% and sustaining 99% platform reliability.',
       skills: ['Node.js', 'NestJS', 'Azure App Services', 'CI/CD', 'REST APIs'],
       logo: '/uploads/capital-one-logo.svg'
     },
@@ -52,6 +50,7 @@ const ExperienceSection = () => {
       company: 'PSE&G',
       period: 'May 2024 - Aug. 2024',
       description: 'Fortified mission-critical cloud infrastructure across complex Linux environments, remediating 95% of system anomalies and resolving Azure service faults with precision. Analyzed large-scale messaging queue architectures to support technical teams, cutting deployment risks by 40% while translating business needs into clean technical outcomes. Advanced distributed system workflows using TypeORM and complex SQL queries, validating massive datasets to ensure 100% event integrity across SQL platforms.',
+      summary: 'Strengthened cloud infrastructure by remediating 95% of system anomalies, reducing deployment risk by 40%, and maintaining 100% event integrity.',
       skills: ['Azure', 'Linux', 'Messaging Queues', 'TypeORM', 'SQL'],
       logo: '/uploads/f4e6c158-e728-46fd-88f4-7f764885e7b7.png'
     },
@@ -61,6 +60,7 @@ const ExperienceSection = () => {
       company: 'Epsilon',
       period: 'Apr 2020 - May 2023',
       description: 'Spearheaded the complete software development lifecycle for scalable real-time systems, improving platform performance by 25% and reducing latency by 30%. Partnered with cross-functional stakeholders to deliver 10+ distributed solutions on schedule, aligning closely with core architectural decisions and enterprise objectives. Streamlined event-driven infrastructure pipelines, cutting manual service configuration effort by 40%, and optimized Kafka streaming data processes for 20% faster query execution and message flow.',
+      summary: 'Delivered 10+ real-time distributed solutions, improving platform performance by 25%, reducing latency by 30%, and cutting manual configuration effort by 40%.',
       skills: ['Distributed Systems', 'Event-Driven Architecture', 'Kafka'],
       logo: '/uploads/epsilon-logo.png',
       cropLogo: true,
@@ -71,6 +71,7 @@ const ExperienceSection = () => {
       company: 'CRISIL Limited',
       period: 'Jun. 2019 - Jul. 2019',
       description: 'Created a chatbot using IBM Watson, integrating Java and JavaScript APIs with IBM Cloud services to deliver context-aware responses, resulting in a 35% increase in customer satisfaction.',
+      summary: 'Built an IBM Watson chatbot across Java, JavaScript, and IBM Cloud services that increased customer satisfaction by 35%.',
       skills: ['Chatbot', 'IBM Watson', 'Java API', 'IBM Cloud'],
       logo: '/uploads/dd039a77-d180-4eb1-8feb-227df0fd9c8b.png',
       cropLogo: true,
@@ -164,20 +165,9 @@ const ExperienceSection = () => {
                   <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_180px]">
                     {/* Description */}
                     <div>
-                      {firstMetric(experience.description) && (
-                        <div className="mb-6 flex items-baseline gap-3 border-l-2 border-portfolio-cyan pl-4">
-                          <strong className="font-['Fraunces'] text-4xl font-semibold text-portfolio-text">{firstMetric(experience.description)}</strong>
-                          <span className="text-xs uppercase tracking-[0.08em] text-portfolio-text-muted">highlighted impact</span>
-                        </div>
-                      )}
-                      <ul className="mb-6 max-w-3xl space-y-3">
-                        {descriptionToBullets(experience.description).map((achievement) => (
-                          <li key={achievement} className="flex gap-3 text-[15px] leading-7 text-portfolio-text-muted">
-                            <span className="mt-[0.7rem] h-1.5 w-1.5 shrink-0 rounded-full bg-portfolio-cyan" aria-hidden="true" />
-                            <span>{achievement}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      <p className="mb-6 max-w-3xl text-[15px] leading-7 text-portfolio-text-muted">
+                        {experience.summary}
+                      </p>
                       
                       {/* Skills */}
                       <div className="flex flex-wrap gap-2">
