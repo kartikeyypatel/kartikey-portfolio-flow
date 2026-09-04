@@ -78,7 +78,11 @@ const Index = () => {
     const pageTask = document.readyState === 'complete'
       ? Promise.resolve()
       : new Promise<void>((resolve) => window.addEventListener('load', () => resolve(), { once: true }));
-    const tasks: Promise<unknown>[] = [...bundleTasks, fontsTask, pageTask];
+    const portfolioWindow = window as Window & { __portfolioAssistantReady?: boolean };
+    const assistantTask = portfolioWindow.__portfolioAssistantReady
+      ? Promise.resolve()
+      : new Promise<void>((resolve) => window.addEventListener('portfolio-assistant-ready', () => resolve(), { once: true }));
+    const tasks: Promise<unknown>[] = [...bundleTasks, fontsTask, pageTask, assistantTask];
     let completed = 0;
 
     setBootProgress(4);

@@ -21,11 +21,19 @@ const chatPlaceholders = [
   'What makes him a great software engineer?',
 ];
 
+const markAssistantReady = () => {
+  const portfolioWindow = window as Window & { __portfolioAssistantReady?: boolean };
+  if (portfolioWindow.__portfolioAssistantReady) return;
+  portfolioWindow.__portfolioAssistantReady = true;
+  window.dispatchEvent(new Event('portfolio-assistant-ready'));
+};
+
 const HeroSection = () => {
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
   const [initialChatMessage, setInitialChatMessage] = useState<string>();
   const [loadSpline, setLoadSpline] = useState(false);
+  const [splineTimedOut, setSplineTimedOut] = useState(false);
 
   useEffect(() => {
     const desktop = window.matchMedia('(min-width: 1024px)');
@@ -54,6 +62,15 @@ const HeroSection = () => {
       reducedMotion.removeEventListener('change', reevaluate);
     };
   }, []);
+
+  useEffect(() => {
+    if (!loadSpline) return;
+    const timeout = window.setTimeout(() => {
+      setSplineTimedOut(true);
+      markAssistantReady();
+    }, 12000);
+    return () => window.clearTimeout(timeout);
+  }, [loadSpline]);
 
   const scrollTo = (selector: string) => {
     window.requestAnimationFrame(() => {
@@ -134,20 +151,53 @@ const HeroSection = () => {
                 Ask AI
               </button>
             </div>
+
+            <div className="relative mx-auto mt-10 max-w-sm lg:hidden">
+              <div className="pointer-events-none absolute inset-x-[18%] inset-y-[10%] rounded-full bg-portfolio-cyan/[0.055] blur-3xl" />
+              <img
+                src="/portfolio-assistant-mobile.jpg"
+                alt="Kartikey's portfolio AI assistant"
+                width="640"
+                height="960"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                onLoad={markAssistantReady}
+                onError={markAssistantReady}
+                className="relative mx-auto h-auto max-h-[430px] w-auto max-w-full object-contain mix-blend-screen"
+              />
+              <div className="relative -mt-10 rounded-2xl border border-white/10 bg-black/80 p-2 shadow-2xl">
+                <p className="mb-2 text-center font-mono text-[9px] uppercase tracking-[0.12em] text-portfolio-text-muted">Ask the portfolio assistant</p>
+                <PlaceholdersAndVanishInput placeholders={chatPlaceholders} onChange={() => undefined} onSubmit={handleChatSubmit} />
+              </div>
+            </div>
           </div>
 
           <div className="relative hidden h-[min(78vh,720px)] min-h-[590px] w-full self-center overflow-visible lg:block">
             <div className="absolute inset-x-[8%] inset-y-[5%] rounded-full bg-black/25 blur-3xl" />
-            {loadSpline ? (
+            {loadSpline && !splineTimedOut ? (
               <Suspense fallback={<div className="h-full w-full" />}>
                 <SplineScene
                   scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
                   className="absolute -left-[10%] top-0 !h-full !w-[120%] -translate-y-4 xl:-left-[12%] xl:!w-[124%] xl:-translate-y-5"
+                  onLoad={markAssistantReady}
                 />
               </Suspense>
+            ) : splineTimedOut ? (
+              <img
+                src="/portfolio-assistant-mobile.jpg"
+                alt=""
+                width="640"
+                height="960"
+                loading="eager"
+                decoding="async"
+                onLoad={markAssistantReady}
+                onError={markAssistantReady}
+                className="absolute left-1/2 top-1/2 h-[88%] w-auto -translate-x-1/2 -translate-y-1/2 object-contain mix-blend-screen"
+              />
             ) : (
-              <div className="absolute left-1/2 top-1/2 flex h-48 w-48 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-portfolio-cyan/15 bg-portfolio-cyan/[0.025] font-mono text-sm uppercase tracking-[0.14em] text-portfolio-cyan/70 shadow-[0_0_100px_rgba(34,211,238,0.08)]" aria-hidden="true">
-                Portfolio AI
+              <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+                <div className="h-10 w-10 animate-spin rounded-full border border-white/10 border-t-portfolio-cyan" />
               </div>
             )}
             <div className="absolute inset-x-0 bottom-0 z-20 mx-auto max-w-[560px] px-3 xl:px-0">
