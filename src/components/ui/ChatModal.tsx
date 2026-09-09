@@ -3,7 +3,7 @@
 import React, { useCallback, useState, useRef, FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import { X, Send, Bot, User, CornerDownLeft } from 'lucide-react';
+import { X, Bot, CornerDownLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ChatBubble, ChatBubbleAvatar, ChatBubbleMessage } from '@/components/ui/chat-bubble';
 import { ChatInput } from '@/components/ui/chat-input';
@@ -179,7 +179,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[1000] flex h-[100dvh] items-center justify-center overflow-hidden bg-[#050707] sm:bg-[#050707]/96 sm:p-4"
+          className="fixed inset-0 z-[1000] flex h-[100dvh] w-full items-center justify-center overflow-hidden overscroll-none bg-[#050707] p-2 sm:bg-[#050707]/96 sm:p-4"
           onClick={handleBackdropClick}
           role="dialog"
           aria-modal="true"
@@ -189,20 +189,20 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="flex h-[100dvh] w-full max-w-2xl flex-col overflow-hidden overscroll-contain bg-[#0b0f10] shadow-2xl sm:h-[80vh] sm:max-h-[600px] sm:rounded-xl sm:border sm:border-portfolio-gray-lighter"
+            className="flex h-[calc(100dvh-1rem)] min-h-0 w-[calc(100vw-1rem)] min-w-0 max-w-2xl touch-pan-y flex-col overflow-hidden overscroll-contain rounded-xl border border-portfolio-gray-lighter bg-[#0b0f10] shadow-2xl sm:h-[80vh] sm:max-h-[600px] sm:w-full"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-portfolio-gray-lighter">
+            <div className="flex shrink-0 items-center justify-between gap-3 border-b border-portfolio-gray-lighter p-4 sm:p-6">
               <div className="flex items-center space-x-3">
                 <div className="p-2 rounded-full bg-portfolio-cyan/20">
                   <Bot className="h-6 w-6 text-portfolio-cyan" />
                 </div>
                 <div>
-                  <h3 id="portfolio-assistant-title" className="text-lg font-semibold text-portfolio-text">
+                  <h3 id="portfolio-assistant-title" className="text-base font-semibold text-portfolio-text sm:text-lg">
                     Ask about Kartikey
                   </h3>
-                  <p className="text-sm text-portfolio-text-muted">
+                  <p className="text-xs text-portfolio-text-muted sm:text-sm">
                     AI-powered portfolio assistant
                   </p>
                 </div>
@@ -220,7 +220,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
 
             {/* Messages */}
             <div className="min-h-0 flex-1 overflow-hidden overscroll-contain">
-              <ChatMessageList>
+              <ChatMessageList className="overscroll-contain p-3 sm:p-4">
                 {messages.map((message) => (
                   <ChatBubble
                     key={message.id}
@@ -232,6 +232,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
                     />
                     <ChatBubbleMessage
                       variant={message.sender === "user" ? "sent" : "received"}
+                      className="min-w-0 max-w-[calc(100%-2.5rem)] break-words text-sm leading-6"
                     >
                       {message.sender === 'ai' ? renderAssistantText(message.content) : message.content}
                     </ChatBubbleMessage>
@@ -270,7 +271,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
                     }
                   }}
                   placeholder="Ask about Kartikey's experience, skills, projects..."
-                  className="min-h-12 resize-none rounded-lg bg-portfolio-gray border-0 p-3 shadow-none focus-visible:ring-0"
+                  className="min-h-12 resize-none rounded-lg border-0 bg-portfolio-gray p-3 text-base shadow-none focus-visible:ring-0 sm:text-sm"
                 />
                 <div className="flex items-center p-3 pt-0 justify-end">
                   <Button 

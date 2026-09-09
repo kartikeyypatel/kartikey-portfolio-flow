@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { message, conversationHistory = [], options = {} } = req.body;
+  const { message, conversationHistory = [] } = req.body;
 
   if (!message || !message.trim()) {
     return res.status(400).json({ error: 'Message is required' });
@@ -97,24 +97,38 @@ Bachelor of Science in Computer Science | University of Mumbai | Mumbai, India |
     // portfolio is a compact knowledge base, so ranking its paragraph-sized
     // chunks is faster and more predictable than sending the entire résumé on
     // every request.
-    const queryTerms = message.toLowerCase().match(/[a-z0-9+#.-]{2,}/g) || [];
-    const retrievedContext = relevantContext
+    const normalizedMessage = message.toLowerCase();
+    const queryTerms = normalizedMessage.match(/[a-z0-9+#.-]{2,}/g) || [];
+    const contextChunks = relevantContext
       .split(/\n\s*\n/)
       .map((chunk, index) => ({
         chunk,
         index,
         score: queryTerms.reduce((score, term) => score + (chunk.toLowerCase().includes(term) ? 1 : 0), 0),
-      }))
+      }));
+
+    // Broad questions such as "projects" should retrieve the whole matching
+    // section, not only the first project whose heading contains that word.
+    const projectContext = /\b(project|projects|portfolio|built|build)\b/.test(normalizedMessage)
+      ? relevantContext.match(/PROJECTS[\s\S]*?(?=\nEDUCATION)/)?.[0]
+      : '';
+    const retrievedContext = [
+      projectContext,
+      ...contextChunks
       .sort((a, b) => b.score - a.score || a.index - b.index)
+      .filter(({ chunk }) => !projectContext || !projectContext.includes(chunk))
       .slice(0, 8)
-      .map(({ chunk }) => chunk)
+      .map(({ chunk }) => chunk),
+    ]
+      .filter((chunk, index, chunks) => chunk && chunks.indexOf(chunk) === index)
       .join('\n\n');
 
     console.log(`[Vercel Chat] Retrieved context length: ${retrievedContext.length} characters`);
 
     // Format prior turns so the model has conversational memory
-    const historyText = conversationHistory
-      .map((turn) => `${turn.sender === 'user' ? 'User' : 'Assistant'}: ${turn.content}`)
+    const historyText = (Array.isArray(conversationHistory) ? conversationHistory : [])
+      .slice(-6)
+      .map((turn) => `${turn.sender === 'user' ? 'User' : 'Assistant'}: ${String(turn.content || '').slice(0, 1200)}`)
       .join('\n');
 
     // Create the prompt for Gemini
@@ -128,6 +142,7 @@ Guidelines:
 - Be specific about technologies, projects, and achievements mentioned in the context
 - If the context doesn't contain relevant information, politely say you don't have that specific information
 - Keep responses concise but informative (2-4 sentences typically)
+- Always finish the final sentence; never return a sentence fragment
 - Highlight key achievements and technical skills
 - Be enthusiastic about technology and problem-solving
 - Reference specific projects, technologies, or metrics when relevant
@@ -138,12 +153,33 @@ User Question: ${message}
 Answer:`;
 
     // Call Gemini API
-    const result = await model.generateContent({
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.25, maxOutputTokens: 350 },
-    });
-    const response = await result.response;
-    const aiResponse = response.text();
+    const generateAnswer = async (answerPrompt, maxOutputTokens = 800) => {
+      const result = await model.generateContent({
+        contents: [{ role: 'user', parts: [{ text: answerPrompt }] }],
+        generationConfig: {
+          temperature: 0.25,
+          maxOutputTokens,
+          // Portfolio answers are grounded lookups; disabling extended
+          // reasoning makes them faster and preserves the visible token budget.
+          thinkingConfig: { thinkingBudget: 0 },
+        },
+      });
+      const response = await result.response;
+      return {
+        text: response.text().trim(),
+        finishReason: response.candidates?.[0]?.finishReason,
+      };
+    };
+
+    let generated = await generateAnswer(prompt);
+
+    // Never expose a response cut off by the model's token boundary. This retry
+    // is only used when Gemini explicitly reports MAX_TOKENS.
+    if (generated.finishReason === 'MAX_TOKENS') {
+      generated = await generateAnswer(`${prompt}\n\nA previous draft was cut off:\n${generated.text}\n\nRewrite the complete answer from the beginning in no more than 3 finished sentences.`, 900);
+    }
+
+    const aiResponse = generated.text;
 
     // Calculate simple confidence score
     const confidence = relevantContext.length > 0 ? 0.8 : 0.3;
@@ -157,6 +193,7 @@ Answer:`;
         originalQuestion: message,
         contextLength: retrievedContext.length,
         model: 'gemini-2.5-flash',
+        finishReason: generated.finishReason,
         timestamp: new Date().toISOString()
       },
       timestamp: new Date().toISOString()
