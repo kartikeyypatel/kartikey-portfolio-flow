@@ -2,6 +2,7 @@
 
 import React, { useCallback, useState, useRef, FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { createPortal } from 'react-dom';
 import { X, Send, Bot, User, CornerDownLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ChatBubble, ChatBubbleAvatar, ChatBubbleMessage } from '@/components/ui/chat-bubble';
@@ -41,7 +42,43 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [hasSentInitial, setHasSentInitial] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const nextMessageId = useRef(2);
+
+  React.useEffect(() => setMounted(true), []);
+
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const body = document.body;
+    const root = document.documentElement;
+    const scrollY = window.scrollY;
+    const previousBodyOverflow = body.style.overflow;
+    const previousBodyPosition = body.style.position;
+    const previousBodyTop = body.style.top;
+    const previousBodyLeft = body.style.left;
+    const previousBodyRight = body.style.right;
+    const previousBodyWidth = body.style.width;
+    const previousRootOverflow = root.style.overflow;
+
+    body.style.overflow = 'hidden';
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollY}px`;
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.width = '100%';
+    root.style.overflow = 'hidden';
+
+    return () => {
+      body.style.overflow = previousBodyOverflow;
+      body.style.position = previousBodyPosition;
+      body.style.top = previousBodyTop;
+      body.style.left = previousBodyLeft;
+      body.style.right = previousBodyRight;
+      body.style.width = previousBodyWidth;
+      root.style.overflow = previousRootOverflow;
+      window.scrollTo(0, scrollY);
+    };
+  }, [isOpen]);
 
   // Core message processing used by both form submit and Enter key handling
   const processInput = useCallback(async (userInput: string) => {
@@ -133,14 +170,16 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
     }
   };
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-[1000] flex h-[100dvh] items-center justify-center overflow-hidden bg-[#050707] sm:bg-[#050707]/96 sm:p-4"
           onClick={handleBackdropClick}
           role="dialog"
           aria-modal="true"
@@ -150,7 +189,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="bg-portfolio-gray border border-portfolio-gray-lighter rounded-xl shadow-2xl w-full max-w-2xl h-[80vh] max-h-[600px] flex flex-col overflow-hidden"
+            className="flex h-[100dvh] w-full max-w-2xl flex-col overflow-hidden overscroll-contain bg-[#0b0f10] shadow-2xl sm:h-[80vh] sm:max-h-[600px] sm:rounded-xl sm:border sm:border-portfolio-gray-lighter"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -180,7 +219,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-hidden">
+            <div className="min-h-0 flex-1 overflow-hidden overscroll-contain">
               <ChatMessageList>
                 {messages.map((message) => (
                   <ChatBubble
@@ -212,7 +251,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
             </div>
 
             {/* Input */}
-            <div className="p-6 border-t border-portfolio-gray-lighter">
+            <div className="shrink-0 border-t border-portfolio-gray-lighter bg-[#0b0f10] p-4 sm:p-6">
               <form
                 onSubmit={handleSubmit}
                 className="relative rounded-lg border border-portfolio-gray-lighter bg-portfolio-gray focus-within:ring-1 focus-within:ring-portfolio-cyan p-1"
@@ -249,7 +288,8 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, initialMessage }
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 };
 

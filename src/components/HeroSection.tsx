@@ -34,6 +34,7 @@ const HeroSection = () => {
   const [initialChatMessage, setInitialChatMessage] = useState<string>();
   const [loadSpline, setLoadSpline] = useState(false);
   const [splineTimedOut, setSplineTimedOut] = useState(false);
+  const [splineLoaded, setSplineLoaded] = useState(false);
   const [compactLayout, setCompactLayout] = useState(() => window.innerWidth < 1024);
 
   useEffect(() => {
@@ -41,6 +42,7 @@ const HeroSection = () => {
     const scheduleLoad = () => {
       setCompactLayout(!desktop.matches);
       setSplineTimedOut(false);
+      setSplineLoaded(false);
       setLoadSpline(false);
       return window.setTimeout(() => setLoadSpline(true), desktop.matches ? 350 : 0);
     };
@@ -57,13 +59,19 @@ const HeroSection = () => {
   }, []);
 
   useEffect(() => {
-    if (!loadSpline) return;
+    if (!loadSpline || splineLoaded) return;
     const timeout = window.setTimeout(() => {
       setSplineTimedOut(true);
       markAssistantReady();
     }, 25000);
     return () => window.clearTimeout(timeout);
-  }, [loadSpline]);
+  }, [loadSpline, splineLoaded]);
+
+  const handleSplineLoad = () => {
+    setSplineLoaded(true);
+    setSplineTimedOut(false);
+    markAssistantReady();
+  };
 
   const scrollTo = (selector: string) => {
     window.requestAnimationFrame(() => {
@@ -145,7 +153,7 @@ const HeroSection = () => {
                     <SplineScene
                       scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
                       className="absolute -left-[8%] top-0 !h-full !w-[116%]"
-                      onLoad={markAssistantReady}
+                      onLoad={handleSplineLoad}
                       pauseAfterLoad
                     />
                   </Suspense>
@@ -177,7 +185,7 @@ const HeroSection = () => {
                 <SplineScene
                   scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
                   className="absolute -left-[10%] top-0 !h-full !w-[120%] -translate-y-4 xl:-left-[12%] xl:!w-[124%] xl:-translate-y-5"
-                  onLoad={markAssistantReady}
+                  onLoad={handleSplineLoad}
                 />
               </Suspense>
             ) : splineTimedOut ? (
