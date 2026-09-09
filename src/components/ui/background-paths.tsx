@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 function FloatingPaths({ position, animatePaths }: { position: number; animatePaths: boolean }) {
-    const paths = Array.from({ length: 20 }, (_, i) => ({
+    const paths = Array.from({ length: animatePaths ? 20 : 8 }, (_, i) => ({
         id: i,
         d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${
             380 - i * 5 * position

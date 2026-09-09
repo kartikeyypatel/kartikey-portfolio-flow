@@ -34,6 +34,7 @@ const HeroSection = () => {
   const [initialChatMessage, setInitialChatMessage] = useState<string>();
   const [loadSpline, setLoadSpline] = useState(false);
   const [splineTimedOut, setSplineTimedOut] = useState(false);
+  const [compactLayout, setCompactLayout] = useState(() => window.innerWidth < 1024);
 
   useEffect(() => {
     const desktop = window.matchMedia('(min-width: 1024px)');
@@ -41,10 +42,13 @@ const HeroSection = () => {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
     const scheduleLoad = () => {
+      setCompactLayout(!desktop.matches);
       if (!desktop.matches || coarsePointer.matches || reducedMotion.matches || connection?.saveData) {
         setLoadSpline(false);
+        setSplineTimedOut(true);
         return undefined;
       }
+      setSplineTimedOut(false);
       return window.setTimeout(() => setLoadSpline(true), 900);
     };
     let timer = scheduleLoad();
@@ -152,28 +156,27 @@ const HeroSection = () => {
               </button>
             </div>
 
-            <div className="relative mx-auto mt-10 max-w-sm lg:hidden">
-              <div className="pointer-events-none absolute inset-x-[18%] inset-y-[10%] rounded-full bg-portfolio-cyan/[0.055] blur-3xl" />
+            {compactLayout && <div className="relative mx-auto mt-10 max-w-sm">
               <img
                 src="/portfolio-assistant-mobile.jpg"
                 alt="Kartikey's portfolio AI assistant"
-                width="640"
-                height="960"
+                width="480"
+                height="408"
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
                 onLoad={markAssistantReady}
                 onError={markAssistantReady}
-                className="relative mx-auto h-auto max-h-[430px] w-auto max-w-full object-contain mix-blend-screen"
+                className="relative mx-auto h-auto max-h-[360px] w-auto max-w-full object-contain"
               />
               <div className="relative -mt-10 rounded-2xl border border-white/10 bg-black/80 p-2 shadow-2xl">
                 <p className="mb-2 text-center font-mono text-[9px] uppercase tracking-[0.12em] text-portfolio-text-muted">Ask the portfolio assistant</p>
                 <PlaceholdersAndVanishInput placeholders={chatPlaceholders} onChange={() => undefined} onSubmit={handleChatSubmit} />
               </div>
-            </div>
+            </div>}
           </div>
 
-          <div className="relative hidden h-[min(78vh,720px)] min-h-[590px] w-full self-center overflow-visible lg:block">
+          {!compactLayout && <div className="relative h-[min(78vh,720px)] min-h-[590px] w-full self-center overflow-visible">
             <div className="absolute inset-x-[8%] inset-y-[5%] rounded-full bg-black/25 blur-3xl" />
             {loadSpline && !splineTimedOut ? (
               <Suspense fallback={<div className="h-full w-full" />}>
@@ -187,13 +190,13 @@ const HeroSection = () => {
               <img
                 src="/portfolio-assistant-mobile.jpg"
                 alt=""
-                width="640"
-                height="960"
+                width="480"
+                height="408"
                 loading="eager"
                 decoding="async"
                 onLoad={markAssistantReady}
                 onError={markAssistantReady}
-                className="absolute left-1/2 top-1/2 h-[88%] w-auto -translate-x-1/2 -translate-y-1/2 object-contain mix-blend-screen"
+                className="absolute left-1/2 top-1/2 h-auto w-[88%] -translate-x-1/2 -translate-y-1/2 object-contain"
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
@@ -212,7 +215,7 @@ const HeroSection = () => {
                 />
               </div>
             </div>
-          </div>
+          </div>}
         </div>
 
       <ResumeModal isOpen={isResumeModalOpen} onClose={() => setIsResumeModalOpen(false)} />

@@ -6,23 +6,14 @@ import SiteBackground from '../components/ui/site-background';
 
 // Start loading the application sections immediately and reuse the same
 // promises for React.lazy and the boot-progress calculation.
-const sectionModules = {
-  hero: import('../components/HeroSection'),
-  about: import('../components/AboutSection'),
-  skills: import('../components/SkillsSection'),
-  projects: import('../components/ProjectsSection'),
-  education: import('../components/EducationSection'),
-  experience: import('../components/ExperienceSection'),
-  contact: import('../components/ContactSection'),
-};
-
-const HeroSection = React.lazy(() => sectionModules.hero);
-const AboutSection = React.lazy(() => sectionModules.about);
-const SkillsSection = React.lazy(() => sectionModules.skills);
-const ProjectsSection = React.lazy(() => sectionModules.projects);
-const EducationSection = React.lazy(() => sectionModules.education);
-const ExperienceSection = React.lazy(() => sectionModules.experience);
-const ContactSection = React.lazy(() => sectionModules.contact);
+const heroModule = import('../components/HeroSection');
+const HeroSection = React.lazy(() => heroModule);
+const AboutSection = React.lazy(() => import('../components/AboutSection'));
+const SkillsSection = React.lazy(() => import('../components/SkillsSection'));
+const ProjectsSection = React.lazy(() => import('../components/ProjectsSection'));
+const EducationSection = React.lazy(() => import('../components/EducationSection'));
+const ExperienceSection = React.lazy(() => import('../components/ExperienceSection'));
+const ContactSection = React.lazy(() => import('../components/ContactSection'));
 
 const SectionLoader = () => (
   <div className="w-full py-20 bg-portfolio-black flex items-center justify-center">
@@ -32,6 +23,31 @@ const SectionLoader = () => (
     </div>
   </div>
 );
+
+const DeferredSection = ({ children, minHeight = 720 }: { children: React.ReactNode; minHeight?: number }) => {
+  const [shouldRender, setShouldRender] = useState(false);
+  const [element, setElement] = useState<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!element || shouldRender) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setShouldRender(true);
+        observer.disconnect();
+      },
+      { rootMargin: '700px 0px' },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [element, shouldRender]);
+
+  return (
+    <div ref={setElement} style={shouldRender ? undefined : { minHeight }}>
+      {shouldRender ? children : null}
+    </div>
+  );
+};
 
 const BootLoader = ({ progress, leaving }: { progress: number; leaving: boolean }) => (
   <div
@@ -73,7 +89,6 @@ const Index = () => {
     let cancelled = false;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    const bundleTasks = Object.values(sectionModules);
     const fontsTask = document.fonts?.ready ?? Promise.resolve();
     const pageTask = document.readyState === 'complete'
       ? Promise.resolve()
@@ -82,7 +97,7 @@ const Index = () => {
     const assistantTask = portfolioWindow.__portfolioAssistantReady
       ? Promise.resolve()
       : new Promise<void>((resolve) => window.addEventListener('portfolio-assistant-ready', () => resolve(), { once: true }));
-    const tasks: Promise<unknown>[] = [...bundleTasks, fontsTask, pageTask, assistantTask];
+    const tasks: Promise<unknown>[] = [heroModule, fontsTask, pageTask, assistantTask];
     let completed = 0;
 
     setBootProgress(4);
@@ -136,24 +151,12 @@ const Index = () => {
         <Suspense fallback={<SectionLoader />}>
           <HeroSection />
         </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <AboutSection />
-        </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <SkillsSection />
-        </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <ProjectsSection />
-        </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <EducationSection />
-        </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <ExperienceSection />
-        </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <ContactSection />
-        </Suspense>
+        <DeferredSection minHeight={520}><Suspense fallback={<SectionLoader />}><AboutSection /></Suspense></DeferredSection>
+        <DeferredSection><Suspense fallback={<SectionLoader />}><SkillsSection /></Suspense></DeferredSection>
+        <DeferredSection minHeight={900}><Suspense fallback={<SectionLoader />}><ProjectsSection /></Suspense></DeferredSection>
+        <DeferredSection><Suspense fallback={<SectionLoader />}><EducationSection /></Suspense></DeferredSection>
+        <DeferredSection><Suspense fallback={<SectionLoader />}><ExperienceSection /></Suspense></DeferredSection>
+        <DeferredSection><Suspense fallback={<SectionLoader />}><ContactSection /></Suspense></DeferredSection>
       </main>
     </div>
   );
