@@ -200,6 +200,11 @@
     opacity: 1 !important;
   }
 
+  /* The animated hero placeholder is a separate layer beneath this input. */
+  .portfolio-editorial input.portfolio-assistant-hero-input {
+    background: transparent !important;
+  }
+
   .portfolio-editorial :is(a, button, input, textarea):focus-visible {
     outline: 2px solid var(--editorial-accent);
     outline-offset: 3px;
