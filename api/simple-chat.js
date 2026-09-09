@@ -159,9 +159,6 @@ Answer:`;
         generationConfig: {
           temperature: 0.25,
           maxOutputTokens,
-          // Portfolio answers are grounded lookups; disabling extended
-          // reasoning makes them faster and preserves the visible token budget.
-          thinkingConfig: { thinkingBudget: 0 },
         },
       });
       const response = await result.response;
