@@ -8,9 +8,10 @@ interface SplineSceneProps {
   scene: string
   className?: string
   onLoad?: () => void
+  pauseAfterLoad?: boolean
 }
 
-export function SplineScene({ scene, className, onLoad }: SplineSceneProps) {
+export function SplineScene({ scene, className, onLoad, pauseAfterLoad = false }: SplineSceneProps) {
   return (
     <Suspense 
       fallback={
@@ -22,7 +23,11 @@ export function SplineScene({ scene, className, onLoad }: SplineSceneProps) {
       <Spline
         scene={scene}
         className={className}
-        onLoad={onLoad}
+        renderOnDemand
+        onLoad={(application) => {
+          onLoad?.()
+          if (pauseAfterLoad) requestAnimationFrame(() => application.stop())
+        }}
       />
     </Suspense>
   )

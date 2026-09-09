@@ -38,18 +38,11 @@ const HeroSection = () => {
 
   useEffect(() => {
     const desktop = window.matchMedia('(min-width: 1024px)');
-    const coarsePointer = window.matchMedia('(pointer: coarse)');
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
     const scheduleLoad = () => {
       setCompactLayout(!desktop.matches);
-      if (!desktop.matches || coarsePointer.matches || reducedMotion.matches || connection?.saveData) {
-        setLoadSpline(false);
-        setSplineTimedOut(true);
-        return undefined;
-      }
       setSplineTimedOut(false);
-      return window.setTimeout(() => setLoadSpline(true), 900);
+      setLoadSpline(false);
+      return window.setTimeout(() => setLoadSpline(true), desktop.matches ? 350 : 0);
     };
     let timer = scheduleLoad();
     const reevaluate = () => {
@@ -57,13 +50,9 @@ const HeroSection = () => {
       timer = scheduleLoad();
     };
     desktop.addEventListener('change', reevaluate);
-    coarsePointer.addEventListener('change', reevaluate);
-    reducedMotion.addEventListener('change', reevaluate);
     return () => {
       if (timer) window.clearTimeout(timer);
       desktop.removeEventListener('change', reevaluate);
-      coarsePointer.removeEventListener('change', reevaluate);
-      reducedMotion.removeEventListener('change', reevaluate);
     };
   }, []);
 
@@ -72,7 +61,7 @@ const HeroSection = () => {
     const timeout = window.setTimeout(() => {
       setSplineTimedOut(true);
       markAssistantReady();
-    }, 12000);
+    }, 25000);
     return () => window.clearTimeout(timeout);
   }, [loadSpline]);
 
@@ -143,32 +132,37 @@ const HeroSection = () => {
               <button
                 type="button"
                 onClick={() => scrollTo('#contact')}
-                className="inline-flex min-h-12 items-center px-3 text-sm font-medium text-portfolio-text-muted underline decoration-white/20 underline-offset-4 transition-colors hover:text-portfolio-text"
+                className="hidden min-h-12 items-center px-3 text-sm font-medium text-portfolio-text-muted underline decoration-white/20 underline-offset-4 transition-colors hover:text-portfolio-text lg:inline-flex"
               >
                 Connect
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsChatModalOpen(true)}
-                className="inline-flex min-h-12 items-center px-3 text-sm font-medium text-portfolio-text-muted underline decoration-white/20 underline-offset-4 transition-colors hover:text-portfolio-text lg:hidden"
-              >
-                Ask AI
               </button>
             </div>
 
             {compactLayout && <div className="relative mx-auto mt-10 max-w-sm">
-              <img
-                src="/portfolio-assistant-mobile.jpg"
-                alt="Kartikey's portfolio AI assistant"
-                width="480"
-                height="408"
-                loading="eager"
-                fetchPriority="high"
-                decoding="async"
-                onLoad={markAssistantReady}
-                onError={markAssistantReady}
-                className="relative mx-auto h-auto max-h-[360px] w-auto max-w-full object-contain"
-              />
+              <div className="relative h-[430px] w-full overflow-visible">
+                {loadSpline && !splineTimedOut ? (
+                  <Suspense fallback={<div className="h-full w-full" />}>
+                    <SplineScene
+                      scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                      className="absolute -left-[8%] top-0 !h-full !w-[116%]"
+                      onLoad={markAssistantReady}
+                      pauseAfterLoad
+                    />
+                  </Suspense>
+                ) : splineTimedOut ? (
+                  <img
+                    src="/portfolio-assistant-mobile.jpg"
+                    alt="Kartikey's portfolio AI assistant"
+                    width="480"
+                    height="408"
+                    loading="eager"
+                    decoding="async"
+                    onLoad={markAssistantReady}
+                    onError={markAssistantReady}
+                    className="h-full w-full object-contain"
+                  />
+                ) : null}
+              </div>
               <div className="relative -mt-10 rounded-2xl border border-white/10 bg-black/80 p-2 shadow-2xl">
                 <p className="mb-2 text-center font-mono text-[9px] uppercase tracking-[0.12em] text-portfolio-text-muted">Ask the portfolio assistant</p>
                 <PlaceholdersAndVanishInput placeholders={chatPlaceholders} onChange={() => undefined} onSubmit={handleChatSubmit} />
